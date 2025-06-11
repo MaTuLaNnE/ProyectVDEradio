@@ -1,0 +1,373 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px 0;
+}
+
+/* ========== NAVBAR ========== */
+.navbar {
+    background: linear-gradient(135deg, #0d47a1, #1976d2);
+    color: white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 100;
+    justify-content: center;
+}
+
+
+    .navbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+    }
+
+.navbar-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 15% 0 15%;
+}
+
+.navbar-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.navbar .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, #fff, #bbdefb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    width: 110px;
+}
+
+.navbar nav a {
+    color: white;
+    margin-left: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+    .navbar nav a:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-2px);
+    }
+
+/* ========== CLIMA EN NAVBAR ========== */
+.navbar-clima {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255,255,255,0.1);
+    padding: 8px 16px;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+
+    .navbar-clima:hover {
+        background: rgba(255,255,255,0.15);
+        transform: scale(1.05);
+    }
+
+.clima-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.clima-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+
+.clima-temp {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.clima-estado {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+}
+
+/* ========== CARRUSEL DE COTIZACIONES ========== */
+.ticker-container {
+    background: #000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 8px 0;
+    position: relative;
+    border-top: 2px solid #333;
+    border-bottom: 2px solid #333;
+}
+
+.ticker-content {
+    display: inline-block;
+    animation: scroll-left 40s linear infinite;
+    font-size: 14px;
+}
+
+.ticker-item {
+    display: inline-block;
+    margin-right: 50px;
+    padding: 0 20px;
+}
+
+.currency-up {
+    color: #00ff00;
+}
+
+.currency-down {
+    color: #ff4444;
+}
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* ========== SECCIONES ========== */
+.section {
+    margin: 30px 0;
+    background: rgba(255,255,255,0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+    .section h2 {
+        margin-bottom: 20px;
+        color: #0d47a1;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+/* ========== PROGRAMA ACTUAL ========== */
+.programa-box {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 25px;
+    border-radius: 15px;
+    border-left: 5px solid #0d47a1;
+}
+
+    .programa-box img {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+.programa-info h3 {
+    color: #0d47a1;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+}
+
+.programa-info p {
+    margin: 5px 0;
+    color: #666;
+}
+
+/* ========== NOTICIAS ========== */
+.noticia-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.noticia-item {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .noticia-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    .noticia-item img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+
+.noticia-content {
+    padding: 20px;
+}
+
+.noticia-item h4 {
+    color: #0d47a1;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+/* ========== COMENTARIOS ========== */
+.comentario-box {
+    background: linear-gradient(135deg, #f1f3f4, #fff);
+    padding: 25px;
+    border-radius: 15px;
+    border-left: 5px solid #4caf50;
+}
+
+    .comentario-box p {
+        margin: 15px 0;
+        padding: 10px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+/* ========== INFO EXTRA ========== */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.clima-card, .monedas-card {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+    .clima-card h2, .monedas-card h2 {
+        color: white;
+        margin-bottom: 20px;
+    }
+
+.temp-display {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 20px 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.clima-details {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.monedas-list {
+    list-style: none;
+}
+
+    .monedas-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+        font-weight: 500;
+    }
+
+        .monedas-list li:last-child {
+            border-bottom: none;
+        }
+
+/* ========== FOOTER ========== */
+.footer {
+    background: linear-gradient(135deg, #263238, #37474f);
+    color: white;
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 50px;
+    border-radius: 20px 20px 0 0;
+}
+
+    .footer a {
+        color: #81c784;
+        text-decoration: none;
+        margin: 0 10px;
+        transition: color 0.3s ease;
+    }
+
+        .footer a:hover {
+            color: #a5d6a7;
+        }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .navbar .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .navbar-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .navbar nav a {
+        margin: 0 10px;
+    }
+
+    .navbar-clima {
+        order: -1;
+    }
+
+    .programa-box {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .temp-display {
+        font-size: 2.5rem;
+    }
+
+    .ticker-content {
+        font-size: 12px;
+    }
+}

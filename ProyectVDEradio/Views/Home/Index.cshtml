@@ -1,0 +1,106 @@
+﻿@model ProyectVDEradio.ViewModels.HomeViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+
+<section class="section">
+    <h2>📻 Programa en vivo</h2>
+    @if (Model.ProgramaEnVivo != null)
+    {
+        <div class="programa-box">
+            <img src="https://via.placeholder.com/150/0d47a1/ffffff?text=🎙️" alt="Imagen del programa">
+            <div class="programa-info">
+                <h3>@Model.ProgramaEnVivo.ProgramName</h3>
+                <p>@Model.ProgramaEnVivo.Description</p>
+                <p><strong>Conducido por:</strong> @Model.ProgramaEnVivo.ProgramHosts</p>
+                <p><strong>Horario:</strong> @Model.ProgramaEnVivo.StartTime - @Model.ProgramaEnVivo.EndTime</p>
+                <p><strong>En vivo desde:</strong> Maldonado, Uruguay</p>
+            </div>
+        </div>
+    }@if (Model.ProgramaEnVivo == null)
+    {
+        <div class="programa-box">
+            <div class="programa-info">
+                <h3>No hay Programa en vivo ahora mismo para mostrar :)</h3>
+
+            </div>
+        </div>
+    }
+</section>
+<section class="section">
+    <h2>💬 Comentarios de Oyentes</h2>
+    <div class="comentario-box">
+        <p><strong>Juan R.:</strong> ¡Excelente programa esta mañana! Me encanta escucharlos todas las mañanas 🎧</p>
+        <p><strong>Lucía M.:</strong> Me encantó la entrevista de hoy, muy interesante el tema tratado 😍</p>
+        <p><strong>Carlos P.:</strong> Los felicito por la calidad de la información y el entretenimiento 👏</p>
+        <p><strong>María S.:</strong> Voz del Este es mi compañía de todas las mañanas, gracias por tanto! ❤️</p>
+    </div>
+</section>
+
+<section class="section">
+    <h2>📰 Últimas Noticias</h2>
+    <div class="noticia-grid">
+
+        @foreach (var noticia in Model.Noticias)
+        {
+            <article class="noticia-item">
+                <img src="@noticia.ArticleImage" alt="Noticia" style="width:auto">
+                <div class="noticia-content">
+                    <h4>@noticia.ArticleTitle</h4>
+                    <p>@noticia.ArticleSubtitle</p>
+                </div>
+            </article>
+        }
+
+    </div>
+</section>
+
+<section class="section">
+    <div class="info-grid">
+        <div class="clima-card">
+            <h2>🌤️ Clima en Maldonado</h2>
+            <div class="temp-display" id="temperatura">22°C</div>
+            <div class="clima-details">
+                <div>
+                    <p><strong>Estado:</strong></p>
+                    <p id="estadoClima">Parcialmente nublado</p>
+                </div>
+                <div>
+                    <img src="https://openweathermap.org/img/wn/03d@2x.png" alt="Icono clima" style="width: 80px;">
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <p><strong>Humedad:</strong> <span id="humedad">65%</span></p>
+                <p><strong>Viento:</strong> <span id="viento">15 km/h</span></p>
+            </div>
+        </div>
+
+        <div class="monedas-card">
+            <h2>💱 Cotizaciones Principales</h2>
+            <ul class="monedas-list">
+                <li>
+                    <span>🇺🇸 Dólar (USD)</span>
+                    <strong class="currency-up">$39.50</strong>
+                </li>
+                <li>
+                    <span>🇪🇺 Euro (EUR)</span>
+                    <strong class="currency-up">$42.70</strong>
+                </li>
+                <li>
+                    <span>🇧🇷 Real (BRL)</span>
+                    <strong class="currency-down">$7.90</strong>
+                </li>
+                <li>
+                    <span>🇦🇷 Peso Argentino</span>
+                    <strong class="currency-up">$0.038</strong>
+                </li>
+                <li>
+                    <span>₿ Bitcoin</span>
+                    <strong class="currency-up">$67,450</strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>

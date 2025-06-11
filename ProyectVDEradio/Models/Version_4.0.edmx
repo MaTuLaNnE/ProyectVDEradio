@@ -1,0 +1,1008 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="VozDelEsteDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AuditLogs">
+          <Key>
+            <PropertyRef Name="AuditId" />
+          </Key>
+          <Property Name="AuditId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Operation" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="TableName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="RecordId" Type="int" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CurrencyAudits">
+          <Key>
+            <PropertyRef Name="CurrencyAuditId" />
+          </Key>
+          <Property Name="CurrencyAuditId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CurrencyAuditDate" Type="datetime" Nullable="false" />
+          <Property Name="CurrencyTypeId" Type="int" Nullable="false" />
+          <Property Name="CurrencyValue" Type="float" />
+        </EntityType>
+        <EntityType Name="CurrencyTypes">
+          <Key>
+            <PropertyRef Name="CurrencyTypeId" />
+          </Key>
+          <Property Name="CurrencyTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CurrencyTypeName" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CustomerSurname" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="BirthDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomersComments">
+          <Key>
+            <PropertyRef Name="CustomerCommentId" />
+          </Key>
+          <Property Name="CustomerCommentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="ProgramId" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="CommentDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Hosts">
+          <Key>
+            <PropertyRef Name="HostId" />
+          </Key>
+          <Property Name="HostId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HostName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="HostDescription" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="ArticleID" />
+          </Key>
+          <Property Name="ArticleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArticleTitle" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ArticleContent" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ArticleDate" Type="datetime" Nullable="false" />
+          <Property Name="ArticleImage" Type="nvarchar" MaxLength="200" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="ArticleSubtitle" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PermissionsRoles">
+          <Key>
+            <PropertyRef Name="PermissionId" />
+          </Key>
+          <Property Name="PermissionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PermissionAddComment" Type="bit" Nullable="false" />
+          <Property Name="PermissionAddNews" Type="bit" Nullable="false" />
+          <Property Name="PermissionAddRegister" Type="bit" Nullable="false" />
+          <Property Name="PermissionAddPrograms" Type="bit" Nullable="false" />
+          <Property Name="PermissionAddSponsor" Type="bit" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProgramDays">
+          <Key>
+            <PropertyRef Name="ProgramId" />
+            <PropertyRef Name="WeekDay" />
+          </Key>
+          <Property Name="ProgramId" Type="int" Nullable="false" />
+          <Property Name="WeekDay" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProgramHosts">
+          <Key>
+            <PropertyRef Name="ProgramHostsId" />
+          </Key>
+          <Property Name="ProgramHostsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProgramId" Type="int" Nullable="false" />
+          <Property Name="HostId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RadioPrograms">
+          <Key>
+            <PropertyRef Name="ProgramId" />
+          </Key>
+          <Property Name="ProgramId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProgramName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sponsors">
+          <Key>
+            <PropertyRef Name="SponsorID" />
+          </Key>
+          <Property Name="SponsorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SponsorName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SponsorDescription" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SponsorPlan" Type="int" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserPassword" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="UserRole" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WeatherAudits">
+          <Key>
+            <PropertyRef Name="WeatherAuditId" />
+          </Key>
+          <Property Name="WeatherAuditId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WeatherAuditDate" Type="datetime" Nullable="false" />
+          <Property Name="WeatherAuditDescription" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="WeatherAuditIconId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WeatherIcons">
+          <Key>
+            <PropertyRef Name="IconId" />
+          </Key>
+          <Property Name="IconId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IconImage" Type="nvarchar" MaxLength="300" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__AuditLog__UserId__797309D9">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="AuditLogs">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CurrencyA__Curre__5812160E">
+          <End Role="CurrencyTypes" Type="Self.CurrencyTypes" Multiplicity="1" />
+          <End Role="CurrencyAudits" Type="Self.CurrencyAudits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CurrencyTypes">
+              <PropertyRef Name="CurrencyTypeId" />
+            </Principal>
+            <Dependent Role="CurrencyAudits">
+              <PropertyRef Name="CurrencyTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customers__Custo__74AE54BC">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="CustomersComments" Type="Self.CustomersComments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="CustomersComments">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customers__Progr__75A278F5">
+          <End Role="RadioPrograms" Type="Self.RadioPrograms" Multiplicity="1" />
+          <End Role="CustomersComments" Type="Self.CustomersComments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RadioPrograms">
+              <PropertyRef Name="ProgramId" />
+            </Principal>
+            <Dependent Role="CustomersComments">
+              <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customers__UserI__6E01572D">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__News__AuthorId__71D1E811">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="News">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__News__CategoryId__00200768">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="News">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Permissio__RoleI__7C4F7684">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="PermissionsRoles" Type="Self.PermissionsRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="PermissionsRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProgramDa__Progr__40058253">
+          <End Role="RadioPrograms" Type="Self.RadioPrograms" Multiplicity="1" />
+          <End Role="ProgramDays" Type="Self.ProgramDays" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RadioPrograms">
+              <PropertyRef Name="ProgramId" />
+            </Principal>
+            <Dependent Role="ProgramDays">
+              <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProgramHo__HostI__4E88ABD4">
+          <End Role="Hosts" Type="Self.Hosts" Multiplicity="1" />
+          <End Role="ProgramHosts" Type="Self.ProgramHosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hosts">
+              <PropertyRef Name="HostId" />
+            </Principal>
+            <Dependent Role="ProgramHosts">
+              <PropertyRef Name="HostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProgramHo__Progr__4D94879B">
+          <End Role="RadioPrograms" Type="Self.RadioPrograms" Multiplicity="1" />
+          <End Role="ProgramHosts" Type="Self.ProgramHosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RadioPrograms">
+              <PropertyRef Name="ProgramId" />
+            </Principal>
+            <Dependent Role="ProgramHosts">
+              <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__UserRole__6B24EA82">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="UserRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WeatherAu__Weath__5FB337D6">
+          <End Role="WeatherIcons" Type="Self.WeatherIcons" Multiplicity="1" />
+          <End Role="WeatherAudits" Type="Self.WeatherAudits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WeatherIcons">
+              <PropertyRef Name="IconId" />
+            </Principal>
+            <Dependent Role="WeatherAudits">
+              <PropertyRef Name="WeatherAuditIconId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VozDelEsteDBModelStoreContainer">
+          <EntitySet Name="AuditLogs" EntityType="Self.AuditLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CurrencyAudits" EntityType="Self.CurrencyAudits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CurrencyTypes" EntityType="Self.CurrencyTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomersComments" EntityType="Self.CustomersComments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hosts" EntityType="Self.Hosts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PermissionsRoles" EntityType="Self.PermissionsRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProgramDays" EntityType="Self.ProgramDays" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProgramHosts" EntityType="Self.ProgramHosts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RadioPrograms" EntityType="Self.RadioPrograms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sponsors" EntityType="Self.Sponsors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WeatherAudits" EntityType="Self.WeatherAudits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WeatherIcons" EntityType="Self.WeatherIcons" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__AuditLog__UserId__797309D9" Association="Self.FK__AuditLog__UserId__797309D9">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AuditLogs" EntitySet="AuditLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CurrencyA__Curre__5812160E" Association="Self.FK__CurrencyA__Curre__5812160E">
+            <End Role="CurrencyTypes" EntitySet="CurrencyTypes" />
+            <End Role="CurrencyAudits" EntitySet="CurrencyAudits" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customers__Custo__74AE54BC" Association="Self.FK__Customers__Custo__74AE54BC">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="CustomersComments" EntitySet="CustomersComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customers__Progr__75A278F5" Association="Self.FK__Customers__Progr__75A278F5">
+            <End Role="RadioPrograms" EntitySet="RadioPrograms" />
+            <End Role="CustomersComments" EntitySet="CustomersComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customers__UserI__6E01572D" Association="Self.FK__Customers__UserI__6E01572D">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__News__AuthorId__71D1E811" Association="Self.FK__News__AuthorId__71D1E811">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK__News__CategoryId__00200768" Association="Self.FK__News__CategoryId__00200768">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Permissio__RoleI__7C4F7684" Association="Self.FK__Permissio__RoleI__7C4F7684">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="PermissionsRoles" EntitySet="PermissionsRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProgramDa__Progr__40058253" Association="Self.FK__ProgramDa__Progr__40058253">
+            <End Role="RadioPrograms" EntitySet="RadioPrograms" />
+            <End Role="ProgramDays" EntitySet="ProgramDays" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProgramHo__HostI__4E88ABD4" Association="Self.FK__ProgramHo__HostI__4E88ABD4">
+            <End Role="Hosts" EntitySet="Hosts" />
+            <End Role="ProgramHosts" EntitySet="ProgramHosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProgramHo__Progr__4D94879B" Association="Self.FK__ProgramHo__Progr__4D94879B">
+            <End Role="RadioPrograms" EntitySet="RadioPrograms" />
+            <End Role="ProgramHosts" EntitySet="ProgramHosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__UserRole__6B24EA82" Association="Self.FK__Users__UserRole__6B24EA82">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WeatherAu__Weath__5FB337D6" Association="Self.FK__WeatherAu__Weath__5FB337D6">
+            <End Role="WeatherIcons" EntitySet="WeatherIcons" />
+            <End Role="WeatherAudits" EntitySet="WeatherAudits" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VozDelEsteDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AuditLogs">
+          <Key>
+            <PropertyRef Name="AuditId" />
+          </Key>
+          <Property Name="AuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Operation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TableName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RecordId" Type="Int32" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__AuditLog__UserId__797309D9" FromRole="AuditLogs" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="News" Relationship="Self.FK__News__CategoryId__00200768" FromRole="Categories" ToRole="News" />
+        </EntityType>
+        <EntityType Name="CurrencyAudits">
+          <Key>
+            <PropertyRef Name="CurrencyAuditId" />
+          </Key>
+          <Property Name="CurrencyAuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CurrencyAuditDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CurrencyTypeId" Type="Int32" Nullable="false" />
+          <Property Name="CurrencyValue" Type="Double" />
+          <NavigationProperty Name="CurrencyTypes" Relationship="Self.FK__CurrencyA__Curre__5812160E" FromRole="CurrencyAudits" ToRole="CurrencyTypes" />
+        </EntityType>
+        <EntityType Name="CurrencyTypes">
+          <Key>
+            <PropertyRef Name="CurrencyTypeId" />
+          </Key>
+          <Property Name="CurrencyTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CurrencyTypeName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CurrencyAudits" Relationship="Self.FK__CurrencyA__Curre__5812160E" FromRole="CurrencyTypes" ToRole="CurrencyAudits" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CustomerSurname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="CustomersComments" Relationship="Self.FK__Customers__Custo__74AE54BC" FromRole="Customers" ToRole="CustomersComments" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Customers__UserI__6E01572D" FromRole="Customers" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="CustomersComments">
+          <Key>
+            <PropertyRef Name="CustomerCommentId" />
+          </Key>
+          <Property Name="CustomerCommentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="ProgramId" Type="Int32" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CommentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK__Customers__Custo__74AE54BC" FromRole="CustomersComments" ToRole="Customers" />
+          <NavigationProperty Name="RadioPrograms" Relationship="Self.FK__Customers__Progr__75A278F5" FromRole="CustomersComments" ToRole="RadioPrograms" />
+        </EntityType>
+        <EntityType Name="Hosts">
+          <Key>
+            <PropertyRef Name="HostId" />
+          </Key>
+          <Property Name="HostId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HostName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HostDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ProgramHosts" Relationship="Self.FK__ProgramHo__HostI__4E88ABD4" FromRole="Hosts" ToRole="ProgramHosts" />
+        </EntityType>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="ArticleID" />
+          </Key>
+          <Property Name="ArticleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArticleTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ArticleContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ArticleDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ArticleImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="ArticleSubtitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Categories" Relationship="Self.FK__News__CategoryId__00200768" FromRole="News" ToRole="Categories" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__News__AuthorId__71D1E811" FromRole="News" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="PermissionsRoles">
+          <Key>
+            <PropertyRef Name="PermissionId" />
+          </Key>
+          <Property Name="PermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PermissionAddComment" Type="Boolean" Nullable="false" />
+          <Property Name="PermissionAddNews" Type="Boolean" Nullable="false" />
+          <Property Name="PermissionAddRegister" Type="Boolean" Nullable="false" />
+          <Property Name="PermissionAddPrograms" Type="Boolean" Nullable="false" />
+          <Property Name="PermissionAddSponsor" Type="Boolean" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Roles" Relationship="Self.FK__Permissio__RoleI__7C4F7684" FromRole="PermissionsRoles" ToRole="Roles" />
+        </EntityType>
+        <EntityType Name="ProgramHosts">
+          <Key>
+            <PropertyRef Name="ProgramHostsId" />
+          </Key>
+          <Property Name="ProgramHostsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProgramId" Type="Int32" Nullable="false" />
+          <Property Name="HostId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Hosts" Relationship="Self.FK__ProgramHo__HostI__4E88ABD4" FromRole="ProgramHosts" ToRole="Hosts" />
+          <NavigationProperty Name="RadioPrograms" Relationship="Self.FK__ProgramHo__Progr__4D94879B" FromRole="ProgramHosts" ToRole="RadioPrograms" />
+        </EntityType>
+        <EntityType Name="RadioPrograms">
+          <Key>
+            <PropertyRef Name="ProgramId" />
+          </Key>
+          <Property Name="ProgramId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProgramName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="CustomersComments" Relationship="Self.FK__Customers__Progr__75A278F5" FromRole="RadioPrograms" ToRole="CustomersComments" />
+          <NavigationProperty Name="ProgramHosts" Relationship="Self.FK__ProgramHo__Progr__4D94879B" FromRole="RadioPrograms" ToRole="ProgramHosts" />
+          <NavigationProperty Name="ProgramDays" Relationship="VozDelEsteDBModel.FK__ProgramDa__Progr__40058253" FromRole="RadioPrograms" ToRole="ProgramDays" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PermissionsRoles" Relationship="Self.FK__Permissio__RoleI__7C4F7684" FromRole="Roles" ToRole="PermissionsRoles" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Users__UserRole__6B24EA82" FromRole="Roles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Sponsors">
+          <Key>
+            <PropertyRef Name="SponsorID" />
+          </Key>
+          <Property Name="SponsorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SponsorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SponsorDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SponsorPlan" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserRole" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AuditLogs" Relationship="Self.FK__AuditLog__UserId__797309D9" FromRole="Users" ToRole="AuditLogs" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK__Customers__UserI__6E01572D" FromRole="Users" ToRole="Customers" />
+          <NavigationProperty Name="News" Relationship="Self.FK__News__AuthorId__71D1E811" FromRole="Users" ToRole="News" />
+          <NavigationProperty Name="Roles" Relationship="Self.FK__Users__UserRole__6B24EA82" FromRole="Users" ToRole="Roles" />
+        </EntityType>
+        <EntityType Name="WeatherAudits">
+          <Key>
+            <PropertyRef Name="WeatherAuditId" />
+          </Key>
+          <Property Name="WeatherAuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WeatherAuditDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="WeatherAuditDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="WeatherAuditIconId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="WeatherIcons" Relationship="Self.FK__WeatherAu__Weath__5FB337D6" FromRole="WeatherAudits" ToRole="WeatherIcons" />
+        </EntityType>
+        <EntityType Name="WeatherIcons">
+          <Key>
+            <PropertyRef Name="IconId" />
+          </Key>
+          <Property Name="IconId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IconImage" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="WeatherAudits" Relationship="Self.FK__WeatherAu__Weath__5FB337D6" FromRole="WeatherIcons" ToRole="WeatherAudits" />
+        </EntityType>
+        <Association Name="FK__AuditLog__UserId__797309D9">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="AuditLogs">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__News__CategoryId__00200768">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="News">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CurrencyA__Curre__5812160E">
+          <End Role="CurrencyTypes" Type="Self.CurrencyTypes" Multiplicity="1" />
+          <End Role="CurrencyAudits" Type="Self.CurrencyAudits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CurrencyTypes">
+              <PropertyRef Name="CurrencyTypeId" />
+            </Principal>
+            <Dependent Role="CurrencyAudits">
+              <PropertyRef Name="CurrencyTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customers__Custo__74AE54BC">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="CustomersComments" Type="Self.CustomersComments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="CustomersComments">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customers__UserI__6E01572D">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customers__Progr__75A278F5">
+          <End Role="RadioPrograms" Type="Self.RadioPrograms" Multiplicity="1" />
+          <End Role="CustomersComments" Type="Self.CustomersComments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RadioPrograms">
+              <PropertyRef Name="ProgramId" />
+            </Principal>
+            <Dependent Role="CustomersComments">
+              <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProgramHo__HostI__4E88ABD4">
+          <End Role="Hosts" Type="Self.Hosts" Multiplicity="1" />
+          <End Role="ProgramHosts" Type="Self.ProgramHosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hosts">
+              <PropertyRef Name="HostId" />
+            </Principal>
+            <Dependent Role="ProgramHosts">
+              <PropertyRef Name="HostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__News__AuthorId__71D1E811">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="News">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Permissio__RoleI__7C4F7684">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="PermissionsRoles" Type="Self.PermissionsRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="PermissionsRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProgramHo__Progr__4D94879B">
+          <End Role="RadioPrograms" Type="Self.RadioPrograms" Multiplicity="1" />
+          <End Role="ProgramHosts" Type="Self.ProgramHosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RadioPrograms">
+              <PropertyRef Name="ProgramId" />
+            </Principal>
+            <Dependent Role="ProgramHosts">
+              <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__UserRole__6B24EA82">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="UserRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WeatherAu__Weath__5FB337D6">
+          <End Role="WeatherIcons" Type="Self.WeatherIcons" Multiplicity="1" />
+          <End Role="WeatherAudits" Type="Self.WeatherAudits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WeatherIcons">
+              <PropertyRef Name="IconId" />
+            </Principal>
+            <Dependent Role="WeatherAudits">
+              <PropertyRef Name="WeatherAuditIconId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VozDelEsteDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AuditLogs" EntityType="Self.AuditLogs" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" />
+          <EntitySet Name="CurrencyAudits" EntityType="Self.CurrencyAudits" />
+          <EntitySet Name="CurrencyTypes" EntityType="Self.CurrencyTypes" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" />
+          <EntitySet Name="CustomersComments" EntityType="Self.CustomersComments" />
+          <EntitySet Name="Hosts" EntityType="Self.Hosts" />
+          <EntitySet Name="News" EntityType="Self.News" />
+          <EntitySet Name="PermissionsRoles" EntityType="Self.PermissionsRoles" />
+          <EntitySet Name="ProgramHosts" EntityType="Self.ProgramHosts" />
+          <EntitySet Name="RadioPrograms" EntityType="Self.RadioPrograms" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" />
+          <EntitySet Name="Sponsors" EntityType="Self.Sponsors" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="WeatherAudits" EntityType="Self.WeatherAudits" />
+          <EntitySet Name="WeatherIcons" EntityType="Self.WeatherIcons" />
+          <AssociationSet Name="FK__AuditLog__UserId__797309D9" Association="Self.FK__AuditLog__UserId__797309D9">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AuditLogs" EntitySet="AuditLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__News__CategoryId__00200768" Association="Self.FK__News__CategoryId__00200768">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CurrencyA__Curre__5812160E" Association="Self.FK__CurrencyA__Curre__5812160E">
+            <End Role="CurrencyTypes" EntitySet="CurrencyTypes" />
+            <End Role="CurrencyAudits" EntitySet="CurrencyAudits" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customers__Custo__74AE54BC" Association="Self.FK__Customers__Custo__74AE54BC">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="CustomersComments" EntitySet="CustomersComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customers__UserI__6E01572D" Association="Self.FK__Customers__UserI__6E01572D">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customers__Progr__75A278F5" Association="Self.FK__Customers__Progr__75A278F5">
+            <End Role="RadioPrograms" EntitySet="RadioPrograms" />
+            <End Role="CustomersComments" EntitySet="CustomersComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProgramHo__HostI__4E88ABD4" Association="Self.FK__ProgramHo__HostI__4E88ABD4">
+            <End Role="Hosts" EntitySet="Hosts" />
+            <End Role="ProgramHosts" EntitySet="ProgramHosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__News__AuthorId__71D1E811" Association="Self.FK__News__AuthorId__71D1E811">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Permissio__RoleI__7C4F7684" Association="Self.FK__Permissio__RoleI__7C4F7684">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="PermissionsRoles" EntitySet="PermissionsRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProgramHo__Progr__4D94879B" Association="Self.FK__ProgramHo__Progr__4D94879B">
+            <End Role="RadioPrograms" EntitySet="RadioPrograms" />
+            <End Role="ProgramHosts" EntitySet="ProgramHosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__UserRole__6B24EA82" Association="Self.FK__Users__UserRole__6B24EA82">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WeatherAu__Weath__5FB337D6" Association="Self.FK__WeatherAu__Weath__5FB337D6">
+            <End Role="WeatherIcons" EntitySet="WeatherIcons" />
+            <End Role="WeatherAudits" EntitySet="WeatherAudits" />
+          </AssociationSet>
+          <EntitySet Name="ProgramDays" EntityType="VozDelEsteDBModel.ProgramDays" />
+          <AssociationSet Name="FK__ProgramDa__Progr__40058253" Association="VozDelEsteDBModel.FK__ProgramDa__Progr__40058253">
+            <End Role="RadioPrograms" EntitySet="RadioPrograms" />
+            <End Role="ProgramDays" EntitySet="ProgramDays" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ProgramDays">
+          <Key>
+            <PropertyRef Name="ProgramId" />
+            <PropertyRef Name="WeekDay" />
+          </Key>
+          <Property Name="ProgramId" Type="Int32" Nullable="false" />
+          <Property Name="WeekDay" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RadioPrograms" Relationship="VozDelEsteDBModel.FK__ProgramDa__Progr__40058253" FromRole="ProgramDays" ToRole="RadioPrograms" />
+        </EntityType>
+        <Association Name="FK__ProgramDa__Progr__40058253">
+          <End Type="VozDelEsteDBModel.RadioPrograms" Role="RadioPrograms" Multiplicity="1" />
+          <End Type="VozDelEsteDBModel.ProgramDays" Role="ProgramDays" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RadioPrograms">
+              <PropertyRef Name="ProgramId" />
+            </Principal>
+            <Dependent Role="ProgramDays">
+              <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VozDelEsteDBModelStoreContainer" CdmEntityContainer="VozDelEsteDBEntities">
+          <EntitySetMapping Name="AuditLogs">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.AuditLogs">
+              <MappingFragment StoreEntitySet="AuditLogs">
+                <ScalarProperty Name="AuditId" ColumnName="AuditId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Operation" ColumnName="Operation" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.Categories">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CurrencyAudits">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.CurrencyAudits">
+              <MappingFragment StoreEntitySet="CurrencyAudits">
+                <ScalarProperty Name="CurrencyAuditId" ColumnName="CurrencyAuditId" />
+                <ScalarProperty Name="CurrencyAuditDate" ColumnName="CurrencyAuditDate" />
+                <ScalarProperty Name="CurrencyTypeId" ColumnName="CurrencyTypeId" />
+                <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CurrencyTypes">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.CurrencyTypes">
+              <MappingFragment StoreEntitySet="CurrencyTypes">
+                <ScalarProperty Name="CurrencyTypeId" ColumnName="CurrencyTypeId" />
+                <ScalarProperty Name="CurrencyTypeName" ColumnName="CurrencyTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.Customers">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerSurname" ColumnName="CustomerSurname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomersComments">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.CustomersComments">
+              <MappingFragment StoreEntitySet="CustomersComments">
+                <ScalarProperty Name="CustomerCommentId" ColumnName="CustomerCommentId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="CommentDate" ColumnName="CommentDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hosts">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.Hosts">
+              <MappingFragment StoreEntitySet="Hosts">
+                <ScalarProperty Name="HostId" ColumnName="HostId" />
+                <ScalarProperty Name="HostName" ColumnName="HostName" />
+                <ScalarProperty Name="HostDescription" ColumnName="HostDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="News">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.News">
+              <MappingFragment StoreEntitySet="News">
+                <ScalarProperty Name="ArticleID" ColumnName="ArticleID" />
+                <ScalarProperty Name="ArticleTitle" ColumnName="ArticleTitle" />
+                <ScalarProperty Name="ArticleContent" ColumnName="ArticleContent" />
+                <ScalarProperty Name="ArticleDate" ColumnName="ArticleDate" />
+                <ScalarProperty Name="ArticleImage" ColumnName="ArticleImage" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="ArticleSubtitle" ColumnName="ArticleSubtitle" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PermissionsRoles">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.PermissionsRoles">
+              <MappingFragment StoreEntitySet="PermissionsRoles">
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+                <ScalarProperty Name="PermissionAddComment" ColumnName="PermissionAddComment" />
+                <ScalarProperty Name="PermissionAddNews" ColumnName="PermissionAddNews" />
+                <ScalarProperty Name="PermissionAddRegister" ColumnName="PermissionAddRegister" />
+                <ScalarProperty Name="PermissionAddPrograms" ColumnName="PermissionAddPrograms" />
+                <ScalarProperty Name="PermissionAddSponsor" ColumnName="PermissionAddSponsor" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProgramHosts">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.ProgramHosts">
+              <MappingFragment StoreEntitySet="ProgramHosts">
+                <ScalarProperty Name="ProgramHostsId" ColumnName="ProgramHostsId" />
+                <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
+                <ScalarProperty Name="HostId" ColumnName="HostId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RadioPrograms">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.RadioPrograms">
+              <MappingFragment StoreEntitySet="RadioPrograms">
+                <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
+                <ScalarProperty Name="ProgramName" ColumnName="ProgramName" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sponsors">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.Sponsors">
+              <MappingFragment StoreEntitySet="Sponsors">
+                <ScalarProperty Name="SponsorID" ColumnName="SponsorID" />
+                <ScalarProperty Name="SponsorName" ColumnName="SponsorName" />
+                <ScalarProperty Name="SponsorDescription" ColumnName="SponsorDescription" />
+                <ScalarProperty Name="SponsorPlan" ColumnName="SponsorPlan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="UserRole" ColumnName="UserRole" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeatherAudits">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.WeatherAudits">
+              <MappingFragment StoreEntitySet="WeatherAudits">
+                <ScalarProperty Name="WeatherAuditId" ColumnName="WeatherAuditId" />
+                <ScalarProperty Name="WeatherAuditDate" ColumnName="WeatherAuditDate" />
+                <ScalarProperty Name="WeatherAuditDescription" ColumnName="WeatherAuditDescription" />
+                <ScalarProperty Name="WeatherAuditIconId" ColumnName="WeatherAuditIconId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeatherIcons">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.WeatherIcons">
+              <MappingFragment StoreEntitySet="WeatherIcons">
+                <ScalarProperty Name="IconId" ColumnName="IconId" />
+                <ScalarProperty Name="IconImage" ColumnName="IconImage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProgramDays">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.ProgramDays">
+              <MappingFragment StoreEntitySet="ProgramDays">
+                <ScalarProperty Name="WeekDay" ColumnName="WeekDay" />
+                <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

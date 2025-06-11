@@ -1,0 +1,44 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using ProyectVDEradio.Models;
+using System.Data.Entity;
+using ProyectVDEradio.ViewModels;
+
+
+
+namespace ProyectVDEradio.Controllers
+{
+    public class HomeController : Controller
+    {
+
+        private VozDelEsteDBEntities db = new VozDelEsteDBEntities();
+
+        public ActionResult Index()
+        {
+            var now = DateTime.Now;
+            var currentTime = now.TimeOfDay;
+            var currentDay = (int)now.DayOfWeek;
+            if (currentDay == 0) currentDay = 7;
+
+            var modelo = new HomeViewModel
+            {
+                Noticias = db.News.Include(n => n.Categories)
+                                  .OrderByDescending(n => n.ArticleDate)
+                                  .Take(4)
+                                  .ToList(),
+                ProgramaEnVivo = db.RadioPrograms
+                                   .Where(p => db.ProgramDays
+                                   .Any(d => d.ProgramId == p.ProgramId && d.WeekDay == currentDay) &&
+                                   p.StartTime <= currentTime && p.EndTime >= currentTime)
+                                   .FirstOrDefault()
+            };
+
+            return View(modelo);
+        }
+
+
+    }
+}

@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voz del Este</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-content">
+
+                <a href="/" class="logo-link">
+                    <img src="~/Content/Images/Navbar_Icon.png" alt="Voz del Este" class="logo">
+                </a>
+                <nav>
+
+                    <a href="@Url.Action("Index","Home")">Inicio</a>
+                    <a href="@Url.Action("Index", "Program")">Programacion</a>
+                    <a href="@Url.Action("Index", "News")" >Noticias</a>
+                    <a href="@Url.Action("Index", "Login")">Login</a>
+
+                </nav>
+                <div class="navbar-clima">
+                    <div class="clima-icon" id="navbarClimaIcon">
+                        🌤️
+                    </div>
+                    <div class="clima-info">
+                        <div class="clima-temp" id="navbarTemp">22°C</div>
+                        <div class="clima-estado" id="navbarEstado">Parcialmente nublado</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+
+
+        @RenderBody()
+
+    </div>
+    <hr />
+    <footer class="footer">
+        <div class="container">
+            <p>© @DateTime.Now.Year Voz del Este - Todos los derechos reservados</p>
+            <p>
+
+                <a href="#">📧 Contacto</a> |
+                <a href="#">📱 Instagram</a> |
+                <a href="#">👥 Facebook</a> |
+                <a href="#">🐦 Twitter</a>
+            </p>
+            <p style="margin-top: 10px; color: #81c784;">
+                📍 Maldonado, Uruguay • 📞 +598 42 123456 • 📻 FM 101.5
+            </p>
+        </div>
+    </footer>
+    <
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/main")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
