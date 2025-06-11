@@ -10,12 +10,31 @@
     @if (Model.ProgramaEnVivo != null)
     {
         <div class="programa-box">
-            <img src="https://via.placeholder.com/150/0d47a1/ffffff?text=🎙️" alt="Imagen del programa">
+            <img src="" alt="Imagen del programa">
             <div class="programa-info">
                 <h3>@Model.ProgramaEnVivo.ProgramName</h3>
                 <p>@Model.ProgramaEnVivo.Description</p>
-                <p><strong>Conducido por:</strong> @Model.ProgramaEnVivo.ProgramHosts</p>
+                <p>
+                    <strong>Conducido por:</strong> <ul>
+                        @foreach (var ph in Model.ProgramaEnVivo.ProgramHosts)
+                        {
+                            <li>
+                                <p> @ph.Hosts.HostName </p>
+                            </li>
+                        }
+                    </ul>
+                </p>
                 <p><strong>Horario:</strong> @Model.ProgramaEnVivo.StartTime - @Model.ProgramaEnVivo.EndTime</p>
+                <p>
+                    <strong>Días de emisión:</strong>
+                    @string.Join(" - ", Model.ProgramaEnVivo.ProgramDays
+                        .OrderBy(d => d.WeekDay)
+                        .Select(d => System.Globalization.CultureInfo
+                            .CurrentCulture
+                            .DateTimeFormat
+                            .GetDayName((DayOfWeek)d.WeekDay)))
+                </p>
+
                 <p><strong>En vivo desde:</strong> Maldonado, Uruguay</p>
             </div>
         </div>
@@ -29,13 +48,22 @@
         </div>
     }
 </section>
+
 <section class="section">
-    <h2>💬 Comentarios de Oyentes</h2>
+
+    <h2>Comentarios de Oyentes de @Model.ProgramaEnVivo.ProgramName</h2>
+
     <div class="comentario-box">
-        <p><strong>Juan R.:</strong> ¡Excelente programa esta mañana! Me encanta escucharlos todas las mañanas 🎧</p>
-        <p><strong>Lucía M.:</strong> Me encantó la entrevista de hoy, muy interesante el tema tratado 😍</p>
-        <p><strong>Carlos P.:</strong> Los felicito por la calidad de la información y el entretenimiento 👏</p>
-        <p><strong>María S.:</strong> Voz del Este es mi compañía de todas las mañanas, gracias por tanto! ❤️</p>
+
+        @foreach (var ph in Model.ProgramaEnVivo.CustomersComments)
+        {
+
+            <p><strong>@ph.Customers.CustomerName</strong>:   @ph.Comment</p>
+
+        }
+
+
+
     </div>
 </section>
 
