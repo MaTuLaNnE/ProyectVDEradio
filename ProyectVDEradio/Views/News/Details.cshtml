@@ -1,0 +1,25 @@
+﻿@model ProyectVDEradio.Models.News
+@{
+    ViewBag.Title = "Details";
+}
+
+<section class="section">
+
+    <h2>@Model.ArticleTitle</h2>
+    <div class="noticia-grid">
+
+
+
+        <article class="noticia-item">
+            <img src="@Model.ArticleImage" alt="Noticia" style="noticia-item">
+            <div class="noticia-content">
+                <h4>@Model.ArticleSubtitle</h4>
+                <p>@Model.ArticleContent</p>
+                
+            </div>
+        </article>
+
+
+    </div>
+
+</section>
