@@ -10,7 +10,7 @@
     @if (Model.ProgramaEnVivo != null)
     {
         <div class="programa-box">
-            <img src="" alt="Imagen del programa">
+            <img src="@Model.ProgramaEnVivo.Image" >
             <div class="programa-info">
                 <h3>@Model.ProgramaEnVivo.ProgramName</h3>
                 <p>@Model.ProgramaEnVivo.Description</p>
