@@ -10,7 +10,7 @@
     @if (Model.ProgramaEnVivo != null)
     {
         <div class="programa-box">
-            <img src="" alt="Imagen del programa">
+            <img src="@Model.ProgramaEnVivo.Image" >
             <div class="programa-info">
                 <h3>@Model.ProgramaEnVivo.ProgramName</h3>
                 <p>@Model.ProgramaEnVivo.Description</p>
@@ -54,7 +54,7 @@
 {
     <section class="section">
 
-        <h2>Comentarios de Oyentes de @Model.ProgramaEnVivo</h2>
+        <h2>Comentarios de Oyentes de @Model.ProgramaEnVivo.ProgramName</h2>
 
         <div class="comentario-box">
 
@@ -63,6 +63,10 @@
 
                 <p><strong>@ph.Customers.CustomerName</strong>:   @ph.Comment</p>
 
+            }
+            @if (Model.ProgramaEnVivo.CustomersComments.Count == 0)
+            {
+                <p>No hay comentarios de oyentes para este programa en vivo.</p>
             }
 
 
@@ -97,7 +101,7 @@
         @foreach (var noticia in Model.Noticias)
         {
             <article class="noticia-item">
-                <img src="@noticia.ArticleImage" alt="Noticia" style="width:auto">
+                <img src="@noticia.ArticleImage" alt="Noticia" style="noticia-item">
                 <div class="noticia-content">
                     <h4>@noticia.ArticleTitle</h4>
                     <p>@noticia.ArticleSubtitle</p>
