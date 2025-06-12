@@ -10,5 +10,7 @@ namespace ProyectVDEradio.ViewModels
     {
         public List<News> Noticias { get; set; }
         public RadioPrograms ProgramaEnVivo { get; set; }
+
+        public RadioPrograms ultimoProgramaEmitido { get; set; }
     }
 }
