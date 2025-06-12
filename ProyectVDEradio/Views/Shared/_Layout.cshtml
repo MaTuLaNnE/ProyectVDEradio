@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -16,11 +16,27 @@
                 <a href="/" class="logo-link">
                     <img src="~/Content/Images/Navbar_Icon.png" alt="Voz del Este" class="logo">
                 </a>
-                <nav>
+               <nav>
 
                     <a href="@Url.Action("Index","Home")">Inicio</a>
-                    <a href="@Url.Action("Index", "RadioPrograms")">Programacion</a>
-                    <a href="@Url.Action("Index", "News")" >Noticias</a>
+                    <a href="@Url.Action("Index", "Program")">Programacion</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle">
+                            Noticias
+                            <span class="dropdown-arrow"></span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="@Url.Action("IndexPolicial", "News")" class="dropdown-item">Policial</a>
+                            <a href="@Url.Action("IndexEconomia", "News")" class="dropdown-item">Economía</a>
+                            <a href="@Url.Action("IndexDeportes", "News")" class="dropdown-item">Deportes</a>
+                            <a href="@Url.Action("IndexTurismo", "News")" class="dropdown-item">Turismo</a>
+                            <a href="@Url.Action("IndexEmpresarial", "News")" class="dropdown-item">Empresarial</a>
+                            <a href="@Url.Action("IndexPolitica", "News")" class="dropdown-item">Política</a>
+                            <a href="@Url.Action("IndexClima", "News")" class="dropdown-item">Clima</a>
+                            <a href="@Url.Action("IndexTransporte", "News")" class="dropdown-item">Transporte</a>
+                            <a href="@Url.Action("IndexInternacional", "News")" class="dropdown-item">Internacional</a>
+                        </div>
+                    </div>
                     <a href="@Url.Action("Index", "Login")">Login</a>
 
                 </nav>
@@ -60,9 +76,8 @@
     </footer>
     <
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/main")
+    @Scripts.Render("~/bundles/DropDown")
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -28,7 +28,6 @@ body {
     justify-content: center;
 }
 
-
     .navbar .container {
         display: flex;
         justify-content: space-between;
@@ -60,19 +59,97 @@ body {
     width: 110px;
 }
 
-.navbar nav a {
-    color: white;
+.navbar nav {
+    display: flex;
+    align-items: center;
+}
+
+    .navbar nav > a {
+        color: white;
+        margin-left: 25px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 8px 16px;
+        border-radius: 20px;
+    }
+
+        .navbar nav > a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+/* ========== DROPDOWN PROGRAMACION ========== */
+.dropdown {
+    position: relative;
+    display: inline-block;
     margin-left: 25px;
+}
+
+.dropdown-toggle {
+    color: white;
     text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease;
     padding: 8px 16px;
     border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-    .navbar nav a:hover {
+    .dropdown-toggle:hover {
         background: rgba(255,255,255,0.2);
         transform: translateY(-2px);
+    }
+
+.dropdown-arrow {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.dropdown.show .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    min-width: 180px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-radius: 15px;
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.dropdown.show .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    display: block;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 0;
+}
+
+    .dropdown-item:hover {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        color: #0d47a1;
+        transform: translateX(5px);
     }
 
 /* ========== CLIMA EN NAVBAR ========== */
@@ -185,6 +262,12 @@ body {
         font-size: 1.8rem;
         font-weight: 600;
     }
+
+.leer-mas {
+    color: #1976d2;
+    text-decoration: underline;
+    text-align:center;
+}
 
 /* ========== PROGRAMA ACTUAL ========== */
 .programa-box {
@@ -317,6 +400,9 @@ body {
             border-bottom: none;
         }
 
+
+
+
 /* ========== FOOTER ========== */
 .footer {
     background: linear-gradient(135deg, #263238, #37474f);
@@ -350,7 +436,8 @@ body {
         gap: 15px;
     }
 
-    .navbar nav a {
+    .navbar nav > a,
+    .dropdown {
         margin: 0 10px;
     }
 
@@ -358,16 +445,15 @@ body {
         order: -1;
     }
 
-    .programa-box {
-        flex-direction: column;
-        text-align: center;
+    .dropdown-menu {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
+        width: 90%;
+        max-width: 300px;
     }
 
-    .temp-display {
-        font-size: 2.5rem;
-    }
-
-    .ticker-content {
-        font-size: 12px;
+    .dropdown.show .dropdown-menu {
+        transform: translateX(-50%) translateY(0);
     }
 }
