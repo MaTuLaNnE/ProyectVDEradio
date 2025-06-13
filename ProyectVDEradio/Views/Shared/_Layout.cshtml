@@ -17,7 +17,7 @@
                 <a href="/" class="logo-link">
                     <img src="~/Content/Images/Navbar_Icon.png" alt="Voz del Este" class="logo">
                 </a>
-               <nav>
+                <nav>
 
                     <a href="@Url.Action("Index","Home")">Inicio</a>
                     <a href="@Url.Action("Index", "RadioPrograms")">Programacion</a>
@@ -43,11 +43,11 @@
                 </nav>
                 <div class="navbar-clima">
                     <div class="clima-icon" id="navbarClimaIcon">
-                        🌤️
+                        <img src="" alt="Icono del clima" style="width: 40px; height: 40px; display: none;">
                     </div>
                     <div class="clima-info">
-                        <div class="clima-temp" id="navbarTemp">22°C</div>
-                        <div class="clima-estado" id="navbarEstado">Parcialmente nublado</div>
+                        <div class="clima-temp" id="navbarTemp"></div>
+                        <div class="clima-estado" id="navbarEstado"></div>
                     </div>
                 </div>
             </div>
@@ -77,8 +77,11 @@
     </footer>
     <
 
-    @Scripts.Render("~/bundles/main")
+    @*@Scripts.Render("~/bundles/main")*@
+    @Scripts.Render("~/bundles/clima")
     @Scripts.Render("~/bundles/DropDown")
     @RenderSection("scripts", required: false)
+
+
 </body>
 </html>
