@@ -7,6 +7,7 @@
     <title>Voz del Este</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <header class="navbar">
@@ -19,7 +20,7 @@
                 <nav>
 
                     <a href="@Url.Action("Index","Home")">Inicio</a>
-                    <a href="@Url.Action("Index", "Program")">Programacion</a>
+                    <a href="@Url.Action("Index", "RadioPrograms")">Programacion</a>
                     <div class="dropdown">
                         <a class="dropdown-toggle">
                             Noticias
@@ -64,13 +65,13 @@
             <p>© @DateTime.Now.Year Voz del Este - Todos los derechos reservados</p>
             <p>
 
-                <a href="#">📧 Contacto</a> |
-                <a href="#">📱 Instagram</a> |
-                <a href="#">👥 Facebook</a> |
-                <a href="#">🐦 Twitter</a>
+                <a href="#"><i class="fa-solid fa-envelope"></i> Contacto</a> |
+                <a href="#"><i class="fa-brands fa-square-instagram"></i> Instagram</a> |
+                <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a> |
+                <a href="#"><i class="fa-brands fa-square-x-twitter"></i> Twitter</a>
             </p>
             <p style="margin-top: 10px; color: #81c784;">
-                📍 Maldonado, Uruguay • 📞 +598 42 123456 • 📻 FM 101.5
+                <i class="fa-solid fa-location-dot"></i> Maldonado, Uruguay • <i class="fa-solid fa-square-phone"></i> +598 42 123456 • 📻 FM 101.5
             </p>
         </div>
     </footer>
