@@ -21,7 +21,6 @@ namespace ProyectVDEradio.Controllers
             var now = DateTime.Now;
             var currentTime = now.TimeOfDay;
             var currentDay = (int)now.DayOfWeek;
-            if (currentDay == 0) currentDay = 7;
 
             var modelo = new HomeViewModel
             {
@@ -30,10 +29,22 @@ namespace ProyectVDEradio.Controllers
                                   .Take(4)
                                   .ToList(),
                 ProgramaEnVivo = db.RadioPrograms
+                                   .Include(p => p.ProgramHosts)
+                                   .Include(p => p.CustomersComments)
                                    .Where(p => db.ProgramDays
                                    .Any(d => d.ProgramId == p.ProgramId && d.WeekDay == currentDay) &&
                                    p.StartTime <= currentTime && p.EndTime >= currentTime)
-                                   .FirstOrDefault()
+                                   .FirstOrDefault(),
+                ultimoProgramaEmitido = db.RadioPrograms
+                                     .Include(p => p.ProgramHosts)
+                                     .Include(p => p.CustomersComments)
+                                     .Include(p => p.ProgramDays)
+                                     .Where(p => p.StartTime < currentTime || (p.StartTime > p.EndTime && currentTime < p.EndTime)) 
+                                     .OrderByDescending(p => p.StartTime)
+                                     .FirstOrDefault()
+
+
+
             };
 
             return View(modelo);

@@ -1,0 +1,26 @@
+﻿@model List<ProyectVDEradio.Models.News>
+@using System.Globalization
+@{
+    ViewBag.Title = "Categoria";
+}
+
+<section class="section">
+    <h2>📰 Últimas Noticias @Model.FirstOrDefault().Categories.CategoryName</h2>
+    <div class="noticia-grid">
+
+        @foreach (var noticia in Model)
+        {
+            <article class="noticia-item">
+                <img src="@noticia.ArticleImage" alt="Noticia" style="noticia-item">
+                <div class="noticia-content">
+                    <h4>@noticia.ArticleTitle</h4>
+                    <p><strong>@noticia.ArticleDate.Day @noticia.ArticleDate.ToString("MMMM", new CultureInfo("es-ES")).ToUpper() @noticia.ArticleDate.Year      @noticia.ArticleDate.ToString("t", new CultureInfo("es-ES"))</strong></p>
+                    <p>@noticia.ArticleSubtitle</p>
+                    <a href="@Url.Action("Details", "News", new { id = noticia.ArticleID })" class="leer-mas">Leer más</a>
+                </div>
+
+            </article>
+        }
+
+    </div>
+</section>
