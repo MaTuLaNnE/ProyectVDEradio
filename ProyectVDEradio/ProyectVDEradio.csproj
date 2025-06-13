@@ -132,6 +132,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RadioProgramsController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\RadioProgramsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -222,9 +223,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
-    <Content Include="Content\Images\MaldonadoHoy.png" />
+    <Content Include="Content\Images\MaldonadoHoy.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\Navbar_Icon.png" />
-    <Content Include="Content\Images\VozDelEste_Icon_Navbar.ico" />
     <Content Include="favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -289,6 +291,11 @@
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\News\Categoria.cshtml" />
     <Content Include="Views\News\Details.cshtml" />
+    <Content Include="Views\RadioPrograms\Create.cshtml" />
+    <Content Include="Views\RadioPrograms\Delete.cshtml" />
+    <Content Include="Views\RadioPrograms\Details.cshtml" />
+    <Content Include="Views\RadioPrograms\Edit.cshtml" />
+    <Content Include="Views\RadioPrograms\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

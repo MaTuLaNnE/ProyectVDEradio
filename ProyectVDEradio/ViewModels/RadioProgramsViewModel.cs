@@ -25,7 +25,7 @@ namespace ProyectVDEradio.ViewModels
         public int WeeksOnAir { get; set; }
         public List<RadioPrograms> RelatedPrograms { get; set; }
 
-
+        
     }
     public class TodayScheduleItem
     {

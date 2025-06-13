@@ -25,29 +25,42 @@ namespace ProyectVDEradio.Controllers
             var currentDay = (int)now.DayOfWeek;
 
             var programaActual = db.RadioPrograms
-                .Where(p => db.ProgramDays
-                .Any(d => d.ProgramId == p.ProgramId && d.WeekDay == currentDay) &&
-                p.StartTime <= currentTime && p.EndTime >= currentTime)
-                .FirstOrDefault();
+                .Include(p => p.ProgramDays)
+                .Include(p => p.ProgramHosts)
+                .Include(p => p.CustomersComments.Select(c => c.Customers))
+                .FirstOrDefault(p => db.ProgramDays
+                    .Any(d => d.ProgramId == p.ProgramId && d.WeekDay == currentDay) &&
+                    p.StartTime <= currentTime && p.EndTime >= currentTime);
 
-            // 2. Obtener todos los programas, excluyendo el actual
+
+            int? idProgramaActual = programaActual?.ProgramId;
+
             var todosMenosElActual = db.RadioPrograms
-                .Where(p => p.ProgramId == null || p.ProgramId != programaActual.ProgramId)
+                .Where(p => idProgramaActual == null || p.ProgramId != idProgramaActual)
                 .OrderByDescending(p => p.StartTime)
                 .ToList();
 
-            List<Hosts> conductores = db.Hosts.OrderByDescending(ph => ph.HostName).ToList();
+
 
 
             var model = new RadioProgramsViewModel
             {
                 ListaRadios = todosMenosElActual,
                 RadioActual = programaActual,
-                Conductores = conductores
+                Conductores = programaActual?.ProgramHosts
+                     .Select(ph => ph.Hosts)
+                     .ToList() ?? new List<Hosts>()
+
             };
 
             return View(model);
         }
+
+
+
+
+
+
 
         // GET: RadioPrograms/Details/5
         public ActionResult Details(int? id)

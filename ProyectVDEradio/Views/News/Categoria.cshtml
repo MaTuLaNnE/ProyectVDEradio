@@ -1,4 +1,5 @@
 ﻿@model List<ProyectVDEradio.Models.News>
+@using System.Globalization
 @{
     ViewBag.Title = "Categoria";
 }
@@ -13,11 +14,11 @@
                 <img src="@noticia.ArticleImage" alt="Noticia" style="noticia-item">
                 <div class="noticia-content">
                     <h4>@noticia.ArticleTitle</h4>
-                    <p><strong>@noticia.ArticleDate.Hour:@noticia.ArticleDate.Minute del @noticia.ArticleDate.Day/@noticia.ArticleDate.Month/@noticia.ArticleDate.Year</strong></p>
+                    <p><strong>@noticia.ArticleDate.Day @noticia.ArticleDate.ToString("MMMM", new CultureInfo("es-ES")).ToUpper() @noticia.ArticleDate.Year      @noticia.ArticleDate.ToString("t", new CultureInfo("es-ES"))</strong></p>
                     <p>@noticia.ArticleSubtitle</p>
                     <a href="@Url.Action("Details", "News", new { id = noticia.ArticleID })" class="leer-mas">Leer más</a>
                 </div>
-                
+
             </article>
         }
 
