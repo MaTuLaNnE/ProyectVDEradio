@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voz del Este</title>
@@ -28,11 +27,11 @@
                         </a>
                         <div class="dropdown-menu">
                             <a href="@Url.Action("IndexPolicial", "News")" class="dropdown-item">Policial</a>
-                            <a href="@Url.Action("IndexEconomia", "News")" class="dropdown-item">Economía</a>
+                            <a href="@Url.Action("IndexEconomia", "News")" class="dropdown-item">@Html.Raw("Econom&#237;a")</a>
                             <a href="@Url.Action("IndexDeportes", "News")" class="dropdown-item">Deportes</a>
                             <a href="@Url.Action("IndexTurismo", "News")" class="dropdown-item">Turismo</a>
                             <a href="@Url.Action("IndexEmpresarial", "News")" class="dropdown-item">Empresarial</a>
-                            <a href="@Url.Action("IndexPolitica", "News")" class="dropdown-item">Política</a>
+                            <a href="@Url.Action("IndexPolitica", "News")" class="dropdown-item">@Html.Raw("Pol&#237;tica")</a>
                             <a href="@Url.Action("IndexClima", "News")" class="dropdown-item">Clima</a>
                             <a href="@Url.Action("IndexTransporte", "News")" class="dropdown-item">Transporte</a>
                             <a href="@Url.Action("IndexInternacional", "News")" class="dropdown-item">Internacional</a>
@@ -71,11 +70,12 @@
                 <a href="#"><i class="fa-brands fa-square-x-twitter"></i> Twitter</a>
             </p>
             <p style="margin-top: 10px; color: #81c784;">
-                <i class="fa-solid fa-location-dot"></i> Maldonado, Uruguay • <i class="fa-solid fa-square-phone"></i> +598 42 123456 • 📻 FM 101.5
+                <i class="fa-location-dot"></i> Maldonado, Uruguay | <i class="fa-solid fa-square-phone"></i> +598 42 123456 @Html.Raw("&#8226; &#128251; FM 101.5")
+
             </p>
         </div>
     </footer>
-    <
+
 
     @*@Scripts.Render("~/bundles/main")*@
     @Scripts.Render("~/bundles/clima")
