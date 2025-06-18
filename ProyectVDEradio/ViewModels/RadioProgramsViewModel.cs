@@ -9,14 +9,6 @@ namespace ProyectVDEradio.ViewModels
     public class RadioProgramsViewModel
     {
 
-        public RadioProgramsViewModel()
-        {
-            ListaRadios = new List<RadioPrograms>();
-            Conductores = new List<Hosts>();
-            TodaySchedule = new List<TodayScheduleItem>();
-            RelatedPrograms = new List<RadioPrograms>();
-        }
-
         public List<RadioPrograms> ListaRadios { get; set; }
         public RadioPrograms RadioActual { get; set; }
         public List<Hosts> Conductores { get; set; }
@@ -25,7 +17,6 @@ namespace ProyectVDEradio.ViewModels
         public int WeeksOnAir { get; set; }
         public List<RadioPrograms> RelatedPrograms { get; set; }
 
-        
     }
     public class TodayScheduleItem
     {

@@ -1,141 +1,82 @@
 ﻿@model ProyectVDEradio.ViewModels.RadioProgramsViewModel
 @{
     ViewBag.Title = "Programas de Radio";
+
+    var currentTime = DateTime.Now.TimeOfDay;
+    var currentDay = (int)DateTime.Now.DayOfWeek;
 }
-<section class="section">
-    @if (Model.RadioActual != null)
-    {
-        <div class="programa-box">
-            <!-- Header del Programa -->
-            
-                <div class="programa-info">
-                    <div class="program-image-container">
-                        <img src="@Model.RadioActual.Image" alt="Imagen del programa" class="program-main-image">
 
-                    </div>
+@if (Model.RadioActual == null)
+{
+    Model.RadioActual = Model.ListaRadios
+        .Where(lr =>
+            lr.StartTime <= currentTime &&
+            lr.EndTime >= currentTime &&
+            lr.ProgramDays.Any(pd => pd.WeekDay == currentDay)
+        ).FirstOrDefault();
+}
 
-                    <div class="program-main-info">
-                        <h1 class="program-title">@Model.RadioActual.ProgramName</h1>
-                        <p class="program-description">@Model.RadioActual.Description</p>
+<!-- PROGRAMA ACTUAL -->
+@if (Model.RadioActual != null)
+{
+    <div class="radio-main-container">
+        <!-- INFORMACIÓN DE LA RADIO -->
+        <div class="radio-info-section">
+            <div class="program-header">
+                <h1>📻 Radio en Vivo</h1>
+            </div>
 
-                        <div class="program-meta">
-                            <div class="meta-item">
-                                <strong>🕒 Horario:</strong>
-                                @($"{Model.RadioActual.StartTime:hh\\:mm} - {Model.RadioActual.EndTime:hh\\:mm}")
-                            </div>
-                            <div class="meta-item">
-                                <strong>📅 Días de emisión:</strong>
-                                @string.Join(" - ", Model.RadioActual.ProgramDays
-                                    .OrderBy(d => d.WeekDay)
-                                    .Select(d => System.Globalization.CultureInfo
-                                        .CurrentCulture
-                                        .DateTimeFormat
-                                        .GetDayName((DayOfWeek)d.WeekDay)))
-                            </div>
-                            <div class="meta-item">
-                                <strong>📍 Desde:</strong> Maldonado, Uruguay
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
-        </div>
-    }
+            <div class="program-image-container">
+                <img src="~/Content/Images/@Model.RadioActual.Image" alt="Imagen del programa">
+            </div>
 
-    @if (Model.ListaRadios != null && Model.ListaRadios.Any())
-    {
-        foreach (var radio in Model.ListaRadios)
-        {
-            <div class="programa-box">
-                <div class="program-image-container">
-                    <img src="@Model.RadioActual.Image" alt="Imagen del programa" class="noticia-item">
-                </div>
-                <h1 class="program-title">@radio.ProgramName</h1>
-                <p class="program-description">@radio.Description</p>
+            <div class="program-main-info">
+                <h2 class="program-title">@Model.RadioActual.ProgramName</h2>
+                <p class="program-description">@Model.RadioActual.Description</p>
 
                 <div class="program-meta">
                     <div class="meta-item">
                         <strong>🕒 Horario:</strong>
-                        @($"{radio.StartTime:hh\\:mm} - {radio.EndTime:hh\\:mm}")
+                        @($"{Model.RadioActual.StartTime:hh\\:mm} - {Model.RadioActual.EndTime:hh\\:mm}")
                     </div>
                     <div class="meta-item">
                         <strong>📅 Días de emisión:</strong>
-                        @string.Join(" - ", radio.ProgramDays
+                        @string.Join(" - ", Model.RadioActual.ProgramDays
                             .OrderBy(d => d.WeekDay)
                             .Select(d => System.Globalization.CultureInfo
                                 .CurrentCulture
                                 .DateTimeFormat
                                 .GetDayName((DayOfWeek)d.WeekDay)))
                     </div>
-                    <div class="meta-item">
-                        <strong>📍 Desde:</strong> Maldonado, Uruguay
-                    </div>
                 </div>
             </div>
-        }
-    }
-
-
         </div>
-    </section>
 
-    <!-- Conductores -->
-    <section class="section">
-        <h2>🎙️ Conductores</h2>
-        <div class="hosts-grid">
-            @if (Model.Conductores != null)
-            {
-                foreach (var ph in Model.Conductores)
-                {
-                    <div class="host-card">
-                        <div class="host-info">
-                            <h3>@ph.HostName</h3>
-                            <p>@ph.HostDescription</p>
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-    </section>
-
-    <!-- Programa de Hoy / Próximo -->
-    @*<section class="section">
-            <h2>📋 Programa de Hoy</h2>
-            <div class="today-program">
-                @if (Model.RadioActual != null && Model.RadioActual.Any())
-                {
-                    <div class="schedule-list">
-                        @foreach (var item in Model.ListaRadios)
-                        {
-                            <div class="schedule-item @(item.De ? "current-segment" : "")">
-                                <div class="schedule-time">@item.ProgramDays.</div>
-                                <div class="schedule-content">
-                                    <h4>@item.ProgramName</h4>
-                                    <p>@item.Description</p>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <div class="no-schedule">
-                        <p>No hay programa detallado para hoy disponible.</p>
-                    </div>
-                }
-            </div>
-        </section>*@
-
-    <!-- Comentarios de Oyentes -->
-    @if (Model.RadioActual != null)
-    {
-        <section class="section">
+        <!-- COMENTARIOS SIDEBAR -->
+        <div class="comments-sidebar">
             <h2>💬 Comentarios de Oyentes</h2>
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">
+                    <span class="alert-icon">✅</span>
+                    @TempData["Success"]
+                </div>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-error">
+                    <span class="alert-icon">❌</span>
+                    @TempData["Error"]
+                </div>
+            }
+
             <div class="comments-section">
                 @if (Model.RadioActual.CustomersComments != null && Model.RadioActual.CustomersComments.Any())
                 {
                     <div class="comments-list">
-                        @foreach (var comment in Model.RadioActual.CustomersComments.OrderByDescending(c => c.CommentDate).Take(10))
+                        @foreach (var comment in Model.RadioActual.CustomersComments.OrderByDescending(c => c.CommentDate).Take(5))
                         {
                             <div class="comment-item">
                                 <div class="comment-header">
@@ -147,93 +88,285 @@
                         }
                     </div>
                 }
+                else
+                {
+                    <div class="comment-item">
+                        <p class="comment-text" style="text-align: center; font-style: italic; color: #666;">
+                            🎙️ ¡Sé el primero en comentar sobre este programa!
+                        </p>
+                    </div>
+                }
+            </div>
+        </div>
 
-                <!-- Formulario para nuevo comentario -->
-                <div class="new-comment-form">
-                    <h3>Deja tu comentario</h3>
-                    @using (Html.BeginForm("AddComment", "Program", FormMethod.Post, new { @class = "comment-form" }))
-                    {
-                        @Html.Hidden("ProgramId", Model.RadioActual.ProgramId)
-                        <div class="form-group">
-                            <input type="text" name="CustomerName" placeholder="Tu nombre" required class="form-input">
-                        </div>
-                        <div class="form-group">
-                            <textarea name="Comment" placeholder="Escribe tu comentario..." required class="form-textarea"></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn">📝 Enviar Comentario</button>
-                    }
-                </div>
-            }
-            else
-            {
-                <div class="no-comments">
-                    <p>¡Sé el primero en comentar sobre este programa!</p>
+        <!-- Formulario de nuevo comentario -->
+        @*<div class="new-comment-form">
+                <h3>✨ Deja tu comentario</h3>
+                @using (Html.BeginForm("AddComment", "RadioPrograms", FormMethod.Post, new { @class = "comment-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("ProgramId", Model.RadioActual.ProgramId)
 
-                    <!-- Formulario para primer comentario -->
-                    <div class="new-comment-form">
-                        @using (Html.BeginForm("AddComment", "Program", FormMethod.Post, new { @class = "comment-form" }))
+                    <div class="form-group">
+                        @Html.TextBox("CustomerName", "", new
                         {
-                            @Html.Hidden("ProgramId", Model.RadioActual.ProgramId)
-                            <div class="form-group">
-                                <input type="text" name="CustomerName" placeholder="Tu nombre" required class="form-input">
-                            </div>
-                            <div class="form-group">
-                                <textarea name="Comment" placeholder="Escribe tu comentario..." required class="form-textarea"></textarea>
-                            </div>
-                            <button type="submit" class="submit-btn">📝 Enviar Comentario</button>
-                        }
+                            @class = "form-input",
+                            @placeholder = "🙋‍♂️ Tu nombre",
+                            @required = "required",
+                            @maxlength = "50"
+                        })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.TextArea("Comment", "", new
+                        {
+                            @class = "form-textarea",
+                            @placeholder = "💭 Escribe tu comentario sobre el programa...",
+                            @required = "required",
+                            @maxlength = "500",
+                            @rows = "4"
+                        })
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        📝 Enviar Comentario
+                    </button>
+                }
+            </div>*@
+
+        <!-- REPRODUCTOR DE RADIO -->
+        <div class="radio-player-section">
+            <h2>🎵 Reproductor en Vivo</h2>
+
+            <div class="radio-player">
+                <div class="radio-header">
+                    <div class="radio-station">Radio Estación FM</div>
+                    <div class="radio-time" id="radioTime">00:00:00</div>
+                    <div class="radio-program" id="radioProgram">🎵 Cargando programa...</div>
                 </div>
+
+                <div class="radio-visualizer">
+                    <div id="visualizerBars"></div>
+                    <div class="radio-status" id="radioStatus" style="display: none;">● EN VIVO</div>
+                    <div class="radio-message" id="radioMessage">Presiona ▶ para sintonizar</div>
+                </div>
+
+                <div class="radio-controls">
+                    <button class="radio-play-btn" id="playBtn" onclick="toggleRadio()">▶</button>
+                    <button class="radio-stop-btn" id="stopBtn" onclick="stopRadio()">⏹</button>
+
+                    <div class="radio-volume">
+                        <div class="volume-label" id="volumeLabel">Volumen: 50%</div>
+                        <input type="range" class="volume-slider" id="volumeSlider"
+                               min="0" max="100" value="50" onchange="updateVolume(this.value)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<!-- CONDUCTORES -->
+@if (Model.RadioActual != null)
+{
+    <section class="section">
+        <h2>🎙️ Conductores</h2>
+        <div class="hosts-grid">
+            @foreach (var ph in Model.Conductores)
+            {
+                <div class="host-card">
+                    <img src="@Url.Content("~/Content/HostImages/" + ph.HostImage)" alt="@ph.HostImage" class="host-img">
+                    <div class="host-info">
+                        <h3>@ph.HostName</h3>
+                        <p>@ph.HostDescription</p>
+                    </div>
                 </div>
             }
+        </div>
+    </section>
+}
+
+
+<!-- ESTADÍSTICAS -->
+@if (Model.RadioActual != null)
+{
+    <section class="section">
+        <h2>📊 Sobre el Programa</h2>
+        <div class="program-stats">
+            <div class="stat-item">
+                <div class="stat-number">@Model.RadioActual.CustomersComments.Count()</div>
+                <div class="stat-label">Comentarios</div>
             </div>
-        </section>
-    }
-
-    <!-- Estadísticas del Programa -->
-    @if (Model.RadioActual != null)
-    {
-        <section class="section">
-            <h2>📊 Sobre el Programa</h2>
-            <div class="program-stats">
-                <div class="stat-item">
-                    <div class="stat-number">@Model.RadioActual.CustomersComments?.Count() ?? 0</div>
-                    <div class="stat-label">Comentarios</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">@Model.RadioActual.ProgramHosts?.Count() ?? 0</div>
-                    <div class="stat-label">Conductores</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">@Model.RadioActual.ProgramDays?.Count() ?? 0</div>
-                    <div class="stat-label">Días por semana</div>
-                </div>
-
+            <div class="stat-item">
+                <div class="stat-number">@Model.RadioActual.ProgramHosts.Count()</div>
+                <div class="stat-label">Conductores</div>
             </div>
-        </section>
-    }
+            <div class="stat-item">
+                <div class="stat-number">@Model.RadioActual.ProgramDays.Count()</div>
+                <div class="stat-label">Días por semana</div>
+            </div>
+        </div>
+    </section>
+}
 
-    <!-- Botón de regreso -->
-    <div class="back-button-container">
-        <a href="@Url.Action("Index", "Program")" class="back-button">
-            ← Volver a Programación
-        </a>
+
+<!-- OTROS PROGRAMAS -->
+<section class="section otros-programas">
+    <h2>📋 Programación del Día</h2>
+    <div class="schedule-grid" id="scheduleGrid">
+        @if (Model.ListaRadios != null && Model.ListaRadios.Any())
+        {
+            foreach (var radio in Model.ListaRadios.OrderBy(r => r.StartTime))
+            {
+
+                <div class="schedule-item" id="schedule-@radio.ProgramId" data-start-time="@radio.StartTime.ToString("hh\\:mm")" data-end-time="@radio.EndTime.ToString("hh\\:mm")">
+                    <div class="program-image-container-small">
+                        <img src="~/Content/Images/@radio.Image" alt="@radio.ProgramName" class="schedule-program-image">
+                    </div>
+                    <div class="schedule-content">
+                        <div class="schedule-time">@($"{radio.StartTime:hh\\:mm} - {radio.EndTime:hh\\:mm}")</div>
+                        <div class="schedule-program-name">@radio.ProgramName</div>
+                        <div class="schedule-program-desc">@radio.Description</div>
+                        <div class="schedule-days">
+                            @string.Join(" - ", radio.ProgramDays
+                                .OrderBy(d => d.WeekDay)
+                                .Select(d => System.Globalization.CultureInfo
+                                    .CurrentCulture
+                                    .DateTimeFormat
+                                    .GetAbbreviatedDayName((DayOfWeek)d.WeekDay)))
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
     </div>
+</section>
+
+<!-- BOTÓN DE REGRESO -->
+<div class="back-button-container">
+    <a href="@Url.Action("Index", "RadioPrograms")" class="back-button">
+        ← Volver a Programación
+    </a>
 </div>
 
-    @section scripts {
-        <script>
-            // Actualizar estado en vivo cada 30 segundos
-            setInterval(function () {
-                // Aquí puedes hacer una llamada AJAX para verificar si el programa está en vivo
-            // y actualizar el indicador correspondiente
-            }, 30000);
+@section scripts {
+    <script>
+let isPlaying = false, animationInterval;
 
-        // Scroll suave para comentarios
-        document.querySelectorAll('.comment-form').forEach(function (form) {
-            form.addEventListener('submit', function (e) {
-                // Aquí puedes agregar validación adicional o efectos visuales
-            });
-        });
-        </script>
+const radioSchedule = [
+@foreach (var radio in Model.ListaRadios.OrderBy(r => r.StartTime)) {
+<text>{
+    programId: @radio.ProgramId,
+    programName: "@Html.Raw(radio.ProgramName.Replace("\"", "\\\""))",
+    description: "@Html.Raw(radio.Description.Replace("\"", "\\\""))",
+    startHour: @radio.StartTime.Hours,
+    startMinute: @radio.StartTime.Minutes,
+    endHour: @radio.EndTime.Hours,
+    endMinute: @radio.EndTime.Minutes,
+    image: "@radio.Image",
+    days: [@string.Join(",", radio.ProgramDays.Select(d => d.WeekDay))]
+},</text>
+}
+];
+
+function $(id) { return document.getElementById(id); }
+
+function createVisualizer() {
+    const c = $('visualizerBars');
+    if (!c) return;
+    c.innerHTML = '';
+    for (let i = 0; i < 20; i++) {
+        let bar = document.createElement('div');
+        bar.className = 'visualizer-bar inactive';
+        bar.style.height = '8px';
+        c.appendChild(bar);
     }
-</section>
+}
+
+function getCurrentProgram() {
+    const now = new Date(), mins = now.getHours() * 60 + now.getMinutes(), day = now.getDay();
+    for (let p of radioSchedule) {
+        let start = p.startHour * 60 + p.startMinute;
+        let end = p.endHour * 60 + p.endMinute;
+        if (end <= start) end += 1440;
+        if (p.days.includes(day) && (mins >= start || (end > 1440 && mins < end - 1440)))
+            return p;
+    }
+    return radioSchedule[0] || null;
+}
+
+function updateTime() {
+    const now = new Date();
+    const p = getCurrentProgram();
+    if (!p) return $('radioTime').textContent = "00:00:00";
+
+    let start = new Date(now);
+    start.setHours(p.startHour, p.startMinute, 0, 0);
+
+    const totalNow = now.getHours() * 60 + now.getMinutes();
+    const totalStart = p.startHour * 60 + p.startMinute;
+    const totalEnd = p.endHour * 60 + p.endMinute;
+    if (totalEnd <= totalStart && totalNow < totalStart) start.setDate(start.getDate() - 1);
+
+    let diff = now - start;
+    if (diff < 0) return $('radioTime').textContent = "00:00:00";
+
+    let h = Math.floor(diff / 3600000),
+        m = Math.floor((diff % 3600000) / 60000),
+        s = Math.floor((diff % 60000) / 1000);
+
+    $('radioTime').textContent = [h, m, s].map(x => String(x).padStart(2, '0')).join(':');
+    updateCurrentProgram(p);
+}
+
+function updateCurrentProgram(p) {
+    if (!p) return;
+    $('radioProgram').textContent = `${isPlaying ? '🔊' : '🎵'} ${p.programName}${isPlaying ? ' - EN VIVO' : ''}`;
+    document.querySelectorAll('.schedule-item').forEach(i => i.classList.remove('active'));
+    let active = $(`schedule-${p.programId}`);
+    if (active) active.classList.add('active');
+}
+
+function animateVisualizer() {
+    document.querySelectorAll('.visualizer-bar').forEach(bar => {
+        bar.style.height = isPlaying ? `${Math.random() * 50 + 8}px` : '8px';
+        bar.classList.toggle('inactive', !isPlaying);
+    });
+}
+
+function toggleRadio() {
+    isPlaying = !isPlaying;
+    $('playBtn').textContent = isPlaying ? '⏸' : '▶';
+    $('radioStatus').style.display = isPlaying ? 'block' : 'none';
+    $('radioMessage').style.display = isPlaying ? 'none' : 'block';
+    $('radioMessage').textContent = isPlaying ? '' : 'PAUSADO';
+    clearInterval(animationInterval);
+    if (isPlaying) animationInterval = setInterval(animateVisualizer, 200);
+    animateVisualizer();
+    updateCurrentProgram(getCurrentProgram());
+}
+
+function stopRadio() {
+    isPlaying = false;
+    $('playBtn').textContent = '▶';
+    $('radioStatus').style.display = 'none';
+    $('radioMessage').style.display = 'block';
+    $('radioMessage').textContent = 'Presiona ▶ para sintonizar';
+    clearInterval(animationInterval);
+    animateVisualizer();
+    updateCurrentProgram(getCurrentProgram());
+}
+
+function updateVolume(v) {
+    $('volumeLabel').textContent = `Volumen: ${v}%`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    createVisualizer();
+    updateTime();
+    setInterval(updateTime, 1000);
+});
+    </script>
+}
