@@ -163,5 +163,63 @@ namespace ProyectVDEradio.Controllers
             }
             base.Dispose(disposing);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddComment(int ProgramId, string CustomerName, string Comment)
+        {
+            try
+            {
+                // Validar que los datos no estén vacíos
+                if (string.IsNullOrWhiteSpace(CustomerName) || string.IsNullOrWhiteSpace(Comment))
+                {
+                    TempData["Error"] = "Por favor completa todos los campos.";
+                    return RedirectToAction("Index"); // o la acción que corresponda
+                }
+
+                // Validar longitud
+                if (CustomerName.Length > 50 || Comment.Length > 500)
+                {
+                    TempData["Error"] = "El nombre o comentario son demasiado largos.";
+                    return RedirectToAction("Index");
+                }
+
+                // Buscar o crear el cliente
+                var customer = db.Customers.FirstOrDefault(c => c.CustomerName == CustomerName.Trim());
+                if (customer == null)
+                {
+                    customer = new Customers
+                    {
+                        CustomerName = CustomerName.Trim(),
+                        // Agrega otros campos si los tienes
+                    };
+                    db.Customers.Add(customer);
+                    db.SaveChanges();
+                }
+
+                // Crear el comentario
+                var newComment = new CustomersComments
+                {
+                    ProgramId = ProgramId,
+                    CustomerId = customer.CustomerId, // Asegúrate del nombre correcto de la propiedad
+                    Comment = Comment.Trim(),
+                    CommentDate = DateTime.Now
+                };
+
+                db.CustomersComments.Add(newComment);
+                db.SaveChanges();
+
+                TempData["Success"] = "¡Comentario enviado exitosamente!";
+            }
+            catch (Exception ex)
+            {
+                // Log del error si tienes sistema de logging
+                TempData["Error"] = "Ocurrió un error al enviar el comentario. Inténtalo de nuevo.";
+            }
+
+            return RedirectToAction("Index"); // o la acción que corresponda
+        }
+
+
     }
 }

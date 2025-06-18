@@ -226,6 +226,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Navbar_Icon.png" />
+    <Content Include="Content\HostImages\M1.png" />
+    <Content Include="Content\HostImages\M2.png" />
+    <Content Include="Content\HostImages\M3.png" />
+    <Content Include="Content\HostImages\M4.png" />
+    <Content Include="Content\HostImages\M5.png" />
+    <Content Include="Content\HostImages\M6.png" />
+    <Content Include="Content\HostImages\M7.png" />
+    <Content Include="Content\HostImages\M8.png" />
+    <Content Include="Content\HostImages\W1.png" />
+    <Content Include="Content\HostImages\W10.png" />
+    <Content Include="Content\HostImages\W2.png" />
+    <Content Include="Content\HostImages\W3.png" />
+    <Content Include="Content\HostImages\W4.png" />
+    <Content Include="Content\HostImages\W5.png" />
+    <Content Include="Content\HostImages\W6.png" />
+    <Content Include="Content\HostImages\W7.png" />
+    <Content Include="Content\HostImages\W8.png" />
+    <Content Include="Content\HostImages\W9.png" />
     <Content Include="favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

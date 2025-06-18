@@ -9,11 +9,9 @@ namespace ProyectVDEradio.ViewModels
     public class RadioProgramsViewModel
     {
 
-
         public List<RadioPrograms> ListaRadios { get; set; }
         public RadioPrograms RadioActual { get; set; }
         public List<Hosts> Conductores { get; set; }
 
-        
     }
 }
