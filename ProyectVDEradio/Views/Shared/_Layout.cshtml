@@ -28,11 +28,11 @@
                         </a>
                         <div class="dropdown-menu">
                             <a href="@Url.Action("IndexPolicial", "News")" class="dropdown-item">Policial</a>
-                            <a href="@Url.Action("IndexEconomia", "News")" class="dropdown-item">Economía</a>
+                            <a href="@Url.Action("IndexEconomia", "News")" class="dropdown-item">@Html.Raw("Econom&#237;a")</a>
                             <a href="@Url.Action("IndexDeportes", "News")" class="dropdown-item">Deportes</a>
                             <a href="@Url.Action("IndexTurismo", "News")" class="dropdown-item">Turismo</a>
                             <a href="@Url.Action("IndexEmpresarial", "News")" class="dropdown-item">Empresarial</a>
-                            <a href="@Url.Action("IndexPolitica", "News")" class="dropdown-item">Política</a>
+                            <a href="@Url.Action("IndexPolitica", "News")" class="dropdown-item">@Html.Raw("Pol&#237;tica")</a>
                             <a href="@Url.Action("IndexClima", "News")" class="dropdown-item">Clima</a>
                             <a href="@Url.Action("IndexTransporte", "News")" class="dropdown-item">Transporte</a>
                             <a href="@Url.Action("IndexInternacional", "News")" class="dropdown-item">Internacional</a>
@@ -62,7 +62,7 @@
     <hr />
     <footer class="footer">
         <div class="container">
-            <p>© @DateTime.Now.Year Voz del Este - Todos los derechos reservados</p>
+            <p><i class="fa-regular fa-copyright"></i> @DateTime.Now.Year Voz del Este - Todos los derechos reservados</p>
             <p>
 
                 <a href="#"><i class="fa-solid fa-envelope"></i> Contacto</a> |
@@ -71,7 +71,7 @@
                 <a href="#"><i class="fa-brands fa-square-x-twitter"></i> Twitter</a>
             </p>
             <p style="margin-top: 10px; color: #81c784;">
-                <i class="fa-solid fa-location-dot"></i> Maldonado, Uruguay • <i class="fa-solid fa-square-phone"></i> +598 42 123456 • 📻 FM 101.5
+                <i class="fa-solid fa-location-dot"></i> Maldonado, Uruguay @Html.Raw("&#8226") <i class="fa-solid fa-square-phone"></i> +598 42 123456 @Html.Raw("&#8226; &#128251; FM 101.5")
             </p>
         </div>
     </footer>
