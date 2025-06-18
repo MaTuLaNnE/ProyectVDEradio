@@ -11,6 +11,7 @@
                 <div class="programa-info">
                     <div class="program-image-container">
                         <img src="@Model.RadioActual.Image" alt="Imagen del programa" class="program-main-image">
+
                     </div>
 
                     <div class="program-main-info">
@@ -73,6 +74,10 @@
             </div>
         }
     }
+
+
+        </div>
+    </section>
 
     <!-- Conductores -->
     <section class="section">
@@ -158,6 +163,28 @@
                         <button type="submit" class="submit-btn">📝 Enviar Comentario</button>
                     }
                 </div>
+            }
+            else
+            {
+                <div class="no-comments">
+                    <p>¡Sé el primero en comentar sobre este programa!</p>
+
+                    <!-- Formulario para primer comentario -->
+                    <div class="new-comment-form">
+                        @using (Html.BeginForm("AddComment", "Program", FormMethod.Post, new { @class = "comment-form" }))
+                        {
+                            @Html.Hidden("ProgramId", Model.RadioActual.ProgramId)
+                            <div class="form-group">
+                                <input type="text" name="CustomerName" placeholder="Tu nombre" required class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <textarea name="Comment" placeholder="Escribe tu comentario..." required class="form-textarea"></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">📝 Enviar Comentario</button>
+                        }
+                </div>
+                </div>
+            }
             </div>
         </section>
     }
@@ -191,13 +218,22 @@
             ← Volver a Programación
         </a>
     </div>
+</div>
 
     @section scripts {
         <script>
             // Actualizar estado en vivo cada 30 segundos
             setInterval(function () {
                 // Aquí puedes hacer una llamada AJAX para verificar si el programa está en vivo
+            // y actualizar el indicador correspondiente
             }, 30000);
+
+        // Scroll suave para comentarios
+        document.querySelectorAll('.comment-form').forEach(function (form) {
+            form.addEventListener('submit', function (e) {
+                // Aquí puedes agregar validación adicional o efectos visuales
+            });
+        });
         </script>
     }
 </section>
