@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -18,6 +19,7 @@ namespace ProyectVDEradio.Controllers
         // GET: RadioPrograms
         public ActionResult Index()
         {
+
             var now = DateTime.Now;
             var currentTime = now.TimeOfDay;
             var currentDay = (int)now.DayOfWeek;

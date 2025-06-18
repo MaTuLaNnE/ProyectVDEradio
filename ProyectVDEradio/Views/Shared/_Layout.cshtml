@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -43,11 +43,11 @@
                 </nav>
                 <div class="navbar-clima">
                     <div class="clima-icon" id="navbarClimaIcon">
-                        🌤️
+                        <img src="" alt="Icono del clima" style="width: 40px; height: 40px; display: none;">
                     </div>
                     <div class="clima-info">
-                        <div class="clima-temp" id="navbarTemp">22°C</div>
-                        <div class="clima-estado" id="navbarEstado">Parcialmente nublado</div>
+                        <div class="clima-temp" id="navbarTemp"></div>
+                        <div class="clima-estado" id="navbarEstado"></div>
                     </div>
                 </div>
             </div>
@@ -77,8 +77,11 @@
     </footer>
     <
 
-    @Scripts.Render("~/bundles/main")
+    @*@Scripts.Render("~/bundles/main")*@
+    @Scripts.Render("~/bundles/clima")
     @Scripts.Render("~/bundles/DropDown")
     @RenderSection("scripts", required: false)
+
+
 </body>
 </html>
