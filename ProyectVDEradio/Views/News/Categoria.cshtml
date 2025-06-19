@@ -1,14 +1,108 @@
-﻿@model List<ProyectVDEradio.Models.News>
+﻿@model ProyectVDEradio.ViewModels.WeatherViewModel
 @using System.Globalization
 @{
     ViewBag.Title = "Categoria";
+    var esClima = Model.noticias.FirstOrDefault()?.Categories.CategoryName == "Clima";
+    var amanecer = DateTimeOffset.FromUnixTimeSeconds(Model.Weather.Amanecer).ToLocalTime().ToString("HH:mm");
+    var atardecer = DateTimeOffset.FromUnixTimeSeconds(Model.Weather.Atardecer).ToLocalTime().ToString("HH:mm");
+    string iconoClima = "https://openweathermap.org/img/wn/" + Model.Weather.Icono + "@2x.png";
+
 }
 
+@if (esClima)
+{
+    <!-- Secciones específicas de Clima -->
+    <div class="clima-grid">
+        <!-- Clima Actual -->
+        <section class="section">
+            <div class="clima-actual-card">
+                <h3><img src="@iconoClima" alt="Icono del clima" style="width: 40px; height: 40px;" /> Clima Actual</h3>
+                <div class="temp-principal">
+                    <span class="icono-clima-principal">
+
+                    </span>
+                    <span id="temp-actual">@Convert.ToInt16(Model.Weather.Temp)°C</span>
+
+                </div>
+                <div class="detalle-valor"> Maxima @Convert.ToInt16(Model.Weather.TempMax)°C - Minima @Convert.ToInt16(Model.Weather.TempMin)°C</div>
+                <div id="estado-actual">@Model.Weather.Estado</div>
+                <div class="clima-detalles">
+                    <div class="detalle-item">
+                        <strong>Humedad</strong>
+                        <div class="detalle-valor"> @Model.Weather.Humedad%</div>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Viento</strong>
+                        <div class="detalle-valor"> @Model.Weather.Viento km/h</div>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Presión</strong>
+                        <div class="detalle-valor" id="presion-actual">@Model.Weather.Presion hPa</div>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Sensacion Termica</strong>
+                        <div class="detalle-valor" id="uv-actual">@Model.Weather.Sensacion°C</div>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Amanecer</strong>
+                        <div class="detalle-valor" id="uv-actual">@amanecer</div>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Atardecer</strong>
+                        <div class="detalle-valor" id="uv-actual">@atardecer</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pronóstico -->
+        <section class="section">
+            <div class="pronostico-card">
+                <h3>📅 Pronóstico De Los Siguientes Días</h3>
+                <div class="pronostico-dias" id="pronostico-container">
+                    @foreach (var dia in Model.Forecast)
+                    {
+
+                        <div class="dia-pronostico">
+                            <div class="dia-nombre">@dia.Fecha.ToString("dddd", new CultureInfo("es-ES")).ToUpper()</div>
+                            <div class="dia-icono">
+                                <img src="@($"https://openweathermap.org/img/wn/{dia.Icono}@2x.png")" alt="@dia.Estado" />
+                            </div>
+                            <div class="dia-temp">
+                                <div class="temp-min">Maxima: @dia.TempMax°C</div>
+                                <div class="temp-min">Minima: @dia.TempMin°C</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Historial del Clima -->
+    <section class="section">
+        <div class="historial-card">
+            <h3>📊 Historial del Clima</h3>
+            <div class="historial-controles">
+                <button class="btn-historial active" data-periodo="7">Últimos 7 días</button>
+                <button class="btn-historial" data-periodo="30">Último mes</button>
+                <button class="btn-historial" data-periodo="90">Últimos 3 meses</button>
+            </div>
+            <div class="historial-contenido">
+                <div class="historial-grid" id="historial-container">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+
 <section class="section">
-    <h2>📰 Últimas Noticias @Model.FirstOrDefault().Categories.CategoryName</h2>
+    <h2>📰 Últimas Noticias @Model.noticias.FirstOrDefault().Categories.CategoryName</h2>
     <div class="noticia-grid">
 
-        @foreach (var noticia in Model)
+        @foreach (var noticia in Model.noticias)
         {
             <article class="noticia-item">
                 <img src="@noticia.ArticleImage" alt="Noticia" style="noticia-item">
@@ -24,3 +118,4 @@
 
     </div>
 </section>
+

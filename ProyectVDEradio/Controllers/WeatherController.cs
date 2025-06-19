@@ -5,7 +5,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using ProyectVDEradio.Utils;
+using ProyectVDEradio.Utils.WeatherAPI;
+using ProyectVDEradio.Utils.WeatherForecastAPI;
 
 namespace ProyectVDEradio.Controllers
 {
@@ -26,11 +27,22 @@ namespace ProyectVDEradio.Controllers
                 {
                     temp = clima.Main.Temp,
                     estado = clima.Weather[0].Description,
-                    icono = clima.Weather[0].Icon
+                    icono = clima.Weather[0].Icon,
+                    tempMax = clima.Main.TempMax,
+                    tempMin = clima.Main.TempMin,
+                    humedad = clima.Main.Humidity,
+                    viento = clima.Wind.Speed,
+                    presion = clima.Main.Pressure,
+                    sensacion = clima.Main.FeelsLike,
+                    amanecer = clima.Sys.Sunrise,
+                    atardecer = clima.Sys.Sunset
+
                 };
 
                 return Json(resultado, JsonRequestBehavior.AllowGet);
             }
         }
+
+
     }
 }

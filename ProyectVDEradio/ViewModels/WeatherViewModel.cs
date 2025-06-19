@@ -1,0 +1,57 @@
+﻿using ProyectVDEradio.Models;
+using ProyectVDEradio.Utils.WeatherForecastAPI;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Web;
+
+
+namespace ProyectVDEradio.ViewModels
+{
+    public class WeatherViewModel
+    {
+        public WeatherViewModel()
+        {
+            Weather = new WeatherData();
+        }
+
+        public WeatherData Weather { get; set; }
+
+        public List<News> noticias { get; set; }
+
+        public List<ForecastData> Forecast { get; set; }
+
+
+    }
+    public class WeatherData
+    {
+        public double Temp { get; set; }
+        public string Estado { get; set; }
+        public string Icono { get; set; }
+        public double TempMax { get; set; }
+        public double TempMin { get; set; }
+        public int Humedad { get; set; }
+        public double Viento { get; set; }
+        public int Presion { get; set; }
+        public double Sensacion { get; set; }
+        public long Amanecer { get; set; }
+        public long Atardecer { get; set; }
+
+    }
+
+    public class ForecastData
+    {
+        public DateTime Fecha { get; set; }
+        public double Temp { get; set; }
+        public string Estado { get; set; }
+        public string Icono { get; set; }
+        public double TempMax { get; set; }
+        public double TempMin { get; set; }
+        public int Humedad { get; set; }
+        public double Viento { get; set; }
+        public int Presion { get; set; }
+        public double Sensacion { get; set; }
+    }
+
+}
