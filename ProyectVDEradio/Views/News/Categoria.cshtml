@@ -16,13 +16,10 @@
         <!-- Clima Actual -->
         <section class="section">
             <div class="clima-actual-card">
-                <h3><img src="@iconoClima" alt="Icono del clima" style="width: 40px; height: 40px;" /> Clima Actual</h3>
+                <h3>Clima Actual</h3>
                 <div class="temp-principal">
-                    <span class="icono-clima-principal">
-
-                    </span>
+                    <span class="icono-clima-principal"><img src="@iconoClima" /></span>
                     <span id="temp-actual">@Convert.ToInt16(Model.Weather.Temp)°C</span>
-
                 </div>
                 <div class="detalle-valor"> Maxima @Convert.ToInt16(Model.Weather.TempMax)°C - Minima @Convert.ToInt16(Model.Weather.TempMin)°C</div>
                 <div id="estado-actual">@Model.Weather.Estado</div>
@@ -33,7 +30,7 @@
                     </div>
                     <div class="detalle-item">
                         <strong>Viento</strong>
-                        <div class="detalle-valor"> @Model.Weather.Viento km/h</div>
+                        <div class="detalle-valor"> @Model.Weather.Viento m/s</div>
                     </div>
                     <div class="detalle-item">
                         <strong>Presión</strong>

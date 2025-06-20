@@ -25,12 +25,16 @@ namespace ProyectVDEradio.Controllers
             var currentDay = (int)now.DayOfWeek;
 
             var programaActual = db.RadioPrograms
-                .Include(p => p.ProgramDays)
-                .Include(p => p.ProgramHosts)
-                .Include(p => p.CustomersComments.Select(c => c.Customers))
-                .FirstOrDefault(p => db.ProgramDays
-                    .Any(d => d.ProgramId == p.ProgramId && d.WeekDay == currentDay) &&
-                    p.StartTime <= currentTime && p.EndTime >= currentTime);
+                            .Include(p => p.ProgramDays)
+                            .Include(p => p.ProgramHosts.Select(ph => ph.Hosts))
+                            .Include(p => p.CustomersComments.Select(c => c.Customers))
+                            .ToList() // Necesario para evaluar TimeSpan correctamente en C#
+                            .Where(p => p.ProgramDays.Any(d => d.WeekDay == currentDay))
+                            .FirstOrDefault(p =>
+                                (p.StartTime < p.EndTime && currentTime >= p.StartTime && currentTime < p.EndTime) || // dentro del mismo día
+                                (p.StartTime > p.EndTime && (currentTime >= p.StartTime || currentTime < p.EndTime))   // cruza medianoche
+                             );
+
 
 
             int? idProgramaActual = programaActual?.ProgramId;
