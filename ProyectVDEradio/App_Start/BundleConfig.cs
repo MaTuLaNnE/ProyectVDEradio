@@ -32,7 +32,8 @@ namespace ProyectVDEradio
             "~/Scripts/DropDown.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/Site.css"));
+                      "~/Content/Site.css",
+                      "~/Content/Clima.css"));
         }
     }
 }

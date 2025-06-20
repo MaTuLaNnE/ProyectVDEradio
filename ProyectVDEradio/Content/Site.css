@@ -505,6 +505,22 @@ body {
     font-size: 1.1rem;
 }
 
+.leer-mas {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #0d47a1, #1976d2);
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+    .leer-mas:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(13, 71, 161, 0.3);
+    }
 
 
 /* ========== SECCIÓN DE COMENTARIOS ========== */
@@ -805,7 +821,6 @@ body {
         .monedas-list li:last-child {
             border-bottom: none;
         }
-
 
 
 

@@ -1,5 +1,5 @@
 ﻿
-namespace ProyectVDEradio.Utils
+namespace ProyectVDEradio.Utils.WeatherAPI
 {
     using System;
     using System.Collections.Generic;
@@ -139,12 +139,12 @@ namespace ProyectVDEradio.Utils
 
     public partial class Welcome
     {
-        public static Welcome FromJson(string json) => JsonConvert.DeserializeObject<Welcome>(json, ProyectVDEradio.Utils.Converter.Settings);
+        public static Welcome FromJson(string json) => JsonConvert.DeserializeObject<Welcome>(json, ProyectVDEradio.Utils.WeatherAPI.Converter.Settings);
     }
 
     public static class Serialize
     {
-        public static string ToJson(this Welcome self) => JsonConvert.SerializeObject(self, ProyectVDEradio.Utils.Converter.Settings);
+        public static string ToJson(this Welcome self) => JsonConvert.SerializeObject(self, ProyectVDEradio.Utils.WeatherAPI.Converter.Settings);
     }
 
     internal static class Converter
