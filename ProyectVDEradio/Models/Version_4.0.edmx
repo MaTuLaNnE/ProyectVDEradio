@@ -67,6 +67,7 @@
           <Property Name="HostId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HostName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="HostDescription" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="HostImage" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="News">
           <Key>
@@ -258,7 +259,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProgramDa__Progr__40058253">
+        <Association Name="FK__ProgramDa__Progr__6FE99F9F">
           <End Role="RadioPrograms" Type="Self.RadioPrograms" Multiplicity="1" />
           <End Role="ProgramDays" Type="Self.ProgramDays" Multiplicity="*" />
           <ReferentialConstraint>
@@ -368,7 +369,7 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="PermissionsRoles" EntitySet="PermissionsRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProgramDa__Progr__40058253" Association="Self.FK__ProgramDa__Progr__40058253">
+          <AssociationSet Name="FK__ProgramDa__Progr__6FE99F9F" Association="Self.FK__ProgramDa__Progr__6FE99F9F">
             <End Role="RadioPrograms" EntitySet="RadioPrograms" />
             <End Role="ProgramDays" EntitySet="ProgramDays" />
           </AssociationSet>
@@ -464,6 +465,7 @@
           <Property Name="HostName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="HostDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="ProgramHosts" Relationship="Self.FK__ProgramHo__HostI__4E88ABD4" FromRole="Hosts" ToRole="ProgramHosts" />
+          <Property Name="HostImage" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="News">
           <Key>
@@ -873,6 +875,7 @@
           <EntitySetMapping Name="Hosts">
             <EntityTypeMapping TypeName="VozDelEsteDBModel.Hosts">
               <MappingFragment StoreEntitySet="Hosts">
+                <ScalarProperty Name="HostImage" ColumnName="HostImage" />
                 <ScalarProperty Name="HostId" ColumnName="HostId" />
                 <ScalarProperty Name="HostName" ColumnName="HostName" />
                 <ScalarProperty Name="HostDescription" ColumnName="HostDescription" />
