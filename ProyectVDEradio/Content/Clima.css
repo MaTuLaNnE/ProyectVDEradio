@@ -8,8 +8,9 @@
     margin-bottom: 40px;
 }
 
-/* Clima Actual */
-.clima-actual-card {
+
+/** Clima Actual */
+/*.clima-actual-card {
     background: linear-gradient(135deg, #ff6b35, #f7931e);
     color: white;
     padding: 30px;
@@ -76,6 +77,406 @@
 .detalle-valor {
     font-size: 1.2rem;
     font-weight: bold;
+}*/
+
+/* Clima Actual Dinamico*/
+.clima-actual-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.6s ease;
+}
+
+    .clima-actual-card h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        opacity: 0.9;
+    }
+
+.temp-principal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.icono-clima-principal {
+    font-size: 64px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+#temp-actual {
+    font-size: 48px;
+    font-weight: 300;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#estado-actual {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+.clima-detalles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.detalle-item {
+    text-align: center;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+    .detalle-item strong {
+        display: block;
+        font-size: 12px;
+        opacity: 0.8;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+.detalle-valor {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.controls {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.control-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+    .control-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+    }
+
+/* Animaciones de fondo */
+.weather-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Sol animado */
+.sun {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #FFD700, #FFA500);
+    border-radius: 50%;
+    animation: sunGlow 3s ease-in-out infinite alternate;
+}
+
+    .sun::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        width: 80px;
+        height: 80px;
+        background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent 70%);
+        border-radius: 50%;
+        animation: sunRotate 20s linear infinite;
+    }
+
+@keyframes sunGlow {
+    0% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+
+    100% {
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+    }
+}
+
+@keyframes sunRotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Luna animada */
+.moon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #E6E6FA, #D3D3D3);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(230, 230, 250, 0.5);
+    animation: moonGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes moonGlow {
+    0% {
+        box-shadow: 0 0 15px rgba(230, 230, 250, 0.3);
+    }
+
+    100% {
+        box-shadow: 0 0 30px rgba(230, 230, 250, 0.7);
+    }
+}
+
+/* Nubes animadas */
+.cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50px;
+    animation: cloudMove 15s linear infinite;
+}
+
+    .cloud::before,
+    .cloud::after {
+        content: '';
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50px;
+    }
+
+.cloud1 {
+    width: 80px;
+    height: 30px;
+    top: 15%;
+    left: -80px;
+    animation-duration: 20s;
+}
+
+    .cloud1::before {
+        width: 50px;
+        height: 40px;
+        top: -20px;
+        left: 10px;
+    }
+
+    .cloud1::after {
+        width: 60px;
+        height: 35px;
+        top: -15px;
+        right: 10px;
+    }
+
+.cloud2 {
+    width: 60px;
+    height: 25px;
+    top: 30%;
+    left: -60px;
+    animation-duration: 25s;
+    animation-delay: -10s;
+}
+
+    .cloud2::before {
+        width: 40px;
+        height: 30px;
+        top: -15px;
+        left: 5px;
+    }
+
+    .cloud2::after {
+        width: 45px;
+        height: 28px;
+        top: -12px;
+        right: 8px;
+    }
+
+.cloud3 {
+    width: 70px;
+    height: 28px;
+    top: 50%;
+    left: -70px;
+    animation-duration: 30s;
+    animation-delay: -20s;
+}
+
+    .cloud3::before {
+        width: 45px;
+        height: 35px;
+        top: -18px;
+        left: 8px;
+    }
+
+    .cloud3::after {
+        width: 50px;
+        height: 32px;
+        top: -14px;
+        right: 12px;
+    }
+
+@keyframes cloudMove {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(calc(100vw + 100px));
+    }
+}
+
+/* Lluvia */
+.rain {
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(to bottom, rgba(174, 194, 224, 0.8), rgba(174, 194, 224, 0.4));
+    border-radius: 2px;
+    animation: rainFall 1s linear infinite;
+}
+
+@keyframes rainFall {
+    0% {
+        transform: translateY(-100vh);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+/* Nieve */
+.snow {
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    animation: snowFall 3s linear infinite;
+}
+
+@keyframes snowFall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Rayos */
+.lightning {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    opacity: 0;
+    animation: lightningFlash 0.2s ease-in-out;
+}
+
+@keyframes lightningFlash {
+    0%, 100% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* Niebla */
+.mist {
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0.3) 100%);
+    border-radius: 30px;
+    animation: mistMove 8s ease-in-out infinite;
+}
+
+.mist1 {
+    bottom: 20%;
+    animation-delay: 0s;
+}
+
+.mist2 {
+    bottom: 35%;
+    animation-delay: -2s;
+}
+
+.mist3 {
+    bottom: 50%;
+    animation-delay: -4s;
+}
+
+@keyframes mistMove {
+    0%, 100% {
+        transform: translateX(-10px);
+        opacity: 0.4;
+    }
+
+    50% {
+        transform: translateX(10px);
+        opacity: 0.8;
+    }
+}
+
+/* Backgrounds dinámicos */
+.bg-clear-day {
+    background: linear-gradient(135deg, #87CEEB 0%, #98D8E8 50%, #B0E0E6 100%);
+}
+
+.bg-clear-night {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.bg-clouds {
+    background: linear-gradient(135deg, #bdc3c7 0%, #95a5a6 50%, #7f8c8d 100%);
+}
+
+.bg-rain {
+    background: linear-gradient(135deg, #485563 0%, #29323c 50%, #2c3e50 100%);
+}
+
+.bg-storm {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+}
+
+.bg-snow {
+    background: linear-gradient(135deg, #e6ddd4 0%, #d0c4ba 50%, #c4b8a9 100%);
+}
+
+.bg-mist {
+    background: linear-gradient(135deg, #bdc3c7 0%, #95a5a6 50%, #7f8c8d 100%);
 }
 
 /* Pronóstico */

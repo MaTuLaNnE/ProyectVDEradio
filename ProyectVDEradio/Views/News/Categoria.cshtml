@@ -7,50 +7,126 @@
     var atardecer = DateTimeOffset.FromUnixTimeSeconds(Model.Weather.Atardecer).ToLocalTime().ToString("HH:mm");
     string iconoClima = "https://openweathermap.org/img/wn/" + Model.Weather.Icono + "@2x.png";
 
+    string claseFondo = "bg-clear-day";
+
+    switch (Model.Weather.Icono)
+    {
+        case "01d": claseFondo = "bg-clear-day"; break;
+        case "01n": claseFondo = "bg-clear-night"; break;
+        case "02d":
+        case "02n":
+        case "03d":
+        case "03n":
+        case "04d":
+        case "04n":
+            claseFondo = "bg-clouds"; break;
+        case "09d":
+        case "09n":
+        case "10d":
+        case "10n":
+            claseFondo = "bg-rain"; break;
+        case "11d":
+        case "11n":
+            claseFondo = "bg-storm"; break;
+        case "13d":
+        case "13n":
+            claseFondo = "bg-snow"; break;
+        case "50d":
+        case "50n":
+            claseFondo = "bg-mist"; break;
+    }
 }
 
 @if (esClima)
 {
     <!-- Secciones específicas de Clima -->
     <div class="clima-grid">
+
+
+
         <!-- Clima Actual -->
-        <section class="section">
-            <div class="clima-actual-card">
-                <h3>Clima Actual</h3>
-                <div class="temp-principal">
-                    <span class="icono-clima-principal"><img src="@iconoClima" /></span>
-                    <span id="temp-actual">@Convert.ToInt16(Model.Weather.Temp)°C</span>
+        @*<section class="section">
+                <div class="clima-actual-card">
+                    <h3>Clima Actual</h3>
+                    <div class="temp-principal">
+                        <span class="icono-clima-principal"><img src="@iconoClima" /></span>
+                        <span id="temp-actual">@Convert.ToInt16(Model.Weather.Temp)°C</span>
+                    </div>
+                    <div class="detalle-valor"> Maxima @Convert.ToInt16(Model.Weather.TempMax)°C - Minima @Convert.ToInt16(Model.Weather.TempMin)°C</div>
+                    <div id="estado-actual">@Model.Weather.Estado</div>
+                    <div class="clima-detalles">
+                        <div class="detalle-item">
+                            <strong>Humedad</strong>
+                            <div class="detalle-valor"> @Model.Weather.Humedad%</div>
+                        </div>
+                        <div class="detalle-item">
+                            <strong>Viento</strong>
+                            <div class="detalle-valor"> @Model.Weather.Viento m/s</div>
+                        </div>
+                        <div class="detalle-item">
+                            <strong>Presión</strong>
+                            <div class="detalle-valor" id="presion-actual">@Model.Weather.Presion hPa</div>
+                        </div>
+                        <div class="detalle-item">
+                            <strong>Sensacion Termica</strong>
+                            <div class="detalle-valor" id="uv-actual">@Model.Weather.Sensacion°C</div>
+                        </div>
+                        <div class="detalle-item">
+                            <strong>Amanecer</strong>
+                            <div class="detalle-valor" id="uv-actual">@amanecer</div>
+                        </div>
+                        <div class="detalle-item">
+                            <strong>Atardecer</strong>
+                            <div class="detalle-valor" id="uv-actual">@atardecer</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="detalle-valor"> Maxima @Convert.ToInt16(Model.Weather.TempMax)°C - Minima @Convert.ToInt16(Model.Weather.TempMin)°C</div>
+            </section>*@
+
+        <!-- Clima Actual Dinamico-->
+
+        <section class="section">
+            <div class="clima-actual-card @claseFondo" id="weatherCard">
+                <h3>🌤️ Clima Actual</h3>
+                <div class="temp-principal">
+                    <span class="icono-clima-principal">
+                        <img src="@iconoClima" style="width: 64px;" />
+                    </span>
+                    <span id="temp-actual">@Convert.ToInt32(Model.Weather.Temp)°C</span>
+                </div>
                 <div id="estado-actual">@Model.Weather.Estado</div>
+
                 <div class="clima-detalles">
                     <div class="detalle-item">
                         <strong>Humedad</strong>
-                        <div class="detalle-valor"> @Model.Weather.Humedad%</div>
+                        <div class="detalle-valor">@Model.Weather.Humedad%</div>
                     </div>
                     <div class="detalle-item">
                         <strong>Viento</strong>
-                        <div class="detalle-valor"> @Model.Weather.Viento m/s</div>
+                        <div class="detalle-valor">@Model.Weather.Viento m/s</div>
                     </div>
                     <div class="detalle-item">
                         <strong>Presión</strong>
-                        <div class="detalle-valor" id="presion-actual">@Model.Weather.Presion hPa</div>
+                        <div class="detalle-valor">@Model.Weather.Presion hPa</div>
                     </div>
                     <div class="detalle-item">
-                        <strong>Sensacion Termica</strong>
-                        <div class="detalle-valor" id="uv-actual">@Model.Weather.Sensacion°C</div>
+                        <strong>Sensación</strong>
+                        <div class="detalle-valor">@Model.Weather.Sensacion°C</div>
                     </div>
                     <div class="detalle-item">
                         <strong>Amanecer</strong>
-                        <div class="detalle-valor" id="uv-actual">@amanecer</div>
+                        <div class="detalle-valor">@DateTimeOffset.FromUnixTimeSeconds(Model.Weather.Amanecer).ToLocalTime().ToString("HH:mm")</div>
                     </div>
                     <div class="detalle-item">
                         <strong>Atardecer</strong>
-                        <div class="detalle-valor" id="uv-actual">@atardecer</div>
+                        <div class="detalle-valor">@DateTimeOffset.FromUnixTimeSeconds(Model.Weather.Atardecer).ToLocalTime().ToString("HH:mm")</div>
                     </div>
                 </div>
             </div>
         </section>
+
+
+
 
         <!-- Pronóstico -->
         <section class="section">
@@ -105,10 +181,14 @@
                 <img src="@noticia.ArticleImage" alt="Noticia" style="noticia-item">
                 <div class="noticia-content">
                     <h4>@noticia.ArticleTitle</h4>
-                    <p><strong>@noticia.ArticleDate.Day 
-                        @noticia.ArticleDate.ToString("MMMM", new CultureInfo("es-ES")).ToUpper() 
-                        @noticia.ArticleDate.Year      
-                        @noticia.ArticleDate.ToString("t", new CultureInfo("es-ES"))</strong></p>
+                    <p>
+                        <strong>
+                            @noticia.ArticleDate.Day
+                            @noticia.ArticleDate.ToString("MMMM", new CultureInfo("es-ES")).ToUpper()
+                            @noticia.ArticleDate.Year
+                            @noticia.ArticleDate.ToString("t", new CultureInfo("es-ES"))
+                        </strong>
+                    </p>
                     <p>@noticia.ArticleSubtitle</p>
                     <a href="@Url.Action("Details", "News", new { id = noticia.ArticleID })" class="leer-mas">Leer más</a>
                 </div>
@@ -119,3 +199,309 @@
     </div>
 </section>
 
+@section Scripts {
+    <script>
+        // Configuración de tipos de clima
+        const weatherConfig = {
+            // Clear sky
+            '01d': {
+                icon: '☀️',
+                description: 'Despejado',
+                background: 'bg-clear-day',
+                animation: 'clear-day'
+            },
+            '01n': {
+                icon: '🌙',
+                description: 'Despejado',
+                background: 'bg-clear-night',
+                animation: 'clear-night'
+            },
+            // Few clouds
+            '02d': {
+                icon: '🌤️',
+                description: 'Pocas nubes',
+                background: 'bg-clear-day',
+                animation: 'few-clouds-day'
+            },
+            '02n': {
+                icon: '🌙',
+                description: 'Pocas nubes',
+                background: 'bg-clear-night',
+                animation: 'few-clouds-night'
+            },
+            // Scattered clouds
+            '03d': {
+                icon: '⛅',
+                description: 'Nubes dispersas',
+                background: 'bg-clouds',
+                animation: 'scattered-clouds'
+            },
+            '03n': {
+                icon: '⛅',
+                description: 'Nubes dispersas',
+                background: 'bg-clouds',
+                animation: 'scattered-clouds'
+            },
+            // Broken clouds
+            '04d': {
+                icon: '☁️',
+                description: 'Nubes rotas',
+                background: 'bg-clouds',
+                animation: 'broken-clouds'
+            },
+            '04n': {
+                icon: '☁️',
+                description: 'Nubes rotas',
+                background: 'bg-clouds',
+                animation: 'broken-clouds'
+            },
+            // Shower rain
+            '09d': {
+                icon: '🌦️',
+                description: 'Chubascos',
+                background: 'bg-rain',
+                animation: 'shower-rain'
+            },
+            '09n': {
+                icon: '🌦️',
+                description: 'Chubascos',
+                background: 'bg-rain',
+                animation: 'shower-rain'
+            },
+            // Rain
+            '10d': {
+                icon: '🌧️',
+                description: 'Lluvia',
+                background: 'bg-rain',
+                animation: 'rain'
+            },
+            '10n': {
+                icon: '🌧️',
+                description: 'Lluvia',
+                background: 'bg-rain',
+                animation: 'rain'
+            },
+            // Thunderstorm
+            '11d': {
+                icon: '⛈️',
+                description: 'Tormenta',
+                background: 'bg-storm',
+                animation: 'thunderstorm'
+            },
+            '11n': {
+                icon: '⛈️',
+                description: 'Tormenta',
+                background: 'bg-storm',
+                animation: 'thunderstorm'
+            },
+            // Snow
+            '13d': {
+                icon: '❄️',
+                description: 'Nieve',
+                background: 'bg-snow',
+                animation: 'snow'
+            },
+            '13n': {
+                icon: '❄️',
+                description: 'Nieve',
+                background: 'bg-snow',
+                animation: 'snow'
+            },
+            // Mist
+            '50d': {
+                icon: '🌫️',
+                description: 'Niebla',
+                background: 'bg-mist',
+                animation: 'mist'
+            },
+            '50n': {
+                icon: '🌫️',
+                description: 'Niebla',
+                background: 'bg-mist',
+                animation: 'mist'
+            }
+        };
+
+        let currentAnimation = null;
+        let animationElements = [];
+
+        function clearAnimation() {
+            const animationContainer = document.getElementById('weatherAnimation');
+            animationContainer.innerHTML = '';
+            animationElements = [];
+
+            if (currentAnimation) {
+                clearInterval(currentAnimation);
+                currentAnimation = null;
+            }
+        }
+
+        function createSun() {
+            const sun = document.createElement('div');
+            sun.className = 'sun';
+            return sun;
+        }
+
+        function createMoon() {
+            const moon = document.createElement('div');
+            moon.className = 'moon';
+            return moon;
+        }
+
+        function createClouds(count = 2) {
+            const clouds = [];
+            for (let i = 0; i < count; i++) {
+                const cloud = document.createElement('div');
+                cloud.className = `cloud cloud${i + 1}`;
+                clouds.push(cloud);
+            }
+            return clouds;
+        }
+
+        function createRain(intensity = 'normal') {
+            const rainDrops = [];
+            const dropCount = intensity === 'heavy' ? 50 : intensity === 'light' ? 20 : 35;
+
+            for (let i = 0; i < dropCount; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'rain';
+                drop.style.left = Math.random() * 100 + '%';
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                drop.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+                rainDrops.push(drop);
+            }
+            return rainDrops;
+        }
+
+        function createSnow() {
+            const snowflakes = [];
+            const flakeCount = 30;
+
+            for (let i = 0; i < flakeCount; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snow';
+                flake.innerHTML = ['❄', '❅', '❆'][Math.floor(Math.random() * 3)];
+                flake.style.left = Math.random() * 100 + '%';
+                flake.style.animationDelay = Math.random() * 3 + 's';
+                flake.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                flake.style.fontSize = (Math.random() * 8 + 8) + 'px';
+                snowflakes.push(flake);
+            }
+            return snowflakes;
+        }
+
+        function createLightning() {
+            const lightning = document.createElement('div');
+            lightning.className = 'lightning';
+            return lightning;
+        }
+
+        function createMist() {
+            const mistLayers = [];
+            for (let i = 1; i <= 3; i++) {
+                const mist = document.createElement('div');
+                mist.className = `mist mist${i}`;
+                mistLayers.push(mist);
+            }
+            return mistLayers;
+        }
+
+        function animateThunderstorm() {
+            const lightning = createLightning();
+            const animationContainer = document.getElementById('weatherAnimation');
+
+            setInterval(() => {
+                if (Math.random() < 0.1) { // 10% chance every interval
+                    animationContainer.appendChild(lightning.cloneNode(true));
+                    setTimeout(() => {
+                        const lightningEl = animationContainer.querySelector('.lightning');
+                        if (lightningEl) {
+                            lightningEl.remove();
+                        }
+                    }, 200);
+                }
+            }, 1000);
+        }
+
+        function changeWeather(iconCode) {
+            const config = weatherConfig[iconCode];
+            if (!config) return;
+
+            // Clear previous animation
+            clearAnimation();
+
+            // Update UI
+            document.getElementById('icono-actual').textContent = config.icon;
+            document.getElementById('estado-actual').textContent = config.description;
+
+            // Update background
+            const body = document.body;
+            body.className = config.background;
+
+            // Create animation
+            const animationContainer = document.getElementById('weatherAnimation');
+
+            switch (config.animation) {
+                case 'clear-day':
+                    animationElements.push(createSun());
+                    break;
+
+                case 'clear-night':
+                    animationElements.push(createMoon());
+                    break;
+
+                case 'few-clouds-day':
+                    animationElements.push(createSun());
+                    animationElements.push(...createClouds(1));
+                    break;
+
+                case 'few-clouds-night':
+                    animationElements.push(createMoon());
+                    animationElements.push(...createClouds(1));
+                    break;
+
+                case 'scattered-clouds':
+                    animationElements.push(...createClouds(2));
+                    break;
+
+                case 'broken-clouds':
+                    animationElements.push(...createClouds(3));
+                    break;
+
+                case 'shower-rain':
+                    animationElements.push(...createClouds(2));
+                    animationElements.push(...createRain('light'));
+                    break;
+
+                case 'rain':
+                    animationElements.push(...createClouds(3));
+                    animationElements.push(...createRain('heavy'));
+                    break;
+
+                case 'thunderstorm':
+                    animationElements.push(...createClouds(3));
+                    animationElements.push(...createRain('heavy'));
+                    setTimeout(() => animateThunderstorm(), 1000);
+                    break;
+
+                case 'snow':
+                    animationElements.push(...createClouds(2));
+                    animationElements.push(...createSnow());
+                    break;
+
+                case 'mist':
+                    animationElements.push(...createMist());
+                    break;
+            }
+
+            // Add elements to DOM
+            animationElements.forEach(element => {
+                animationContainer.appendChild(element);
+            });
+        }
+
+        // Initialize with default weather
+        changeWeather('@Model.Weather.Icono'); // ← esto lo pasa Razor dinámicamente
+
+    </script>
+}
