@@ -37,6 +37,7 @@ namespace ProyectVDEradio.Controllers
 
         public ActionResult IndexEconomia()
         {
+
             var noticias = db.News
                 .Include(n => n.Categories)
                 .Where(n => n.Categories.CategoryName == "Economía")
