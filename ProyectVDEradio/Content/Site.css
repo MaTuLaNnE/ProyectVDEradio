@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0d47a1 0%, #1976d2 50%);
     color: #333;
     min-height: 100vh;
 }
@@ -778,7 +778,7 @@ body {
 }
 
 .clima-card, .monedas-card {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background-color: black;
     color: white;
     padding: 25px;
     border-radius: 20px;
