@@ -37,7 +37,16 @@
                             <a href="@Url.Action("IndexInternacional", "News")" class="dropdown-item">Internacional</a>
                         </div>
                     </div>
-                    <a href="@Url.Action("Index", "Login")">Login</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a>Bienvenido @User.Identity.Name</a>
+                        <a href="@Url.Action("Logout", "Account")">Cerrar sesion</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Login", "Account")">Iniciar sesion</a>
+                    }
+
 
                 </nav>
                 <div class="navbar-clima">
