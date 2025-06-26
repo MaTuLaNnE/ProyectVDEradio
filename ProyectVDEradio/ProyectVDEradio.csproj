@@ -230,12 +230,17 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Clima.css" />
-    <Content Include="Content\Falgs\Flag_of_Argentina.png" />
-    <Content Include="Content\Falgs\Flag_of_Brazil.png" />
-    <Content Include="Content\Falgs\Flag_of_the_United_States.png" />
+    <Content Include="Content\Flags\Flag_of_Argentina.png" />
+    <Content Include="Content\Flags\Flag_of_Brazil.png" />
+    <Content Include="Content\Flags\Flag_of_the_United_States.png" />
+    <Content Include="Content\Images\ClimaEnVivoIMG.png" />
+    <Content Include="Content\Images\DeportesIMG.png" />
+    <Content Include="Content\Images\Entretenimiento101IMG.png" />
+    <Content Include="Content\Images\MadrugadaContigoIMG.png" />
     <Content Include="Content\Images\MaldonadoHoy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\MusicaNocturnaIMG.png" />
     <Content Include="Content\Images\Navbar_Icon.png" />
     <Content Include="Content\HostImages\M1.png" />
     <Content Include="Content\HostImages\M2.png" />
@@ -255,6 +260,7 @@
     <Content Include="Content\HostImages\W7.png" />
     <Content Include="Content\HostImages\W8.png" />
     <Content Include="Content\HostImages\W9.png" />
+    <Content Include="Content\Images\NoticiasConVozIMG.png" />
     <Content Include="favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
