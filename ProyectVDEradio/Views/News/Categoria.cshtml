@@ -7,9 +7,17 @@
     var amanecer = DateTimeOffset.FromUnixTimeSeconds(Model.Weather.Amanecer).ToLocalTime().ToString("HH:mm");
     var atardecer = DateTimeOffset.FromUnixTimeSeconds(Model.Weather.Atardecer).ToLocalTime().ToString("HH:mm");
     string iconoClima = "https://openweathermap.org/img/wn/" + Model.Weather.Icono + "@2x.png";
-    var convertedUSD = 1 / Model.Currency.UYUUSD;
-    var convertedARS = 1 / Model.Currency.UYUARS;
-    var convertedRBL = 1 / Model.Currency.UYUBRL;
+    decimal convertedUSD = 0;
+    decimal convertedARS = 0;
+    decimal convertedBRL = 0;
+
+    if (esEconomia)
+    {
+
+        convertedUSD = Model.Currency.UYUUSD > 0 ? (1 / Model.Currency.UYUUSD) : 0;
+        convertedARS = Model.Currency.UYUARS > 0 ? (1 / Model.Currency.UYUARS) : 0;
+        convertedBRL = Model.Currency.UYUBRL > 0 ? (1 / Model.Currency.UYUBRL) : 0;
+    }
 
 }
 
@@ -20,24 +28,26 @@
         <h2>💱 Cotizaciones Principales</h2>
         <ul class="monedas-list">
             <li>
+                <span class="flagImages">
+                    <img src="~/Content/Falgs/Flag_of_the_United_States.png" height=55px />
+                </span>
                 <span>Dólar (USD)</span>
-                <strong class="currency-up">$@convertedUSD</strong>
+                <strong class="currency-up">$@convertedUSD.ToString("F2")</strong>
             </li>
             <li>
-                <span>🇪🇺 Euro (EUR)</span>
-                <strong class="currency-up">$42.70</strong>
+                <span class="flagImages">
+                    <img src="~/Content/Falgs/Flag_of_Argentina.png" height=55px />
+                </span>
+                <span>Peso Argentino (ARS)</span>
+                <strong class="currency-up">$@convertedARS.ToString("F2")</strong>
             </li>
             <li>
-                <span>🇧🇷 Real (BRL)</span>
-                <strong class="currency-down">$7.90</strong>
-            </li>
-            <li>
-                <span>🇦🇷 Peso Argentino</span>
-                <strong class="currency-up">$0.038</strong>
-            </li>
-            <li>
-                <span>₿ Bitcoin</span>
-                <strong class="currency-up">$67,450</strong>
+                <span class="flagImages">
+                    <img src="~/Content/Falgs/Flag_of_Brazil.png" height=55px />
+                </span>
+                <span>Real Brasileño (BRL)</span>
+                
+                <strong class="currency-down">$@convertedBRL.ToString("F2")</strong>
             </li>
         </ul>
     </div>
@@ -142,17 +152,17 @@
                     <p>
                         <strong>
                             @noticia.ArticleDate.Day
-                        @noticia.ArticleDate.ToString("MMMM", new CultureInfo("es-ES")).ToUpper()
-                        @noticia.ArticleDate.Year
-                        @noticia.ArticleDate.ToString("t", new CultureInfo("es-ES"))
-                    </strong>
-                </p>
-                <p>@noticia.ArticleSubtitle</p>
-                <a href="@Url.Action("Details", "News", new { id = noticia.ArticleID })" class="leer-mas">Leer más</a>
-            </div>
+                            @noticia.ArticleDate.ToString("MMMM", new CultureInfo("es-ES")).ToUpper()
+                            @noticia.ArticleDate.Year
+                            @noticia.ArticleDate.ToString("t", new CultureInfo("es-ES"))
+                        </strong>
+                    </p>
+                    <p>@noticia.ArticleSubtitle</p>
+                    <a href="@Url.Action("Details", "News", new { id = noticia.ArticleID })" class="leer-mas">Leer más</a>
+                </div>
 
-        </article>
-    }
+            </article>
+        }
 
     </div>
 </section>

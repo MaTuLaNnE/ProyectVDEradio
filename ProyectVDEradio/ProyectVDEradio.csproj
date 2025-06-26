@@ -230,6 +230,9 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Clima.css" />
+    <Content Include="Content\Falgs\Flag_of_Argentina.png" />
+    <Content Include="Content\Falgs\Flag_of_Brazil.png" />
+    <Content Include="Content\Falgs\Flag_of_the_United_States.png" />
     <Content Include="Content\Images\MaldonadoHoy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
