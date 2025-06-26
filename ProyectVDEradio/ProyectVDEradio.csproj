@@ -143,10 +143,7 @@
     <Compile Include="Models\Categories.cs">
       <DependentUpon>Version_4.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CurrencyAudits.cs">
-      <DependentUpon>Version_4.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CurrencyTypes.cs">
+    <Compile Include="Models\CurrencyAudit.cs">
       <DependentUpon>Version_4.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Customers.cs">
@@ -161,7 +158,10 @@
     <Compile Include="Models\News.cs">
       <DependentUpon>Version_4.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PermissionsRoles.cs">
+    <Compile Include="Models\PermissionRole.cs">
+      <DependentUpon>Version_4.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Permissions.cs">
       <DependentUpon>Version_4.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProgramDays.cs">
@@ -197,10 +197,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Version_4.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WeatherAudits.cs">
-      <DependentUpon>Version_4.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WeatherIcons.cs">
+    <Compile Include="Models\WeatherAudit.cs">
       <DependentUpon>Version_4.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

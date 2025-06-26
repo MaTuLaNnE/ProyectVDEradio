@@ -12,16 +12,12 @@ namespace ProyectVDEradio.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PermissionsRoles
+    public partial class CurrencyAudit
     {
-        public int PermissionId { get; set; }
-        public bool PermissionAddComment { get; set; }
-        public bool PermissionAddNews { get; set; }
-        public bool PermissionAddRegister { get; set; }
-        public bool PermissionAddPrograms { get; set; }
-        public bool PermissionAddSponsor { get; set; }
-        public int RoleID { get; set; }
-    
-        public virtual Roles Roles { get; set; }
+        public int RateId { get; set; }
+        public System.DateTime Timestamp { get; set; }
+        public decimal UYUUSD { get; set; }
+        public decimal UYUARS { get; set; }
+        public decimal UYUBRL { get; set; }
     }
 }

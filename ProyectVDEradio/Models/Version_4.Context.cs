@@ -27,20 +27,19 @@ namespace ProyectVDEradio.Models
     
         public virtual DbSet<AuditLogs> AuditLogs { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
-        public virtual DbSet<CurrencyAudits> CurrencyAudits { get; set; }
-        public virtual DbSet<CurrencyTypes> CurrencyTypes { get; set; }
         public virtual DbSet<Customers> Customers { get; set; }
         public virtual DbSet<CustomersComments> CustomersComments { get; set; }
         public virtual DbSet<Hosts> Hosts { get; set; }
         public virtual DbSet<News> News { get; set; }
-        public virtual DbSet<PermissionsRoles> PermissionsRoles { get; set; }
         public virtual DbSet<ProgramHosts> ProgramHosts { get; set; }
         public virtual DbSet<RadioPrograms> RadioPrograms { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Sponsors> Sponsors { get; set; }
         public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<WeatherAudits> WeatherAudits { get; set; }
-        public virtual DbSet<WeatherIcons> WeatherIcons { get; set; }
         public virtual DbSet<ProgramDays> ProgramDays { get; set; }
+        public virtual DbSet<CurrencyAudit> CurrencyAudit { get; set; }
+        public virtual DbSet<WeatherAudit> WeatherAudit { get; set; }
+        public virtual DbSet<PermissionRole> PermissionRole { get; set; }
+        public virtual DbSet<Permissions> Permissions { get; set; }
     }
 }
