@@ -15,6 +15,7 @@ namespace ProyectVDEradio.Utils
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
+    
     public partial class CurrencyApi
     {
         [JsonProperty("success", NullValueHandling = NullValueHandling.Ignore)]
