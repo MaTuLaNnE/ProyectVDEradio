@@ -31,15 +31,16 @@ namespace ProyectVDEradio.Controllers
                 ProgramaEnVivo = db.RadioPrograms
                                    .Include(p => p.ProgramHosts)
                                    .Include(p => p.CustomersComments)
-                                   .Where(p => db.ProgramDays
-                                   .Any(d => d.ProgramId == p.ProgramId && d.WeekDay == currentDay) &&
-                                   p.StartTime <= currentTime && p.EndTime >= currentTime)
-                                   .FirstOrDefault(),
+                                  .Where(p => p.ProgramDays.Any(d => d.WeekDay == currentDay))
+                                  .FirstOrDefault(p =>
+                                    (p.StartTime < p.EndTime && currentTime >= p.StartTime && currentTime < p.EndTime) ||
+                                (p.StartTime > p.EndTime && (currentTime >= p.StartTime || currentTime < p.EndTime))   
+                                ),
                 ultimoProgramaEmitido = db.RadioPrograms
                                      .Include(p => p.ProgramHosts)
                                      .Include(p => p.CustomersComments)
                                      .Include(p => p.ProgramDays)
-                                     .Where(p => p.StartTime < currentTime || (p.StartTime > p.EndTime && currentTime < p.EndTime)) 
+                                     .Where(p => p.StartTime < currentTime || (p.StartTime > p.EndTime && currentTime < p.EndTime))
                                      .OrderByDescending(p => p.StartTime)
                                      .FirstOrDefault()
 
