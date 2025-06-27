@@ -39,7 +39,6 @@
                     </div>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a>Bienvenido @User.Identity.Name</a>
                         <a href="@Url.Action("Logout", "Account")">Cerrar sesion</a>
                     }
                     else

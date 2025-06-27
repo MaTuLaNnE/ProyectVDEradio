@@ -62,5 +62,13 @@ namespace ProyectVDEradio.Controllers
         }
 
 
+        public ActionResult Logout()
+        {
+            var authManager = HttpContext.GetOwinContext().Authentication;
+            authManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home");
+        }
+
+
     }
 }
