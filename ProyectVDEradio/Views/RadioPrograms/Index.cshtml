@@ -4,6 +4,14 @@
 
     var currentTime = DateTime.Now.TimeOfDay;
     var currentDay = (int)DateTime.Now.DayOfWeek;
+
+    var now = DateTime.Now;
+    var today = now.Date;
+
+    var startTime = Model.RadioActual.StartTime;
+    var startDateTime = today + startTime;
+
+    var elapsed = now - startDateTime;
 }
 
 @if (Model.RadioActual == null)
@@ -141,7 +149,9 @@
         <div class="radio-player">
             <div class="radio-header">
                 <div class="radio-station">Radio Estación FM</div>
-                <div class="radio-time" id="radioTime"></div>
+                <div class="radio-time">
+                    @string.Format("{0:D2}:{1:D2}:{2:D2}", (int)elapsed.TotalHours, elapsed.Minutes, elapsed.Seconds)
+                </div>
                 <div class="radio-program" id="radioProgram">@Model.RadioActual.ProgramName</div>
             </div>
 
