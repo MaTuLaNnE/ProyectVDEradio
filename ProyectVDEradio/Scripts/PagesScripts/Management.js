@@ -2,7 +2,7 @@
     const card = header.parentElement;
     const isActive = card.classList.contains('active');
 
-    // Cerrar todas las tarjetas activas
+
     document.querySelectorAll('.gestion-card.active').forEach(activeCard => {
         activeCard.classList.remove('active');
     });
@@ -13,25 +13,7 @@
     }
 }
 
-// Simulación de verificación de roles (aquí integrarías tu lógica real)
-function checkUserPermissions() {
-    // Ejemplo: simular que el usuario es Administrador
-    // En tu implementación real, esto vendría del servidor
-    const userRoles = ['Administrador']; // Cambiar según el usuario actual
 
-    document.querySelectorAll('.gestion-card').forEach(card => {
-        const requiredRoles = card.dataset.role ? card.dataset.role.split(',') : [];
-        const hasAccess = requiredRoles.some(role => userRoles.includes(role.trim()));
-
-        if (!hasAccess && !card.classList.contains('no-access')) {
-            card.classList.add('no-access');
-            card.querySelector('.gestion-header').onclick = null;
-        }
-    });
-}
-
-// Ejecutar verificación al cargar la página
-document.addEventListener('DOMContentLoaded', checkUserPermissions);
 
 // Efecto de hover mejorado para los botones
 document.querySelectorAll('.crud-btn').forEach(btn => {
