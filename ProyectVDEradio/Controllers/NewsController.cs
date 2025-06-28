@@ -13,6 +13,8 @@ using ProyectVDEradio.Utils.WeatherAPI;
 using ProyectVDEradio.ViewModels;
 using ProyectVDEradio.Utils.WeatherForecastAPI;
 using ProyectVDEradio.Utils;
+using Newtonsoft.Json;
+
 namespace ProyectVDEradio.Controllers
 {
     public class NewsController : Controller

@@ -21,6 +21,7 @@ namespace ProyectVDEradio.Utils
 
                 string sql = @"SELECT TOP 1 UYUUSD, UYUARS, UYUBRL
                            FROM CurrencyAudit
+                           WHERE Timestamp >= DATEADD(HOUR, -3, GETDATE())
                            ORDER BY Timestamp DESC";
 
                 using (SqlCommand cmd = new SqlCommand(sql, conn))

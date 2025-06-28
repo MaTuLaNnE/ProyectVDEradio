@@ -7,17 +7,6 @@
     var amanecer = DateTimeOffset.FromUnixTimeSeconds(Model.Weather.Amanecer).ToLocalTime().ToString("HH:mm");
     var atardecer = DateTimeOffset.FromUnixTimeSeconds(Model.Weather.Atardecer).ToLocalTime().ToString("HH:mm");
     string iconoClima = "https://openweathermap.org/img/wn/" + Model.Weather.Icono + "@2x.png";
-    decimal convertedUSD = 0;
-    decimal convertedARS = 0;
-    decimal convertedBRL = 0;
-
-    if (esEconomia)
-    {
-
-        convertedUSD = Model.Currency.UYUUSD > 0 ? (1 / Model.Currency.UYUUSD) : 0;
-        convertedARS = Model.Currency.UYUARS > 0 ? (1 / Model.Currency.UYUARS) : 0;
-        convertedBRL = Model.Currency.UYUBRL > 0 ? (1 / Model.Currency.UYUBRL) : 0;
-    }
 
 }
 
@@ -32,14 +21,14 @@
                     <img src="~/Content/Flags/Flag_of_the_United_States.png" height=55px />
                 </span>
                 <span>Dólar (USD)</span>
-                <strong class="currency-up">$@convertedUSD.ToString("F2")</strong>
+                <strong class="currency-up">$@Model.Currency.UYUUSD.ToString("F2")</strong>
             </li>
             <li>
                 <span class="flagImages">
                     <img src="~/Content/Flags/Flag_of_Argentina.png" height=55px />
                 </span>
                 <span>Peso Argentino (ARS)</span>
-                <strong class="currency-up">$@convertedARS.ToString("F2")</strong>
+                <strong class="currency-up">$@Model.Currency.UYUARS.ToString("F2")</strong>
             </li>
             <li>
                 <span class="flagImages">
@@ -47,7 +36,7 @@
                 </span>
                 <span>Real Brasileño (BRL)</span>
 
-                <strong class="currency-down">$@convertedBRL.ToString("F2")</strong>
+                <strong class="currency-down">$@Model.Currency.UYUBRL.ToString("F2")</strong>
             </li>
         </ul>
     </div>

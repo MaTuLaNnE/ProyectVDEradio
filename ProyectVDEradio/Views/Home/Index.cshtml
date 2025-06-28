@@ -1,44 +1,46 @@
 ﻿@model ProyectVDEradio.ViewModels.HomeViewModel
 @{
     ViewBag.Title = "Home Page";
+
+    var currentTime = DateTime.Now.TimeOfDay;
+    var currentDay = (int)DateTime.Now.DayOfWeek;
 }
-
-
 
 <section class="section">
     <h2>📻 Programa en vivo</h2>
     @if (Model.ProgramaEnVivo != null)
     {
         <div class="programa-box">
-            <img src="@Model.ProgramaEnVivo.Image" >
+            <div class="program-image-container">
+                <img src="~/Content/Images/@Model.ProgramaEnVivo.Image" alt="Imagen del programa">
+            </div>
             <div class="programa-info">
                 <h3>@Model.ProgramaEnVivo.ProgramName</h3>
                 <p>@Model.ProgramaEnVivo.Description</p>
                 <p>
-                    <strong>Conducido por:</strong> <ul>
-                        @foreach (var ph in Model.ProgramaEnVivo.ProgramHosts)
-                        {
-                            <li>
-                                <p> @ph.Hosts.HostName </p>
-                            </li>
-                        }
-                    </ul>
-                </p>
-                <p><strong>Horario:</strong> @Model.ProgramaEnVivo.StartTime - @Model.ProgramaEnVivo.EndTime</p>
-                <p>
-                    <strong>Días de emisión:</strong>
-                    @string.Join(" - ", Model.ProgramaEnVivo.ProgramDays
-                        .OrderBy(d => d.WeekDay)
-                        .Select(d => System.Globalization.CultureInfo
-                            .CurrentCulture
-                            .DateTimeFormat
-                            .GetDayName((DayOfWeek)d.WeekDay)))
-                </p>
+                    <strong>Conducido por:</strong>
+                    @foreach (var ph in Model.ProgramaEnVivo.ProgramHosts)
+                    {
 
-                <p><strong>En vivo desde:</strong> Maldonado, Uruguay</p>
+                    <p> @ph.Hosts.HostName</p>
+
+                }
+                    </p>
+                    <p><strong>Horario:</strong> @Model.ProgramaEnVivo.StartTime - @Model.ProgramaEnVivo.EndTime</p>
+                    <p>
+                        <strong>Días de emisión:</strong>
+                        @string.Join(" - ", Model.ProgramaEnVivo.ProgramDays
+                            .OrderBy(d => d.WeekDay)
+                            .Select(d => System.Globalization.CultureInfo
+                                .CurrentCulture
+                                .DateTimeFormat
+                                .GetDayName((DayOfWeek)d.WeekDay)))
+                    </p>
+
+                    <p><strong>En vivo desde:</strong> Maldonado, Uruguay</p>
+                </div>
             </div>
-        </div>
-    }@if (Model.ProgramaEnVivo == null)
+        }@if (Model.ProgramaEnVivo == null)
     {
         <div class="programa-box">
             <div class="programa-info">
@@ -47,115 +49,140 @@
             </div>
         </div>
     }
-</section>
+    </section>
 
 
-@if (Model.ProgramaEnVivo != null)
-{
+    @if (Model.ProgramaEnVivo != null)
+    {
+        <section class="section">
+
+            <h2>Comentarios de Oyentes de @Model.ProgramaEnVivo.ProgramName</h2>
+
+            <div class="comentario-box">
+
+                @foreach (var ph in Model.ProgramaEnVivo.CustomersComments)
+                {
+
+                    <p><strong>@ph.Customers.CustomerName</strong>:   @ph.Comment</p>
+
+                }
+                @if (Model.ProgramaEnVivo.CustomersComments.Count == 0)
+                {
+                    <p>No hay comentarios de oyentes para este programa en vivo.</p>
+                }
+
+
+
+            </div>
+        </section>
+    }@if (Model.ProgramaEnVivo == null)
+    {
+        <section class="section">
+
+            <h2>Comentarios de Oyentes de @Model.ultimoProgramaEmitido.ProgramName (Ya emitido)</h2>
+
+            <div class="comentario-box">
+
+                @foreach (var ph in Model.ultimoProgramaEmitido.CustomersComments)
+                {
+
+                    <p><strong>@ph.Customers.CustomerName</strong>:   @ph.Comment</p>
+
+                }
+
+            </div>
+        </section>
+
+    }
+
+
     <section class="section">
+        <h2>📰 Últimas Noticias</h2>
+        <div class="noticia-grid">
 
-        <h2>Comentarios de Oyentes de @Model.ProgramaEnVivo.ProgramName</h2>
-
-        <div class="comentario-box">
-
-            @foreach (var ph in Model.ProgramaEnVivo.CustomersComments)
+            @foreach (var noticia in Model.Noticias.Take(4))
             {
-
-                <p><strong>@ph.Customers.CustomerName</strong>:   @ph.Comment</p>
-
+                <article class="noticia-item">
+                    <img src="@noticia.ArticleImage" alt="Noticia" style="noticia-item">
+                    <div class="noticia-content">
+                        <h4>@noticia.ArticleTitle</h4>
+                        <p>@noticia.ArticleSubtitle</p>
+                    </div>
+                </article>
             }
-            @if (Model.ProgramaEnVivo.CustomersComments.Count == 0)
-            {
-                <p>No hay comentarios de oyentes para este programa en vivo.</p>
-            }
-
-
 
         </div>
     </section>
-}@if (Model.ProgramaEnVivo == null)
-{
+
+    @foreach (var categoria in Model.Noticias)
+    {
+
+    }
     <section class="section">
+        <h2>📰 Últimas Noticias de Deportes</h2>
+        <div class="noticia-grid">
 
-        <h2>Comentarios de Oyentes de @Model.ultimoProgramaEmitido.ProgramName (Ya emitido)</h2>
-
-        <div class="comentario-box">
-
-            @foreach (var ph in Model.ultimoProgramaEmitido.CustomersComments)
+            @foreach (var noticia in Model.Noticias.Where(n => n.Categories.CategoryName == "Deportes").Take(3))
             {
-
-                <p><strong>@ph.Customers.CustomerName</strong>:   @ph.Comment</p>
-
+                <article class="noticia-item">
+                    <img src="@noticia.ArticleImage" alt="Noticia" style="noticia-item">
+                    <div class="noticia-content">
+                        <h4>@noticia.ArticleTitle</h4>
+                        <p>@noticia.ArticleSubtitle</p>
+                    </div>
+                </article>
             }
 
         </div>
     </section>
+    <section class="section">
+        <h2>📰 Últimas Noticias de Politica</h2>
+        <div class="noticia-grid">
 
-}
+            @foreach (var noticia in Model.Noticias.Where(n => n.Categories.CategoryName == "Política").Take(3))
+            {
+                <article class="noticia-item">
+                    <img src="@noticia.ArticleImage" alt="Noticia" style="noticia-item">
+                    <div class="noticia-content">
+                        <h4>@noticia.ArticleTitle</h4>
+                        <p>@noticia.ArticleSubtitle</p>
+                    </div>
+                </article>
+            }
 
-
-<section class="section">
-    <h2>📰 Últimas Noticias</h2>
-    <div class="noticia-grid">
-
-        @foreach (var noticia in Model.Noticias)
-        {
-            <article class="noticia-item">
-                <img src="@noticia.ArticleImage" alt="Noticia" style="noticia-item">
-                <div class="noticia-content">
-                    <h4>@noticia.ArticleTitle</h4>
-                    <p>@noticia.ArticleSubtitle</p>
-                </div>
-            </article>
-        }
-
-    </div>
-</section>
-
-<section class="section">
-    <div class="info-grid">
-        <div class="clima-card">
-            <h2>🌤️ Clima en Maldonado</h2>
-            <div class="temp-display" id="temperatura">22°C</div>
-            <div class="clima-details">
-                <div>
-                    <p><strong>Estado:</strong></p>
-                    <p id="estadoClima">Parcialmente nublado</p>
-                </div>
-                <div>
-                    <img src="https://openweathermap.org/img/wn/03d@2x.png" alt="Icono clima" style="width: 80px;">
-                </div>
-            </div>
-            <div style="margin-top: 15px;">
-                <p><strong>Humedad:</strong> <span id="humedad">65%</span></p>
-                <p><strong>Viento:</strong> <span id="viento">15 km/h</span></p>
-            </div>
         </div>
+    </section>
+    <section class="section">
+        <h2>📰 Últimas Noticias de Turismo</h2>
+        <div class="noticia-grid">
 
-        <div class="monedas-card">
-            <h2>💱 Cotizaciones Principales</h2>
-            <ul class="monedas-list">
-                <li>
-                    <span>🇺🇸 Dólar (USD)</span>
-                    <strong class="currency-up">$39.50</strong>
-                </li>
-                <li>
-                    <span>🇪🇺 Euro (EUR)</span>
-                    <strong class="currency-up">$42.70</strong>
-                </li>
-                <li>
-                    <span>🇧🇷 Real (BRL)</span>
-                    <strong class="currency-down">$7.90</strong>
-                </li>
-                <li>
-                    <span>🇦🇷 Peso Argentino</span>
-                    <strong class="currency-up">$0.038</strong>
-                </li>
-                <li>
-                    <span>₿ Bitcoin</span>
-                    <strong class="currency-up">$67,450</strong>
-                </li>
-            </ul>
+            @foreach (var noticia in Model.Noticias.Where(n => n.Categories.CategoryName == "Turismo").Take(3))
+            {
+                <article class="noticia-item">
+                    <img src="@noticia.ArticleImage" alt="Noticia" style="noticia-item">
+                    <div class="noticia-content">
+                        <h4>@noticia.ArticleTitle</h4>
+                        <p>@noticia.ArticleSubtitle</p>
+                    </div>
+                </article>
+            }
+
         </div>
-    </div>
-</section>
+    </section>
+    <section class="section">
+        <h2>📰 Últimas Noticias Internacionales</h2>
+        <div class="noticia-grid">
+
+            @foreach (var noticia in Model.Noticias.Where(n => n.Categories.CategoryName == "Internacional").Take(3))
+            {
+                <article class="noticia-item">
+                    <img src="@noticia.ArticleImage" alt="Noticia" style="noticia-item">
+                    <div class="noticia-content">
+                        <h4>@noticia.ArticleTitle</h4>
+                        <p>@noticia.ArticleSubtitle</p>
+                    </div>
+                </article>
+            }
+
+        </div>
+    </section>
