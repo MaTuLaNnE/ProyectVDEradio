@@ -41,7 +41,6 @@
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="CustomerName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CustomerSurname" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="BirthDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="CustomersComments">
@@ -140,7 +139,7 @@
           </Key>
           <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="UserPassword" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="UserRole" Type="int" Nullable="false" />
         </EntityType>
@@ -401,7 +400,6 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="CustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CustomerSurname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="CustomersComments" Relationship="Self.FK__Customers__Custo__74AE54BC" FromRole="Customers" ToRole="CustomersComments" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Customers__UserI__6E01572D" FromRole="Customers" ToRole="Users" />
@@ -491,7 +489,7 @@
           </Key>
           <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserPassword" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserRole" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AuditLogs" Relationship="Self.FK__AuditLog__UserId__797309D9" FromRole="Users" ToRole="AuditLogs" />
@@ -794,7 +792,6 @@
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
                 <ScalarProperty Name="CustomerSurname" ColumnName="CustomerSurname" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container">
+    <div class="section">
+        <h2>Panel de Gestión</h2>
+
+        <!-- Gestión de Usuarios - Solo Administradores -->
+        @if (User.IsInRole("Administrador"))
+        {
+            <div class="gestion-card" data-role="Administrador">
+                <div class="gestion-header" onclick="toggleCard(this)">
+                    <h3 class="gestion-title">
+                        Gestión de Usuarios
+                        <span class="permission-badge">Solo Administradores</span>
+                    </h3>
+                    <span class="gestion-icon">▼</span>
+                </div>
+                <div class="gestion-content">
+                    <div class="gestion-info">
+                        <h4>Permisos y Funcionalidades</h4>
+                        <p><strong>Acceso:</strong> Exclusivo para usuarios con rol de Administrador</p>
+                        <p><strong>Descripción:</strong> Gestión completa del sistema de usuarios, incluyendo creación, modificación, eliminación y asignación de roles.</p>
+                        <p><strong>Funciones:</strong> CRUD completo de usuarios, gestión de permisos, reportes de actividad.</p>
+                    </div>
+                    <div class="crud-buttons">
+                        <a href="@Url.Action("Index", "Users")" class="crud-btn btn-listar">
+                            📋 Listar Usuarios
+                        </a>
+                        <a href="@Url.Action("Create", "Users")" class="crud-btn btn-crear">
+                            ➕ Crear Usuario
+                        </a>
+                        <a href="@Url.Action("Create", "Edit")" class="crud-btn btn-editar">
+                            ✏️ Editar Usuarios
+                        </a>
+                        <a href="@Url.Action("Create", "Delete")" class="crud-btn btn-eliminar">
+                            🗑️ Eliminar Usuarios
+                        </a>
+                        <a href="@Url.Action("Create", "Index")" class="crud-btn btn-reportes">
+                            📊 Reportes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- Gestión de Noticias - Administradores y Editores -->
+
+        @if (User.IsInRole("Administrador") || User.IsInRole("Editor"))
+        {
+            <div class="gestion-card" data-role="Administrador,Editor">
+                <div class="gestion-header" onclick="toggleCard(this)">
+                    <h3 class="gestion-title">
+                        Gestión de Noticias
+                        <span class="permission-badge">Administradores y Editores</span>
+                    </h3>
+                    <span class="gestion-icon">▼</span>
+                </div>
+                <div class="gestion-content">
+                    <div class="gestion-info">
+                        <h4>Permisos y Funcionalidades</h4>
+                        <p><strong>Acceso:</strong> Usuarios con rol de Administrador o Editor</p>
+                        <p><strong>Descripción:</strong> Sistema completo de gestión de contenido de noticias, incluyendo publicación, edición y moderación.</p>
+                        <p><strong>Funciones:</strong> CRUD de noticias, gestión de categorías, programación de publicaciones, moderación de comentarios.</p>
+                    </div>
+                    <div class="crud-buttons">
+                        <a href="/Noticias" class="crud-btn btn-listar">
+                            📰 Listar Noticias
+                        </a>
+                        <a href="/Noticias/Create" class="crud-btn btn-crear">
+                            ✍️ Crear Noticia
+                        </a>
+                        <a href="/Noticias/Edit" class="crud-btn btn-editar">
+                            📝 Editar Noticias
+                        </a>
+                        <a href="/Noticias/Delete" class="crud-btn btn-eliminar">
+                            🗑️ Eliminar Noticias
+                        </a>
+                        <a href="/Noticias/Categorias" class="crud-btn btn-reportes">
+                            🏷️ Gestionar Categorías
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- Gestión de Comentarios - Futuro (Ejemplo de cómo se vería) -->
+        <div class="gestion-card no-access">
+            <div class="gestion-header">
+                <h3 class="gestion-title">
+                    Gestión de Comentarios
+                    <span class="permission-badge" style="background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);">Próximamente</span>
+                </h3>
+                <span class="gestion-icon">▼</span>
+            </div>
+            <div class="gestion-content">
+                <div class="gestion-info">
+                    <h4>Funcionalidad en Desarrollo</h4>
+                    <p><strong>Estado:</strong> En desarrollo</p>
+                    <p><strong>Descripción:</strong> Sistema de moderación y gestión de comentarios de usuarios.</p>
+                    <p><strong>Disponibilidad:</strong> Próximamente disponible para Administradores y Moderadores.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

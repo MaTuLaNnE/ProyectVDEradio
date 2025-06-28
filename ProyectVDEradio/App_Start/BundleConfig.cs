@@ -25,6 +25,9 @@ namespace ProyectVDEradio
             bundles.Add(new Bundle("~/bundles/main").Include(
             "~/Scripts/main.js"));
 
+            bundles.Add(new Bundle("~/bundles/Management").Include(
+                      "~/Scripts/PagesScripts/Management.js"));
+
             bundles.Add(new Bundle("~/bundles/clima").Include(
             "~/Scripts/clima.js"));
 
@@ -33,7 +36,8 @@ namespace ProyectVDEradio
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/Site.css",
-                      "~/Content/Clima.css"));
+                      "~/Content/Clima.css",
+                      "~/Content/PagesStyles/Management.css"));
         }
     }
 }
