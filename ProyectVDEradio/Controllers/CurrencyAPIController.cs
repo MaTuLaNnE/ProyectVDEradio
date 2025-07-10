@@ -31,15 +31,7 @@ namespace ProyectVDEradio.Controllers
                     UYUARS = currency.Quotes.Uyuars ?? 0,
                     UYUUSD = currency.Quotes.Uyuusd ?? 0,
                     TimeStamp = currency.Timestamp ?? 0
-
-
-
-
                 };
-
-
-
-
 
                 return View(curren);
             }

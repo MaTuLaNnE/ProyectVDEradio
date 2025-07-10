@@ -14,12 +14,15 @@ using ProyectVDEradio.ViewModels;
 using ProyectVDEradio.Utils.WeatherForecastAPI;
 using ProyectVDEradio.Utils;
 using Newtonsoft.Json;
+using ProyectVDEradio.DataAccess.APIsRepository;
 
 namespace ProyectVDEradio.Controllers
 {
     public class NewsController : Controller
     {
         private VozDelEsteDBEntities db = new VozDelEsteDBEntities();
+
+        APIs api = new APIs();
 
         public ActionResult IndexPolicial()
         {
@@ -47,15 +50,18 @@ namespace ProyectVDEradio.Controllers
                 .OrderByDescending(n => n.ArticleDate)
                 .ToList();
 
+            //var ultima = db.CurrencyAudits.Where(c => c.CurrencyAuditDate >  DateTime.Today).ToList();
+
             var service = new CurrencyService();
-            var existingRates = service.GetLatestAuditIfRecent();
+            //var existingRates = service.GetLatestAuditIfRecent();
+            var existingRates = api.AddCurrencyAudit();
 
             decimal usd, ars, brl;
 
             if (existingRates == null)
             {
                 // No hay datos recientes: llamar a la API
-                string urlCurrency = "http://apilayer.net/api/live?access_key=TU_API_KEY&currencies=BRL,USD,ARS&source=UYU&format=1";
+                string urlCurrency = "http://apilayer.net/api/live?access_key=3b51394b74c5ace5216edbb5731c5961&currencies=BRL,USD,ARS&source=UYU&format=1";
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -68,6 +74,7 @@ namespace ProyectVDEradio.Controllers
 
                     // Insertar en CurrencyAudit
                     await service.InsertCurrencyAuditAsync(usd, ars, brl);
+                    api.AddCurrencyAudit(usd, ars, brl); // ARREGLAR ESTO Y DESDE LA API
                 }
             }
             else

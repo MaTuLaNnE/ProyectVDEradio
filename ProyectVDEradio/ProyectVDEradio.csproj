@@ -135,6 +135,8 @@
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\RadioProgramsController.cs" />
     <Compile Include="Controllers\WeatherController.cs" />
+    <Compile Include="DataAccess\APIsRepository\APIs.cs" />
+    <Compile Include="DataAccess\Persistence\PConection.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
