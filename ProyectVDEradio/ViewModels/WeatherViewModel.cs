@@ -49,8 +49,7 @@ namespace ProyectVDEradio.ViewModels
         public decimal UYUARS { get; set; }
     }
 
-
-        public class ForecastData
+    public class ForecastData
     {
         public DateTime Fecha { get; set; }
         public double Temp { get; set; }

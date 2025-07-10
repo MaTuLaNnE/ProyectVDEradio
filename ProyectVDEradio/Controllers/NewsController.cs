@@ -52,15 +52,16 @@ namespace ProyectVDEradio.Controllers
 
             //var ultima = db.CurrencyAudits.Where(c => c.CurrencyAuditDate >  DateTime.Today).ToList();
 
+            //var existingRates = api.AddCurrencyAudit();
+
             var service = new CurrencyService();
-            //var existingRates = service.GetLatestAuditIfRecent();
-            var existingRates = api.AddCurrencyAudit();
+            var existingRates = service.GetLatestAuditIfRecent();
 
             decimal usd, ars, brl;
 
             if (existingRates == null)
             {
-                // No hay datos recientes: llamar a la API
+                // No hay datos en las ultimas 24hrs, llamar a la API
                 string urlCurrency = "http://apilayer.net/api/live?access_key=3b51394b74c5ace5216edbb5731c5961&currencies=BRL,USD,ARS&source=UYU&format=1";
 
                 using (HttpClient client = new HttpClient())
@@ -68,14 +69,14 @@ namespace ProyectVDEradio.Controllers
                     var response = await client.GetStringAsync(urlCurrency);
                     var currency = Utils.CurrencyApi.FromJson(response);
 
-                    usd = currency.Quotes.Uyuusd ?? 0;
-                    ars = currency.Quotes.Uyuars ?? 0;
-                    brl = currency.Quotes.Uyubrl ?? 0;
+                    usd = 1/currency.Quotes.Uyuusd ?? 0;
+                    ars = 1/currency.Quotes.Uyuars ?? 0;
+                    brl = 1/currency.Quotes.Uyubrl ?? 0;
 
                     // Insertar en CurrencyAudit
                     await service.InsertCurrencyAuditAsync(usd, ars, brl);
-                    api.AddCurrencyAudit(usd, ars, brl); // ARREGLAR ESTO Y DESDE LA API
-                }
+                    //api.AddCurrencyAudit(usd, ars, brl); // ARREGLAR ESTO Y DESDE LA API
+                } 
             }
             else
             {

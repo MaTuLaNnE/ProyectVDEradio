@@ -12,7 +12,7 @@ namespace ProyectVDEradio.Utils
     {
         private readonly string _connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-        // 1. Buscamos cotizacion de las ultimas 3 horas
+        // Buscamos cotizacion en las ultimas 24 horas
         public (decimal usd, decimal ars, decimal brl)? GetLatestAuditIfRecent()
         {
             using (SqlConnection conn = new SqlConnection(_connectionString))
@@ -21,7 +21,7 @@ namespace ProyectVDEradio.Utils
 
                 string sql = @"SELECT TOP 1 UYUUSD, UYUARS, UYUBRL
                            FROM CurrencyAudit
-                           WHERE Timestamp >= DATEADD(HOUR, -3, GETDATE())
+                           WHERE Timestamp >= DATEADD(DAY, -1, GETDATE())
                            ORDER BY Timestamp DESC";
 
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
@@ -56,6 +56,17 @@ namespace ProyectVDEradio.Utils
 
                 await connection.OpenAsync();
                 await command.ExecuteNonQueryAsync();
+            }
+        }
+
+
+        public async Task GetCurrencyAudit()
+        {
+            string query = @"SELECT * FROM CurrencyAudit";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+
             }
         }
 
