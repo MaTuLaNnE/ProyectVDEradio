@@ -25,7 +25,7 @@ namespace ProyectVDEradio.Controllers
         }
 
         // GET: Users/Details/5
-        [Authorize(Roles = "Administrador")]
+        [AuthorizePermiso("ViewUser")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -41,7 +41,7 @@ namespace ProyectVDEradio.Controllers
         }
 
         // GET: Users/Create
-        [Authorize(Roles = "Administrador")]
+        [AuthorizePermiso("CreateUser")]
         public ActionResult Create()
         {
             var model = new CreateUserViewModel
@@ -57,7 +57,7 @@ namespace ProyectVDEradio.Controllers
 
         // POST: Users/Create
 
-        [AuthorizePermiso("CreateUsers")]
+        [AuthorizePermiso("CreateUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateUserViewModel model)
@@ -104,6 +104,7 @@ namespace ProyectVDEradio.Controllers
 
 
         // GET: Users/Edit/5
+        [AuthorizePermiso("EditUser")] 
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -122,6 +123,7 @@ namespace ProyectVDEradio.Controllers
         // POST: Users/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
+        [AuthorizePermiso("EditUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "UserId,UserName,Email,UserPassword,UserRole")] Users users)
@@ -137,6 +139,7 @@ namespace ProyectVDEradio.Controllers
         }
 
         // GET: Users/Delete/5
+        [AuthorizePermiso("DeleteUser")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
