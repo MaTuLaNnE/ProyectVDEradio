@@ -12,18 +12,13 @@ namespace ProyectVDEradio.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class WeatherIcons
+    public partial class PermissionRole
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public WeatherIcons()
-        {
-            this.WeatherAudits = new HashSet<WeatherAudits>();
-        }
+        public int PersmissionRoleId { get; set; }
+        public int PermissionId { get; set; }
+        public int RoleId { get; set; }
     
-        public int IconId { get; set; }
-        public string IconImage { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WeatherAudits> WeatherAudits { get; set; }
+        public virtual Permissions Permissions { get; set; }
+        public virtual Roles Roles { get; set; }
     }
 }

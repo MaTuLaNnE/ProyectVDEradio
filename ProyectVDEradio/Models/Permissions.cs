@@ -12,18 +12,18 @@ namespace ProyectVDEradio.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CurrencyTypes
+    public partial class Permissions
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CurrencyTypes()
+        public Permissions()
         {
-            this.CurrencyAudits = new HashSet<CurrencyAudits>();
+            this.PermissionRole = new HashSet<PermissionRole>();
         }
     
-        public int CurrencyTypeId { get; set; }
-        public string CurrencyTypeName { get; set; }
+        public int PermissionId { get; set; }
+        public string PermissionName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CurrencyAudits> CurrencyAudits { get; set; }
+        public virtual ICollection<PermissionRole> PermissionRole { get; set; }
     }
 }

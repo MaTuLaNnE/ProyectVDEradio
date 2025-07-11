@@ -52,7 +52,31 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.4\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.2.2\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.2.2\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.2.2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.2.2\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -129,6 +153,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CurrencyAPIController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RadioProgramsController.cs" />
@@ -146,10 +171,7 @@
     <Compile Include="Models\Categories.cs">
       <DependentUpon>Version_4.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CurrencyAudits.cs">
-      <DependentUpon>Version_4.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CurrencyTypes.cs">
+    <Compile Include="Models\CurrencyAudit.cs">
       <DependentUpon>Version_4.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Customers.cs">
@@ -164,7 +186,10 @@
     <Compile Include="Models\News.cs">
       <DependentUpon>Version_4.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PermissionsRoles.cs">
+    <Compile Include="Models\PermissionRole.cs">
+      <DependentUpon>Version_4.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Permissions.cs">
       <DependentUpon>Version_4.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProgramDays.cs">
@@ -200,13 +225,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Version_4.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WeatherAudits.cs">
-      <DependentUpon>Version_4.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WeatherIcons.cs">
+    <Compile Include="Models\WeatherAudit.cs">
       <DependentUpon>Version_4.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="Utils\PasswordHelper.cs" />
+    <Compile Include="Utils\Startup.cs" />
     <Compile Include="Utils\CurrencyAPI.cs" />
     <Compile Include="Utils\CurrencyService.cs" />
     <Compile Include="Utils\WeatherAPI.cs" />
@@ -264,6 +289,7 @@
     <Content Include="Content\HostImages\W7.png" />
     <Content Include="Content\HostImages\W8.png" />
     <Content Include="Content\HostImages\W9.png" />
+    <Content Include="Content\LoginStyles\Login.css" />
     <Content Include="Content\Images\NoticiasConVozIMG.png" />
     <Content Include="favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -334,6 +360,7 @@
     <Content Include="Views\RadioPrograms\Details.cshtml" />
     <Content Include="Views\RadioPrograms\Edit.cshtml" />
     <Content Include="Views\RadioPrograms\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\CurrencyAPI.cshtml" />
   </ItemGroup>
   <ItemGroup>
