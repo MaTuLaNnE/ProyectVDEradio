@@ -23,21 +23,15 @@
           <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryName" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
-        <EntityType Name="CurrencyAudits">
+        <EntityType Name="CurrencyAudit">
           <Key>
-            <PropertyRef Name="CurrencyAuditId" />
+            <PropertyRef Name="RateId" />
           </Key>
-          <Property Name="CurrencyAuditId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CurrencyAuditDate" Type="datetime" Nullable="false" />
-          <Property Name="CurrencyTypeId" Type="int" Nullable="false" />
-          <Property Name="CurrencyValue" Type="float" />
-        </EntityType>
-        <EntityType Name="CurrencyTypes">
-          <Key>
-            <PropertyRef Name="CurrencyTypeId" />
-          </Key>
-          <Property Name="CurrencyTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CurrencyTypeName" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="RateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UYUUSD" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="UYUARS" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="UYUBRL" Type="decimal" Precision="10" Scale="3" Nullable="false" />
         </EntityType>
         <EntityType Name="Customers">
           <Key>
@@ -82,17 +76,20 @@
           <Property Name="CategoryId" Type="int" Nullable="false" />
           <Property Name="ArticleSubtitle" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
-        <EntityType Name="PermissionsRoles">
+        <EntityType Name="PermissionRole">
+          <Key>
+            <PropertyRef Name="PersmissionRoleId" />
+          </Key>
+          <Property Name="PersmissionRoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PermissionId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Permissions">
           <Key>
             <PropertyRef Name="PermissionId" />
           </Key>
           <Property Name="PermissionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PermissionAddComment" Type="bit" Nullable="false" />
-          <Property Name="PermissionAddNews" Type="bit" Nullable="false" />
-          <Property Name="PermissionAddRegister" Type="bit" Nullable="false" />
-          <Property Name="PermissionAddPrograms" Type="bit" Nullable="false" />
-          <Property Name="PermissionAddSponsor" Type="bit" Nullable="false" />
-          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="PermissionName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="ProgramDays">
           <Key>
@@ -147,21 +144,20 @@
           <Property Name="UserPassword" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="UserRole" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="WeatherAudits">
+        <EntityType Name="WeatherAudit">
           <Key>
             <PropertyRef Name="WeatherAuditId" />
           </Key>
           <Property Name="WeatherAuditId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="WeatherAuditDate" Type="datetime" Nullable="false" />
-          <Property Name="WeatherAuditDescription" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="WeatherAuditIconId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="WeatherIcons">
-          <Key>
-            <PropertyRef Name="IconId" />
-          </Key>
-          <Property Name="IconId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IconImage" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Temp" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="Icon" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Feels_like" Type="int" Nullable="false" />
+          <Property Name="Temp_min" Type="int" Nullable="false" />
+          <Property Name="Temp_max" Type="int" Nullable="false" />
+          <Property Name="Sunrise" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Sunset" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <Association Name="FK__AuditLog__UserId__797309D9">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
@@ -172,18 +168,6 @@
             </Principal>
             <Dependent Role="AuditLogs">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__CurrencyA__Curre__5812160E">
-          <End Role="CurrencyTypes" Type="Self.CurrencyTypes" Multiplicity="1" />
-          <End Role="CurrencyAudits" Type="Self.CurrencyAudits" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CurrencyTypes">
-              <PropertyRef Name="CurrencyTypeId" />
-            </Principal>
-            <Dependent Role="CurrencyAudits">
-              <PropertyRef Name="CurrencyTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -247,19 +231,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Permissio__RoleI__7C4F7684">
+        <Association Name="FK__Persmissi__Permi__56E8E7AB">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
+          <End Role="PermissionRole" Type="Self.PermissionRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="PermissionId" />
+            </Principal>
+            <Dependent Role="PermissionRole">
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Persmissi__RoleI__57DD0BE4">
           <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
-          <End Role="PermissionsRoles" Type="Self.PermissionsRoles" Multiplicity="*" />
+          <End Role="PermissionRole" Type="Self.PermissionRole" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Roles">
               <PropertyRef Name="RoleId" />
             </Principal>
-            <Dependent Role="PermissionsRoles">
-              <PropertyRef Name="RoleID" />
+            <Dependent Role="PermissionRole">
+              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProgramDa__Progr__6FE99F9F">
+        <Association Name="FK__ProgramDa__Progr__40058253">
           <End Role="RadioPrograms" Type="Self.RadioPrograms" Multiplicity="1" />
           <End Role="ProgramDays" Type="Self.ProgramDays" Multiplicity="*" />
           <ReferentialConstraint>
@@ -307,43 +303,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__WeatherAu__Weath__5FB337D6">
-          <End Role="WeatherIcons" Type="Self.WeatherIcons" Multiplicity="1" />
-          <End Role="WeatherAudits" Type="Self.WeatherAudits" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WeatherIcons">
-              <PropertyRef Name="IconId" />
-            </Principal>
-            <Dependent Role="WeatherAudits">
-              <PropertyRef Name="WeatherAuditIconId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="VozDelEsteDBModelStoreContainer">
           <EntitySet Name="AuditLogs" EntityType="Self.AuditLogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CurrencyAudits" EntityType="Self.CurrencyAudits" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CurrencyTypes" EntityType="Self.CurrencyTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CurrencyAudit" EntityType="Self.CurrencyAudit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomersComments" EntityType="Self.CustomersComments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hosts" EntityType="Self.Hosts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PermissionsRoles" EntityType="Self.PermissionsRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PermissionRole" EntityType="Self.PermissionRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProgramDays" EntityType="Self.ProgramDays" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProgramHosts" EntityType="Self.ProgramHosts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RadioPrograms" EntityType="Self.RadioPrograms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sponsors" EntityType="Self.Sponsors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="WeatherAudits" EntityType="Self.WeatherAudits" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="WeatherIcons" EntityType="Self.WeatherIcons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WeatherAudit" EntityType="Self.WeatherAudit" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__AuditLog__UserId__797309D9" Association="Self.FK__AuditLog__UserId__797309D9">
             <End Role="Users" EntitySet="Users" />
             <End Role="AuditLogs" EntitySet="AuditLogs" />
-          </AssociationSet>
-          <AssociationSet Name="FK__CurrencyA__Curre__5812160E" Association="Self.FK__CurrencyA__Curre__5812160E">
-            <End Role="CurrencyTypes" EntitySet="CurrencyTypes" />
-            <End Role="CurrencyAudits" EntitySet="CurrencyAudits" />
           </AssociationSet>
           <AssociationSet Name="FK__Customers__Custo__74AE54BC" Association="Self.FK__Customers__Custo__74AE54BC">
             <End Role="Customers" EntitySet="Customers" />
@@ -365,11 +344,15 @@
             <End Role="Categories" EntitySet="Categories" />
             <End Role="News" EntitySet="News" />
           </AssociationSet>
-          <AssociationSet Name="FK__Permissio__RoleI__7C4F7684" Association="Self.FK__Permissio__RoleI__7C4F7684">
-            <End Role="Roles" EntitySet="Roles" />
-            <End Role="PermissionsRoles" EntitySet="PermissionsRoles" />
+          <AssociationSet Name="FK__Persmissi__Permi__56E8E7AB" Association="Self.FK__Persmissi__Permi__56E8E7AB">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="PermissionRole" EntitySet="PermissionRole" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProgramDa__Progr__6FE99F9F" Association="Self.FK__ProgramDa__Progr__6FE99F9F">
+          <AssociationSet Name="FK__Persmissi__RoleI__57DD0BE4" Association="Self.FK__Persmissi__RoleI__57DD0BE4">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="PermissionRole" EntitySet="PermissionRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProgramDa__Progr__40058253" Association="Self.FK__ProgramDa__Progr__40058253">
             <End Role="RadioPrograms" EntitySet="RadioPrograms" />
             <End Role="ProgramDays" EntitySet="ProgramDays" />
           </AssociationSet>
@@ -384,10 +367,6 @@
           <AssociationSet Name="FK__Users__UserRole__6B24EA82" Association="Self.FK__Users__UserRole__6B24EA82">
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK__WeatherAu__Weath__5FB337D6" Association="Self.FK__WeatherAu__Weath__5FB337D6">
-            <End Role="WeatherIcons" EntitySet="WeatherIcons" />
-            <End Role="WeatherAudits" EntitySet="WeatherAudits" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -413,24 +392,6 @@
           <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CategoryName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="News" Relationship="Self.FK__News__CategoryId__00200768" FromRole="Categories" ToRole="News" />
-        </EntityType>
-        <EntityType Name="CurrencyAudits">
-          <Key>
-            <PropertyRef Name="CurrencyAuditId" />
-          </Key>
-          <Property Name="CurrencyAuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CurrencyAuditDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CurrencyTypeId" Type="Int32" Nullable="false" />
-          <Property Name="CurrencyValue" Type="Double" />
-          <NavigationProperty Name="CurrencyTypes" Relationship="Self.FK__CurrencyA__Curre__5812160E" FromRole="CurrencyAudits" ToRole="CurrencyTypes" />
-        </EntityType>
-        <EntityType Name="CurrencyTypes">
-          <Key>
-            <PropertyRef Name="CurrencyTypeId" />
-          </Key>
-          <Property Name="CurrencyTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CurrencyTypeName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="CurrencyAudits" Relationship="Self.FK__CurrencyA__Curre__5812160E" FromRole="CurrencyTypes" ToRole="CurrencyAudits" />
         </EntityType>
         <EntityType Name="Customers">
           <Key>
@@ -482,19 +443,6 @@
           <NavigationProperty Name="Categories" Relationship="Self.FK__News__CategoryId__00200768" FromRole="News" ToRole="Categories" />
           <NavigationProperty Name="Users" Relationship="Self.FK__News__AuthorId__71D1E811" FromRole="News" ToRole="Users" />
         </EntityType>
-        <EntityType Name="PermissionsRoles">
-          <Key>
-            <PropertyRef Name="PermissionId" />
-          </Key>
-          <Property Name="PermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PermissionAddComment" Type="Boolean" Nullable="false" />
-          <Property Name="PermissionAddNews" Type="Boolean" Nullable="false" />
-          <Property Name="PermissionAddRegister" Type="Boolean" Nullable="false" />
-          <Property Name="PermissionAddPrograms" Type="Boolean" Nullable="false" />
-          <Property Name="PermissionAddSponsor" Type="Boolean" Nullable="false" />
-          <Property Name="RoleID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Roles" Relationship="Self.FK__Permissio__RoleI__7C4F7684" FromRole="PermissionsRoles" ToRole="Roles" />
-        </EntityType>
         <EntityType Name="ProgramHosts">
           <Key>
             <PropertyRef Name="ProgramHostsId" />
@@ -525,8 +473,8 @@
           </Key>
           <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="PermissionsRoles" Relationship="Self.FK__Permissio__RoleI__7C4F7684" FromRole="Roles" ToRole="PermissionsRoles" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Users__UserRole__6B24EA82" FromRole="Roles" ToRole="Users" />
+          <NavigationProperty Name="PermissionRole" Relationship="VozDelEsteDBModel.FK__Persmissi__RoleI__57DD0BE41" FromRole="Roles" ToRole="PermissionRole" />
         </EntityType>
         <EntityType Name="Sponsors">
           <Key>
@@ -551,24 +499,6 @@
           <NavigationProperty Name="News" Relationship="Self.FK__News__AuthorId__71D1E811" FromRole="Users" ToRole="News" />
           <NavigationProperty Name="Roles" Relationship="Self.FK__Users__UserRole__6B24EA82" FromRole="Users" ToRole="Roles" />
         </EntityType>
-        <EntityType Name="WeatherAudits">
-          <Key>
-            <PropertyRef Name="WeatherAuditId" />
-          </Key>
-          <Property Name="WeatherAuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="WeatherAuditDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="WeatherAuditDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="WeatherAuditIconId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="WeatherIcons" Relationship="Self.FK__WeatherAu__Weath__5FB337D6" FromRole="WeatherAudits" ToRole="WeatherIcons" />
-        </EntityType>
-        <EntityType Name="WeatherIcons">
-          <Key>
-            <PropertyRef Name="IconId" />
-          </Key>
-          <Property Name="IconId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IconImage" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="WeatherAudits" Relationship="Self.FK__WeatherAu__Weath__5FB337D6" FromRole="WeatherIcons" ToRole="WeatherAudits" />
-        </EntityType>
         <Association Name="FK__AuditLog__UserId__797309D9">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
@@ -590,18 +520,6 @@
             </Principal>
             <Dependent Role="News">
               <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__CurrencyA__Curre__5812160E">
-          <End Role="CurrencyTypes" Type="Self.CurrencyTypes" Multiplicity="1" />
-          <End Role="CurrencyAudits" Type="Self.CurrencyAudits" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CurrencyTypes">
-              <PropertyRef Name="CurrencyTypeId" />
-            </Principal>
-            <Dependent Role="CurrencyAudits">
-              <PropertyRef Name="CurrencyTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -665,18 +583,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Permissio__RoleI__7C4F7684">
-          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
-          <End Role="PermissionsRoles" Type="Self.PermissionsRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Roles">
-              <PropertyRef Name="RoleId" />
-            </Principal>
-            <Dependent Role="PermissionsRoles">
-              <PropertyRef Name="RoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__ProgramHo__Progr__4D94879B">
           <End Role="RadioPrograms" Type="Self.RadioPrograms" Multiplicity="1" />
           <End Role="ProgramHosts" Type="Self.ProgramHosts" Multiplicity="*" />
@@ -701,35 +607,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__WeatherAu__Weath__5FB337D6">
-          <End Role="WeatherIcons" Type="Self.WeatherIcons" Multiplicity="1" />
-          <End Role="WeatherAudits" Type="Self.WeatherAudits" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WeatherIcons">
-              <PropertyRef Name="IconId" />
-            </Principal>
-            <Dependent Role="WeatherAudits">
-              <PropertyRef Name="WeatherAuditIconId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="VozDelEsteDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AuditLogs" EntityType="Self.AuditLogs" />
           <EntitySet Name="Categories" EntityType="Self.Categories" />
-          <EntitySet Name="CurrencyAudits" EntityType="Self.CurrencyAudits" />
-          <EntitySet Name="CurrencyTypes" EntityType="Self.CurrencyTypes" />
           <EntitySet Name="Customers" EntityType="Self.Customers" />
           <EntitySet Name="CustomersComments" EntityType="Self.CustomersComments" />
           <EntitySet Name="Hosts" EntityType="Self.Hosts" />
           <EntitySet Name="News" EntityType="Self.News" />
-          <EntitySet Name="PermissionsRoles" EntityType="Self.PermissionsRoles" />
           <EntitySet Name="ProgramHosts" EntityType="Self.ProgramHosts" />
           <EntitySet Name="RadioPrograms" EntityType="Self.RadioPrograms" />
           <EntitySet Name="Roles" EntityType="Self.Roles" />
           <EntitySet Name="Sponsors" EntityType="Self.Sponsors" />
           <EntitySet Name="Users" EntityType="Self.Users" />
-          <EntitySet Name="WeatherAudits" EntityType="Self.WeatherAudits" />
-          <EntitySet Name="WeatherIcons" EntityType="Self.WeatherIcons" />
           <AssociationSet Name="FK__AuditLog__UserId__797309D9" Association="Self.FK__AuditLog__UserId__797309D9">
             <End Role="Users" EntitySet="Users" />
             <End Role="AuditLogs" EntitySet="AuditLogs" />
@@ -737,10 +626,6 @@
           <AssociationSet Name="FK__News__CategoryId__00200768" Association="Self.FK__News__CategoryId__00200768">
             <End Role="Categories" EntitySet="Categories" />
             <End Role="News" EntitySet="News" />
-          </AssociationSet>
-          <AssociationSet Name="FK__CurrencyA__Curre__5812160E" Association="Self.FK__CurrencyA__Curre__5812160E">
-            <End Role="CurrencyTypes" EntitySet="CurrencyTypes" />
-            <End Role="CurrencyAudits" EntitySet="CurrencyAudits" />
           </AssociationSet>
           <AssociationSet Name="FK__Customers__Custo__74AE54BC" Association="Self.FK__Customers__Custo__74AE54BC">
             <End Role="Customers" EntitySet="Customers" />
@@ -762,10 +647,6 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="News" EntitySet="News" />
           </AssociationSet>
-          <AssociationSet Name="FK__Permissio__RoleI__7C4F7684" Association="Self.FK__Permissio__RoleI__7C4F7684">
-            <End Role="Roles" EntitySet="Roles" />
-            <End Role="PermissionsRoles" EntitySet="PermissionsRoles" />
-          </AssociationSet>
           <AssociationSet Name="FK__ProgramHo__Progr__4D94879B" Association="Self.FK__ProgramHo__Progr__4D94879B">
             <End Role="RadioPrograms" EntitySet="RadioPrograms" />
             <End Role="ProgramHosts" EntitySet="ProgramHosts" />
@@ -774,14 +655,22 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK__WeatherAu__Weath__5FB337D6" Association="Self.FK__WeatherAu__Weath__5FB337D6">
-            <End Role="WeatherIcons" EntitySet="WeatherIcons" />
-            <End Role="WeatherAudits" EntitySet="WeatherAudits" />
-          </AssociationSet>
           <EntitySet Name="ProgramDays" EntityType="VozDelEsteDBModel.ProgramDays" />
           <AssociationSet Name="FK__ProgramDa__Progr__40058253" Association="VozDelEsteDBModel.FK__ProgramDa__Progr__40058253">
             <End Role="RadioPrograms" EntitySet="RadioPrograms" />
             <End Role="ProgramDays" EntitySet="ProgramDays" />
+          </AssociationSet>
+          <EntitySet Name="CurrencyAudit" EntityType="VozDelEsteDBModel.CurrencyAudit" />
+          <EntitySet Name="WeatherAudit" EntityType="VozDelEsteDBModel.WeatherAudit" />
+          <EntitySet Name="PermissionRole" EntityType="VozDelEsteDBModel.PermissionRole" />
+          <EntitySet Name="Permissions" EntityType="VozDelEsteDBModel.Permissions" />
+          <AssociationSet Name="FK__Persmissi__Permi__56E8E7AB1" Association="VozDelEsteDBModel.FK__Persmissi__Permi__56E8E7AB1">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="PermissionRole" EntitySet="PermissionRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Persmissi__RoleI__57DD0BE41" Association="VozDelEsteDBModel.FK__Persmissi__RoleI__57DD0BE41">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="PermissionRole" EntitySet="PermissionRole" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ProgramDays">
@@ -802,6 +691,73 @@
             </Principal>
             <Dependent Role="ProgramDays">
               <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CurrencyAudit">
+          <Key>
+            <PropertyRef Name="RateId" />
+          </Key>
+          <Property Name="RateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UYUUSD" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
+          <Property Name="UYUARS" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
+          <Property Name="UYUBRL" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
+        </EntityType>
+        <EntityType Name="WeatherAudit">
+          <Key>
+            <PropertyRef Name="WeatherAuditId" />
+          </Key>
+          <Property Name="WeatherAuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Temp" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
+          <Property Name="Icon" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Feels_like" Type="Int32" Nullable="false" />
+          <Property Name="Temp_min" Type="Int32" Nullable="false" />
+          <Property Name="Temp_max" Type="Int32" Nullable="false" />
+          <Property Name="Sunrise" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Sunset" Type="DateTime" Nullable="false" Precision="7" />
+        </EntityType>
+        <EntityType Name="PermissionRole">
+          <Key>
+            <PropertyRef Name="PersmissionRoleId" />
+          </Key>
+          <Property Name="PersmissionRoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PermissionId" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Permissions" Relationship="VozDelEsteDBModel.FK__Persmissi__Permi__56E8E7AB1" FromRole="PermissionRole" ToRole="Permissions" />
+          <NavigationProperty Name="Roles" Relationship="VozDelEsteDBModel.FK__Persmissi__RoleI__57DD0BE41" FromRole="PermissionRole" ToRole="Roles" />
+        </EntityType>
+        <EntityType Name="Permissions">
+          <Key>
+            <PropertyRef Name="PermissionId" />
+          </Key>
+          <Property Name="PermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PermissionName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PermissionRole" Relationship="VozDelEsteDBModel.FK__Persmissi__Permi__56E8E7AB1" FromRole="Permissions" ToRole="PermissionRole" />
+        </EntityType>
+        <Association Name="FK__Persmissi__Permi__56E8E7AB1">
+          <End Type="VozDelEsteDBModel.Permissions" Role="Permissions" Multiplicity="1" />
+          <End Type="VozDelEsteDBModel.PermissionRole" Role="PermissionRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="PermissionId" />
+            </Principal>
+            <Dependent Role="PermissionRole">
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Persmissi__RoleI__57DD0BE41">
+          <End Type="VozDelEsteDBModel.Roles" Role="Roles" Multiplicity="1" />
+          <End Type="VozDelEsteDBModel.PermissionRole" Role="PermissionRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="PermissionRole">
+              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -828,24 +784,6 @@
               <MappingFragment StoreEntitySet="Categories">
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CurrencyAudits">
-            <EntityTypeMapping TypeName="VozDelEsteDBModel.CurrencyAudits">
-              <MappingFragment StoreEntitySet="CurrencyAudits">
-                <ScalarProperty Name="CurrencyAuditId" ColumnName="CurrencyAuditId" />
-                <ScalarProperty Name="CurrencyAuditDate" ColumnName="CurrencyAuditDate" />
-                <ScalarProperty Name="CurrencyTypeId" ColumnName="CurrencyTypeId" />
-                <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CurrencyTypes">
-            <EntityTypeMapping TypeName="VozDelEsteDBModel.CurrencyTypes">
-              <MappingFragment StoreEntitySet="CurrencyTypes">
-                <ScalarProperty Name="CurrencyTypeId" ColumnName="CurrencyTypeId" />
-                <ScalarProperty Name="CurrencyTypeName" ColumnName="CurrencyTypeName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -893,19 +831,6 @@
                 <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="ArticleSubtitle" ColumnName="ArticleSubtitle" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PermissionsRoles">
-            <EntityTypeMapping TypeName="VozDelEsteDBModel.PermissionsRoles">
-              <MappingFragment StoreEntitySet="PermissionsRoles">
-                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
-                <ScalarProperty Name="PermissionAddComment" ColumnName="PermissionAddComment" />
-                <ScalarProperty Name="PermissionAddNews" ColumnName="PermissionAddNews" />
-                <ScalarProperty Name="PermissionAddRegister" ColumnName="PermissionAddRegister" />
-                <ScalarProperty Name="PermissionAddPrograms" ColumnName="PermissionAddPrograms" />
-                <ScalarProperty Name="PermissionAddSponsor" ColumnName="PermissionAddSponsor" />
-                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -959,29 +884,55 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="WeatherAudits">
-            <EntityTypeMapping TypeName="VozDelEsteDBModel.WeatherAudits">
-              <MappingFragment StoreEntitySet="WeatherAudits">
-                <ScalarProperty Name="WeatherAuditId" ColumnName="WeatherAuditId" />
-                <ScalarProperty Name="WeatherAuditDate" ColumnName="WeatherAuditDate" />
-                <ScalarProperty Name="WeatherAuditDescription" ColumnName="WeatherAuditDescription" />
-                <ScalarProperty Name="WeatherAuditIconId" ColumnName="WeatherAuditIconId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="WeatherIcons">
-            <EntityTypeMapping TypeName="VozDelEsteDBModel.WeatherIcons">
-              <MappingFragment StoreEntitySet="WeatherIcons">
-                <ScalarProperty Name="IconId" ColumnName="IconId" />
-                <ScalarProperty Name="IconImage" ColumnName="IconImage" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ProgramDays">
             <EntityTypeMapping TypeName="VozDelEsteDBModel.ProgramDays">
               <MappingFragment StoreEntitySet="ProgramDays">
                 <ScalarProperty Name="WeekDay" ColumnName="WeekDay" />
                 <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CurrencyAudit">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.CurrencyAudit">
+              <MappingFragment StoreEntitySet="CurrencyAudit">
+                <ScalarProperty Name="UYUBRL" ColumnName="UYUBRL" />
+                <ScalarProperty Name="UYUARS" ColumnName="UYUARS" />
+                <ScalarProperty Name="UYUUSD" ColumnName="UYUUSD" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="RateId" ColumnName="RateId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeatherAudit">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.WeatherAudit">
+              <MappingFragment StoreEntitySet="WeatherAudit">
+                <ScalarProperty Name="Sunset" ColumnName="Sunset" />
+                <ScalarProperty Name="Sunrise" ColumnName="Sunrise" />
+                <ScalarProperty Name="Temp_max" ColumnName="Temp_max" />
+                <ScalarProperty Name="Temp_min" ColumnName="Temp_min" />
+                <ScalarProperty Name="Feels_like" ColumnName="Feels_like" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Temp" ColumnName="Temp" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="WeatherAuditId" ColumnName="WeatherAuditId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PermissionRole">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.PermissionRole">
+              <MappingFragment StoreEntitySet="PermissionRole">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+                <ScalarProperty Name="PersmissionRoleId" ColumnName="PersmissionRoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.Permissions">
+              <MappingFragment StoreEntitySet="Permissions">
+                <ScalarProperty Name="PermissionName" ColumnName="PermissionName" />
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -12,13 +12,17 @@ namespace ProyectVDEradio.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CurrencyAudits
+    public partial class WeatherAudit
     {
-        public int CurrencyAuditId { get; set; }
-        public System.DateTime CurrencyAuditDate { get; set; }
-        public int CurrencyTypeId { get; set; }
-        public Nullable<double> CurrencyValue { get; set; }
-    
-        public virtual CurrencyTypes CurrencyTypes { get; set; }
+        public int WeatherAuditId { get; set; }
+        public System.DateTime TimeStamp { get; set; }
+        public decimal Temp { get; set; }
+        public string Icon { get; set; }
+        public string Description { get; set; }
+        public int Feels_like { get; set; }
+        public int Temp_min { get; set; }
+        public int Temp_max { get; set; }
+        public System.DateTime Sunrise { get; set; }
+        public System.DateTime Sunset { get; set; }
     }
 }
