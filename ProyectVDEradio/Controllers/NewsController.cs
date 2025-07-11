@@ -12,11 +12,17 @@ using ProyectVDEradio.Models;
 using ProyectVDEradio.Utils.WeatherAPI;
 using ProyectVDEradio.ViewModels;
 using ProyectVDEradio.Utils.WeatherForecastAPI;
+using ProyectVDEradio.Utils;
+using Newtonsoft.Json;
+using ProyectVDEradio.DataAccess.APIsRepository;
+
 namespace ProyectVDEradio.Controllers
 {
     public class NewsController : Controller
     {
         private VozDelEsteDBEntities db = new VozDelEsteDBEntities();
+
+        APIs api = new APIs();
 
         public ActionResult IndexPolicial()
         {
@@ -35,21 +41,60 @@ namespace ProyectVDEradio.Controllers
             return View("Categoria", model);
         }
 
-        public ActionResult IndexEconomia()
+        public async Task<ActionResult> IndexEconomia()
         {
-            var noticias = db.News
+            var modelo = new WeatherViewModel();
+            modelo.noticias = db.News
                 .Include(n => n.Categories)
                 .Where(n => n.Categories.CategoryName == "Economía")
                 .OrderByDescending(n => n.ArticleDate)
                 .ToList();
 
-            var model = new WeatherViewModel
+            //var ultima = db.CurrencyAudits.Where(c => c.CurrencyAuditDate >  DateTime.Today).ToList();
+
+            //var existingRates = api.AddCurrencyAudit();
+
+            var service = new CurrencyService();
+            var existingRates = service.GetLatestAuditIfRecent();
+
+            decimal usd, ars, brl;
+
+            if (existingRates == null)
             {
-                noticias = noticias,
-                Weather = new WeatherData()
+                // No hay datos en las ultimas 24hrs, llamar a la API
+                string urlCurrency = "http://apilayer.net/api/live?access_key=3b51394b74c5ace5216edbb5731c5961&currencies=BRL,USD,ARS&source=UYU&format=1";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    var response = await client.GetStringAsync(urlCurrency);
+                    var currency = Utils.CurrencyApi.FromJson(response);
+
+                    usd = 1/currency.Quotes.Uyuusd ?? 0;
+                    ars = 1/currency.Quotes.Uyuars ?? 0;
+                    brl = 1/currency.Quotes.Uyubrl ?? 0;
+
+                    // Insertar en CurrencyAudit
+                    await service.InsertCurrencyAuditAsync(usd, ars, brl);
+                    //api.AddCurrencyAudit(usd, ars, brl); // ARREGLAR ESTO Y DESDE LA API
+                } 
+            }
+            else
+            {
+                // Si hay cotizaciones recientes, usarlas
+                usd = existingRates.Value.usd;
+                ars = existingRates.Value.ars;
+                brl = existingRates.Value.brl;
+            }
+
+            modelo.Currency = new Currency
+            {
+                UYUUSD = usd,
+                UYUARS = ars,
+                UYUBRL = brl,
+                TimeStamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()
             };
 
-            return View("Categoria", model);
+            return View("Categoria", modelo);
         }
 
         public ActionResult IndexDeportes()

@@ -22,7 +22,7 @@ namespace ProyectVDEradio.ViewModels
 
         public List<ForecastData> Forecast { get; set; }
 
-
+        public Currency Currency { get; set; }
     }
     public class WeatherData
     {
@@ -38,6 +38,15 @@ namespace ProyectVDEradio.ViewModels
         public long Amanecer { get; set; }
         public long Atardecer { get; set; }
 
+    }
+
+    public class Currency
+    {
+        public string Source { get; set; }
+        public long TimeStamp { get; set; }
+        public decimal UYUBRL { get; set; }
+        public decimal UYUUSD { get; set; }
+        public decimal UYUARS { get; set; }
     }
 
     public class ForecastData
