@@ -154,6 +154,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CurrencyAPIController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagementController.cs" />
     <Compile Include="Controllers\RadioProgramsController.cs" />
@@ -161,6 +162,8 @@
     <Compile Include="Controllers\RadioProgramsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\WeatherController.cs" />
+    <Compile Include="DataAccess\APIsRepository\APIs.cs" />
+    <Compile Include="DataAccess\Persistence\PConection.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -231,6 +234,8 @@
     <Compile Include="Utils\AuthorizePermisoAttribute.cs" />
     <Compile Include="ViewModels\CreateUserViewModel.cs" />
     <Compile Include="ViewModels\EditUserViewModel.cs" />
+    <Compile Include="Utils\CurrencyAPI.cs" />
+    <Compile Include="Utils\CurrencyService.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Utils\PasswordHelper.cs" />
     <Compile Include="Utils\Startup.cs" />
@@ -258,6 +263,9 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Clima.css" />
+    <Content Include="Content\Flags\Flag_of_Argentina.png" />
+    <Content Include="Content\Flags\Flag_of_Brazil.png" />
+    <Content Include="Content\Flags\Flag_of_the_United_States.png" />
     <Content Include="Content\Images\ClimaEnVivoIMG.png" />
     <Content Include="Content\Images\ClimaEnVivoIMGLogo.png" />
     <Content Include="Content\Images\DeportesIMG.png" />
@@ -356,11 +364,7 @@
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\News\Categoria.cshtml" />
     <Content Include="Views\News\Details.cshtml" />
-    <Content Include="Views\RadioPrograms\Create.cshtml" />
-    <Content Include="Views\RadioPrograms\Delete.cshtml" />
-    <Content Include="Views\RadioPrograms\Details.cshtml" />
-    <Content Include="Views\RadioPrograms\Edit.cshtml" />
-    <Content Include="Views\RadioPrograms\Index.cshtml" />
+    <Content Include="Views\Shared\CurrencyAPI.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Management\Index.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
@@ -371,6 +375,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\CurrencyAPI\" />
     <Folder Include="Views\Weather\" />
   </ItemGroup>
   <ItemGroup>
