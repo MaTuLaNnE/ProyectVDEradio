@@ -16,6 +16,10 @@
                 <a href="/" class="logo-link">
                     <img src="~/Content/Images/Navbar_Icon.png" alt="Voz del Este" class="logo">
                 </a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <p>Bienvenido @User.Identity.Name</p>
+                }
                 <nav>
 
                     <a href="@Url.Action("Index","Home")">Inicio</a>
@@ -37,14 +41,22 @@
                             <a href="@Url.Action("IndexInternacional", "News")" class="dropdown-item">Internacional</a>
                         </div>
                     </div>
+
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Editor"))
+                    {
+                        <a href="@Url.Action("Index", "Management")">Panel de Gestion</a>
+                    }
+
                     @if (User.Identity.IsAuthenticated)
                     {
                         <a href="@Url.Action("Logout", "Account")">Cerrar sesion</a>
+
                     }
                     else
                     {
                         <a href="@Url.Action("Login", "Account")">Iniciar sesion</a>
                     }
+
 
 
                 </nav>
@@ -87,6 +99,7 @@
     @*@Scripts.Render("~/bundles/main")*@
     @Scripts.Render("~/bundles/clima")
     @Scripts.Render("~/bundles/DropDown")
+    @Scripts.Render("~/bundles/Management")
     @RenderSection("scripts", required: false)
 
 

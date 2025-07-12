@@ -242,6 +242,7 @@ advertencia 6002: La tabla o vista 'VozDelEsteDB.dbo.vw_PermissionsRole' no tien
             </Dependent>
           </ReferentialConstraint>
         </Association>
+
         <Association Name="FK__Permissio__Permi__7B5B524B">
           <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
           <End Role="PermissionRole" Type="Self.PermissionRole" Multiplicity="*" />
@@ -255,6 +256,7 @@ advertencia 6002: La tabla o vista 'VozDelEsteDB.dbo.vw_PermissionsRole' no tien
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Permissio__RoleI__7C4F7684">
+
           <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
           <End Role="PermissionRole" Type="Self.PermissionRole" Multiplicity="*" />
           <ReferentialConstraint>

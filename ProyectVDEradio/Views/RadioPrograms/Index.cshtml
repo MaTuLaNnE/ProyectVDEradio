@@ -107,40 +107,6 @@
             </div>
         </div>
 
-        <!-- Formulario de nuevo comentario -->
-        @*<div class="new-comment-form">
-                <h3>✨ Deja tu comentario</h3>
-                @using (Html.BeginForm("AddComment", "RadioPrograms", FormMethod.Post, new { @class = "comment-form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.Hidden("ProgramId", Model.RadioActual.ProgramId)
-
-                    <div class="form-group">
-                        @Html.TextBox("CustomerName", "", new
-                        {
-                            @class = "form-input",
-                            @placeholder = "🙋‍♂️ Tu nombre",
-                            @required = "required",
-                            @maxlength = "50"
-                        })
-                    </div>
-
-                    <div class="form-group">
-                        @Html.TextArea("Comment", "", new
-                        {
-                            @class = "form-textarea",
-                            @placeholder = "💭 Escribe tu comentario sobre el programa...",
-                            @required = "required",
-                            @maxlength = "500",
-                            @rows = "4"
-                        })
-                    </div>
-
-                    <button type="submit" class="submit-btn">
-                        📝 Enviar Comentario
-                    </button>
-                }
-            </div>*@
 
         <!-- REPRODUCTOR DE RADIO -->
     <div class="radio-player-section">
@@ -255,13 +221,6 @@
         }
     </div>
 </section>
-
-<!-- BOTÓN DE REGRESO -->
-<div class="back-button-container">
-    <a href="@Url.Action("Index", "RadioPrograms")" class="back-button">
-        ← Volver a Programación
-    </a>
-</div>
 
 @section scripts {
     <script>

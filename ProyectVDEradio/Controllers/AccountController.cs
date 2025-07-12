@@ -46,13 +46,26 @@ namespace ProyectVDEradio.Controllers
                 return View(model);
             }
 
+            var permisos = db.PermissionRole
+                    .Where(rp => rp.RoleId == user.UserRole)
+                    .Select(rp => rp.Permissions.PermissionName)
+                    .ToList();
+
             // Crear claims
             var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.UserName),
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
             new Claim(ClaimTypes.Role, user.Roles.RoleName)
+       
         };
+
+
+            foreach (var permiso in permisos)
+            {
+                claims.Add(new Claim("Permiso", permiso));
+            }
+
 
             var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
             var authManager = HttpContext.GetOwinContext().Authentication;
