@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using ProyectVDEradio.ViewModels;
 
 namespace ProyectVDEradio.Utils
 {
@@ -60,14 +61,36 @@ namespace ProyectVDEradio.Utils
         }
 
 
-        public async Task GetCurrencyAudit()
+        public List<CurrencyAuditHistory> GetCurrencyHistory()
         {
-            string query = @"SELECT * FROM CurrencyAudit";
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
+            var historial = new List<CurrencyAuditHistory>();
 
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                string sql = @"SELECT TOP 30 AuditId, Timestamp, UYUUSD, UYUARS, UYUBRL
+                       FROM CurrencyAudit
+                       ORDER BY Timestamp DESC";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        historial.Add(new CurrencyAuditHistory
+                        {
+                            AuditId = Convert.ToInt32(reader["AuditId"]),
+                            Timestamp = Convert.ToDateTime(reader["Timestamp"]),
+                            UYUUSD = Convert.ToDecimal(reader["UYUUSD"]),
+                            UYUARS = Convert.ToDecimal(reader["UYUARS"]),
+                            UYUBRL = Convert.ToDecimal(reader["UYUBRL"])
+                        });
+                    }
+                }
             }
+
+            historial.Reverse();
+            return historial;
         }
 
     }
