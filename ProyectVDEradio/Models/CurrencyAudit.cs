@@ -14,10 +14,10 @@ namespace ProyectVDEradio.Models
     
     public partial class CurrencyAudit
     {
-        public int RateId { get; set; }
         public System.DateTime Timestamp { get; set; }
         public decimal UYUUSD { get; set; }
         public decimal UYUARS { get; set; }
         public decimal UYUBRL { get; set; }
+        public int AuditId { get; set; }
     }
 }
