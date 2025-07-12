@@ -145,6 +145,7 @@
           <Property Name="UserPassword" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="UserRole" Type="int" Nullable="false" />
         </EntityType>
+
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'VozDelEsteDB.dbo.vw_PermissionsRole' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_PermissionsRole">
@@ -619,12 +620,11 @@ advertencia 6002: La tabla o vista 'VozDelEsteDB.dbo.vw_PermissionsRole' no tien
             <End Role="ProgramDays" EntitySet="ProgramDays" />
           </AssociationSet>
           <EntitySet Name="CurrencyAudit" EntityType="VozDelEsteDBModel.CurrencyAudit" />
-          <EntitySet Name="PermissionRoleSet" EntityType="VozDelEsteDBModel.PermissionRole" />
-          <EntitySet Name="PermissionsSet" EntityType="VozDelEsteDBModel.Permissions" />
-          <EntitySet Name="vw_PermissionsRole" EntityType="VozDelEsteDBModel.vw_PermissionsRole" />
-          <AssociationSet Name="FK__Permissio__Permi__7B5B524B" Association="VozDelEsteDBModel.FK__Permissio__Permi__7B5B524B">
-            <End Role="Permissions1" EntitySet="PermissionsSet" />
-            <End Role="PermissionRole1" EntitySet="PermissionRoleSet" />
+          <EntitySet Name="PermissionRole" EntityType="VozDelEsteDBModel.PermissionRole" />
+          <EntitySet Name="Permissions" EntityType="VozDelEsteDBModel.Permissions" />
+          <AssociationSet Name="FK__Persmissi__Permi__56E8E7AB1" Association="VozDelEsteDBModel.FK__Persmissi__Permi__56E8E7AB1">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="PermissionRole" EntitySet="PermissionRole" />
           </AssociationSet>
           <AssociationSet Name="FK__Permissio__RoleI__7C4F7684" Association="VozDelEsteDBModel.FK__Permissio__RoleI__7C4F7684">
             <End Role="Roles" EntitySet="Roles" />
@@ -857,7 +857,7 @@ advertencia 6002: La tabla o vista 'VozDelEsteDB.dbo.vw_PermissionsRole' no tien
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PermissionRoleSet">
+          <EntitySetMapping Name="PermissionRole">
             <EntityTypeMapping TypeName="VozDelEsteDBModel.PermissionRole">
               <MappingFragment StoreEntitySet="PermissionRole">
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
@@ -896,7 +896,7 @@ advertencia 6002: La tabla o vista 'VozDelEsteDB.dbo.vw_PermissionsRole' no tien
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
