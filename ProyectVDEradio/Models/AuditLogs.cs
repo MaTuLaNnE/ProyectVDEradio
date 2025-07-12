@@ -14,13 +14,12 @@ namespace ProyectVDEradio.Models
     
     public partial class AuditLogs
     {
-        public int AuditId { get; set; }
-        public int UserId { get; set; }
+        public int AuditID { get; set; }
+        public string UserName { get; set; }
         public string Operation { get; set; }
         public string TableName { get; set; }
-        public Nullable<int> RecordId { get; set; }
         public System.DateTime Timestamp { get; set; }
-    
-        public virtual Users Users { get; set; }
+        public string OldValues { get; set; }
+        public string NewValues { get; set; }
     }
 }

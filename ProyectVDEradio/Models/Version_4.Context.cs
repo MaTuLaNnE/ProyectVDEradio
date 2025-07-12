@@ -25,7 +25,6 @@ namespace ProyectVDEradio.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<AuditLogs> AuditLogs { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Customers> Customers { get; set; }
         public virtual DbSet<CustomersComments> CustomersComments { get; set; }
@@ -38,8 +37,8 @@ namespace ProyectVDEradio.Models
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<ProgramDays> ProgramDays { get; set; }
         public virtual DbSet<CurrencyAudit> CurrencyAudit { get; set; }
-        public virtual DbSet<WeatherAudit> WeatherAudit { get; set; }
         public virtual DbSet<PermissionRole> PermissionRole { get; set; }
         public virtual DbSet<Permissions> Permissions { get; set; }
+        public virtual DbSet<AuditLogs> AuditLogs { get; set; }
     }
 }

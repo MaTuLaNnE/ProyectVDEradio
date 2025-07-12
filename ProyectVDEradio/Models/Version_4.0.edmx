@@ -7,14 +7,15 @@
     <Schema Namespace="VozDelEsteDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AuditLogs">
           <Key>
-            <PropertyRef Name="AuditId" />
+            <PropertyRef Name="AuditID" />
           </Key>
-          <Property Name="AuditId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="Operation" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="AuditID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Operation" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="TableName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="RecordId" Type="int" />
           <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="OldValues" Type="nvarchar(max)" />
+          <Property Name="NewValues" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -144,32 +145,6 @@
           <Property Name="UserPassword" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="UserRole" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="WeatherAudit">
-          <Key>
-            <PropertyRef Name="WeatherAuditId" />
-          </Key>
-          <Property Name="WeatherAuditId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TimeStamp" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Temp" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="Icon" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Feels_like" Type="int" Nullable="false" />
-          <Property Name="Temp_min" Type="int" Nullable="false" />
-          <Property Name="Temp_max" Type="int" Nullable="false" />
-          <Property Name="Sunrise" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Sunset" Type="datetime2" Precision="7" Nullable="false" />
-        </EntityType>
-        <Association Name="FK__AuditLog__UserId__797309D9">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="AuditLogs">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Customers__Custo__74AE54BC">
           <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
           <End Role="CustomersComments" Type="Self.CustomersComments" Multiplicity="*" />
@@ -318,11 +293,6 @@
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sponsors" EntityType="Self.Sponsors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="WeatherAudit" EntityType="Self.WeatherAudit" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AuditLog__UserId__797309D9" Association="Self.FK__AuditLog__UserId__797309D9">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="AuditLogs" EntitySet="AuditLogs" />
-          </AssociationSet>
           <AssociationSet Name="FK__Customers__Custo__74AE54BC" Association="Self.FK__Customers__Custo__74AE54BC">
             <End Role="Customers" EntitySet="Customers" />
             <End Role="CustomersComments" EntitySet="CustomersComments" />
@@ -372,18 +342,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="VozDelEsteDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="AuditLogs">
-          <Key>
-            <PropertyRef Name="AuditId" />
-          </Key>
-          <Property Name="AuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Operation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TableName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RecordId" Type="Int32" />
-          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__AuditLog__UserId__797309D9" FromRole="AuditLogs" ToRole="Users" />
-        </EntityType>
         <EntityType Name="Categories">
           <Key>
             <PropertyRef Name="CategoryId" />
@@ -493,23 +451,10 @@
           <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserPassword" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserRole" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="AuditLogs" Relationship="Self.FK__AuditLog__UserId__797309D9" FromRole="Users" ToRole="AuditLogs" />
           <NavigationProperty Name="Customers" Relationship="Self.FK__Customers__UserI__6E01572D" FromRole="Users" ToRole="Customers" />
           <NavigationProperty Name="News" Relationship="Self.FK__News__AuthorId__71D1E811" FromRole="Users" ToRole="News" />
           <NavigationProperty Name="Roles" Relationship="Self.FK__Users__UserRole__6B24EA82" FromRole="Users" ToRole="Roles" />
         </EntityType>
-        <Association Name="FK__AuditLog__UserId__797309D9">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="AuditLogs">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__News__CategoryId__00200768">
           <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
           <End Role="News" Type="Self.News" Multiplicity="*" />
@@ -607,7 +552,6 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="VozDelEsteDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="AuditLogs" EntityType="Self.AuditLogs" />
           <EntitySet Name="Categories" EntityType="Self.Categories" />
           <EntitySet Name="Customers" EntityType="Self.Customers" />
           <EntitySet Name="CustomersComments" EntityType="Self.CustomersComments" />
@@ -618,10 +562,6 @@
           <EntitySet Name="Roles" EntityType="Self.Roles" />
           <EntitySet Name="Sponsors" EntityType="Self.Sponsors" />
           <EntitySet Name="Users" EntityType="Self.Users" />
-          <AssociationSet Name="FK__AuditLog__UserId__797309D9" Association="Self.FK__AuditLog__UserId__797309D9">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="AuditLogs" EntitySet="AuditLogs" />
-          </AssociationSet>
           <AssociationSet Name="FK__News__CategoryId__00200768" Association="Self.FK__News__CategoryId__00200768">
             <End Role="Categories" EntitySet="Categories" />
             <End Role="News" EntitySet="News" />
@@ -660,7 +600,6 @@
             <End Role="ProgramDays" EntitySet="ProgramDays" />
           </AssociationSet>
           <EntitySet Name="CurrencyAudit" EntityType="VozDelEsteDBModel.CurrencyAudit" />
-          <EntitySet Name="WeatherAudit" EntityType="VozDelEsteDBModel.WeatherAudit" />
           <EntitySet Name="PermissionRole" EntityType="VozDelEsteDBModel.PermissionRole" />
           <EntitySet Name="Permissions" EntityType="VozDelEsteDBModel.Permissions" />
           <AssociationSet Name="FK__Persmissi__Permi__56E8E7AB1" Association="VozDelEsteDBModel.FK__Persmissi__Permi__56E8E7AB1">
@@ -671,6 +610,7 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="PermissionRole" EntitySet="PermissionRole" />
           </AssociationSet>
+          <EntitySet Name="AuditLogs" EntityType="VozDelEsteDBModel.AuditLogs" />
         </EntityContainer>
         <EntityType Name="ProgramDays">
           <Key>
@@ -702,20 +642,6 @@
           <Property Name="UYUARS" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
           <Property Name="UYUBRL" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
           <Property Name="AuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="WeatherAudit">
-          <Key>
-            <PropertyRef Name="WeatherAuditId" />
-          </Key>
-          <Property Name="WeatherAuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Temp" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
-          <Property Name="Icon" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Feels_like" Type="Int32" Nullable="false" />
-          <Property Name="Temp_min" Type="Int32" Nullable="false" />
-          <Property Name="Temp_max" Type="Int32" Nullable="false" />
-          <Property Name="Sunrise" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Sunset" Type="DateTime" Nullable="false" Precision="7" />
         </EntityType>
         <EntityType Name="PermissionRole">
           <Key>
@@ -759,24 +685,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AuditLogs">
+          <Key>
+            <PropertyRef Name="AuditID" />
+          </Key>
+          <Property Name="AuditID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Operation" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TableName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OldValues" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NewValues" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="VozDelEsteDBModelStoreContainer" CdmEntityContainer="VozDelEsteDBEntities">
-          <EntitySetMapping Name="AuditLogs">
-            <EntityTypeMapping TypeName="VozDelEsteDBModel.AuditLogs">
-              <MappingFragment StoreEntitySet="AuditLogs">
-                <ScalarProperty Name="AuditId" ColumnName="AuditId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Operation" ColumnName="Operation" />
-                <ScalarProperty Name="TableName" ColumnName="TableName" />
-                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
-                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="VozDelEsteDBModel.Categories">
               <MappingFragment StoreEntitySet="Categories">
@@ -901,21 +827,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="WeatherAudit">
-            <EntityTypeMapping TypeName="VozDelEsteDBModel.WeatherAudit">
-              <MappingFragment StoreEntitySet="WeatherAudit">
-                <ScalarProperty Name="Sunset" ColumnName="Sunset" />
-                <ScalarProperty Name="Sunrise" ColumnName="Sunrise" />
-                <ScalarProperty Name="Temp_max" ColumnName="Temp_max" />
-                <ScalarProperty Name="Temp_min" ColumnName="Temp_min" />
-                <ScalarProperty Name="Feels_like" ColumnName="Feels_like" />
-                <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="Temp" ColumnName="Temp" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="WeatherAuditId" ColumnName="WeatherAuditId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PermissionRole">
             <EntityTypeMapping TypeName="VozDelEsteDBModel.PermissionRole">
               <MappingFragment StoreEntitySet="PermissionRole">
@@ -930,6 +841,19 @@
               <MappingFragment StoreEntitySet="Permissions">
                 <ScalarProperty Name="PermissionName" ColumnName="PermissionName" />
                 <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AuditLogs">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.AuditLogs">
+              <MappingFragment StoreEntitySet="AuditLogs">
+                <ScalarProperty Name="NewValues" ColumnName="NewValues" />
+                <ScalarProperty Name="OldValues" ColumnName="OldValues" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="Operation" ColumnName="Operation" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AuditID" ColumnName="AuditID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
