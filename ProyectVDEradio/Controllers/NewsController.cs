@@ -214,7 +214,6 @@ namespace ProyectVDEradio.Controllers
         public async Task<ActionResult> IndexClima()
         {
             var modelo = new WeatherViewModel();
-            var service = new WeatherService();
 
             modelo.noticias = db.News
                 .Include(n => n.Categories)
@@ -225,14 +224,6 @@ namespace ProyectVDEradio.Controllers
 
             // --- Clima actual ---
             string urlClima = "https://api.openweathermap.org/data/2.5/weather?lat=-34.90&lon=-54.95&appid=7d3b86d0d678a4b70d2a0d0d027d78f1&units=metric&lang=es";
-
-            var existingWeatherToday = service.GetWeatherHistory(1);
-            if (existingWeatherToday.Count == 0 ||
-                existingWeatherToday.All(w => w.TimeStamp.Date != DateTime.Today))
-            {
-                // No hay registro de hoy, insertar nuevo
-                await service.InsertWeatherAuditAsync(modelo.Weather);
-            }
 
             using (HttpClient client = new HttpClient())
             {
@@ -285,62 +276,7 @@ namespace ProyectVDEradio.Controllers
             }
         }
 
-        public JsonResult GetWeatherHistory(int days = 7)
-        {
-            try
-            {
-                var service = new WeatherService(); // O WeatherService si lo separas
-                var historial = service.GetWeatherHistory(days);
-
-                // Agrupar por día para el gráfico
-                var groupedData = historial
-                    .GroupBy(h => h.TimeStamp.Date)
-                    .Select(g => new
-                    {
-                        Date = g.Key,
-                        Description = g.First().Description,
-                        Icon = g.First().Icon,
-                        AvgTemp = g.Average(x => (double)x.Temp),
-                        Count = g.Count()
-                    })
-                    .OrderBy(x => x.Date)
-                    .ToList();
-
-                var data = new
-                {
-                    labels = groupedData.Select(g => g.Date.ToString("dd/MM")).ToArray(),
-                    datasets = new[]
-                    {
-                new
-                {
-                    label = "Temperatura Promedio (°C)",
-                    data = groupedData.Select(g => Math.Round(g.AvgTemp, 1)).ToArray(),
-                    borderColor = "#007bff",
-                    backgroundColor = "rgba(0, 123, 255, 0.1)",
-                    tension = 0.1
-                }
-            },
-                    // Datos adicionales para la tabla
-                    weatherData = groupedData.Select(g => new
-                    {
-                        date = g.Date.ToString("dddd, dd/MM/yyyy", new CultureInfo("es-ES")),
-                        description = g.Description,
-                        icon = g.Icon,
-                        avgTemp = Math.Round(g.AvgTemp, 1),
-                        count = g.Count
-                    }).ToArray()
-                };
-
-                return Json(data, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-
-
+       
         public ActionResult IndexTransporte()
         {
             var noticias = db.News

@@ -52,19 +52,7 @@ namespace ProyectVDEradio.ViewModels
         public int Presion { get; set; }
         public double Sensacion { get; set; }
     }
-    public class WeatherAuditHistory
-    {
-        public int WeatherAuditId { get; set; }
-        public DateTime TimeStamp { get; set; }
-        public decimal Temp { get; set; }
-        public string Icon { get; set; }
-        public string Description { get; set; }
-        public int Feels_like { get; set; }
-        public int Temp_min { get; set; }
-        public int Temp_max { get; set; }
-        public DateTime Sunrise { get; set; }
-        public DateTime Sunset { get; set; }
-    }
+    
     //------------------ Currencies ------------------
 
     public class Currency
