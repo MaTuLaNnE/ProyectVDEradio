@@ -39,7 +39,8 @@ namespace ProyectVDEradio.Models
         public virtual DbSet<ProgramDays> ProgramDays { get; set; }
         public virtual DbSet<CurrencyAudit> CurrencyAudit { get; set; }
         public virtual DbSet<WeatherAudit> WeatherAudit { get; set; }
-        public virtual DbSet<PermissionRole> PermissionRole { get; set; }
-        public virtual DbSet<Permissions> Permissions { get; set; }
+        public virtual DbSet<PermissionRole> PermissionRoleSet { get; set; }
+        public virtual DbSet<Permissions> PermissionsSet { get; set; }
+        public virtual DbSet<vw_PermissionsRole> vw_PermissionsRole { get; set; }
     }
 }

@@ -29,10 +29,11 @@
         <AssociationConnector Association="VozDelEsteDBModel.FK__ProgramDa__Progr__40058253" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.CurrencyAudit" Width="1.5" PointX="5.375" PointY="0.75" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.WeatherAudit" Width="1.5" PointX="7.625" PointY="0.625" />
-        <EntityTypeShape EntityType="VozDelEsteDBModel.PermissionRole" Width="1.5" PointX="3" PointY="0.875" />
-        <EntityTypeShape EntityType="VozDelEsteDBModel.Permissions" Width="1.5" PointX="0.75" PointY="1.125" />
-        <AssociationConnector Association="VozDelEsteDBModel.FK__Persmissi__Permi__56E8E7AB1" />
-        <AssociationConnector Association="VozDelEsteDBModel.FK__Persmissi__RoleI__57DD0BE41" />
+        <EntityTypeShape EntityType="VozDelEsteDBModel.PermissionRole" Width="1.5" PointX="10.375" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VozDelEsteDBModel.Permissions" Width="1.5" PointX="10.375" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VozDelEsteDBModel.vw_PermissionsRole" Width="1.5" PointX="10.375" PointY="6.75" />
+        <AssociationConnector Association="VozDelEsteDBModel.FK__Permissio__Permi__7B5B524B" />
+        <AssociationConnector Association="VozDelEsteDBModel.FK__Permissio__RoleI__7C4F7684" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

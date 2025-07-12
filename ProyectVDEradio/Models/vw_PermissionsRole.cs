@@ -12,12 +12,10 @@ namespace ProyectVDEradio.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CurrencyAudit
+    public partial class vw_PermissionsRole
     {
-        public System.DateTime Timestamp { get; set; }
-        public decimal UYUUSD { get; set; }
-        public decimal UYUARS { get; set; }
-        public decimal UYUBRL { get; set; }
-        public int AuditId { get; set; }
+        public int PersmissionRoleId { get; set; }
+        public string PermissionName { get; set; }
+        public string RoleName { get; set; }
     }
 }

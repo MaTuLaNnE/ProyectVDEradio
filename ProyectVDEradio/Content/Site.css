@@ -201,6 +201,139 @@ body {
     font-weight: 500;
 }
 
+
+/* ========== Historial Clima ========== */
+
+.historial-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.historial-controles {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-historial {
+    padding: 8px 16px;
+    border: 2px solid #007bff;
+    background: transparent;
+    color: #007bff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+    .btn-historial:hover {
+        background: #007bff;
+        color: white;
+    }
+
+    .btn-historial.active {
+        background: #007bff;
+        color: white;
+    }
+
+.weather-chart-container {
+    position: relative;
+    height: 300px;
+    margin-bottom: 25px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.weather-table-container {
+    overflow-x: auto;
+}
+
+.weather-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+    .weather-history-table th,
+    .weather-history-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .weather-history-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .weather-history-table tr:hover {
+        background: #f8f9fa;
+    }
+
+.weather-icon {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+}
+
+.loading-cell {
+    text-align: center;
+    padding: 30px;
+    color: #6c757d;
+}
+
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #007bff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.condition-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    .historial-controles {
+        flex-direction: column;
+    }
+
+    .btn-historial {
+        width: 100%;
+    }
+
+    .weather-chart-container {
+        height: 250px;
+        padding: 15px;
+    }
+}
+
 /* ========== CARRUSEL DE COTIZACIONES ========== */
 .ticker-container {
     background: #000;
@@ -242,6 +375,52 @@ body {
 
     100% {
         transform: translateX(-100%);
+    }
+}
+
+
+/* ========== Historial de Cotizaciones ========== */
+
+.chart-container {
+    position: relative;
+    height: 400px;
+    margin: 20px 0;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        height: 300px;
+        padding: 15px;
+    }
+
+    .chart-legend {
+        flex-direction: column;
+        gap: 10px;
     }
 }
 

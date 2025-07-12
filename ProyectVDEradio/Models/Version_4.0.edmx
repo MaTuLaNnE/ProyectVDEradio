@@ -25,9 +25,9 @@
         </EntityType>
         <EntityType Name="CurrencyAudit">
           <Key>
-            <PropertyRef Name="RateId" />
+            <PropertyRef Name="AuditId" />
           </Key>
-          <Property Name="RateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuditId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Timestamp" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UYUUSD" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="UYUARS" Type="decimal" Precision="10" Scale="3" Nullable="false" />
@@ -41,7 +41,6 @@
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="CustomerName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CustomerSurname" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="BirthDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="CustomersComments">
@@ -133,6 +132,7 @@
           <Property Name="SponsorName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SponsorDescription" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SponsorPlan" Type="int" />
+          <Property Name="SponsorImage" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -140,7 +140,7 @@
           </Key>
           <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="UserPassword" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="UserRole" Type="int" Nullable="false" />
         </EntityType>
@@ -152,12 +152,23 @@
           <Property Name="TimeStamp" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="Temp" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="Icon" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Feels_like" Type="int" Nullable="false" />
           <Property Name="Temp_min" Type="int" Nullable="false" />
           <Property Name="Temp_max" Type="int" Nullable="false" />
           <Property Name="Sunrise" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="Sunset" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'VozDelEsteDB.dbo.vw_PermissionsRole' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vw_PermissionsRole">
+          <Key>
+            <PropertyRef Name="PersmissionRoleId" />
+            <PropertyRef Name="PermissionName" />
+            <PropertyRef Name="RoleName" />
+          </Key>
+          <Property Name="PersmissionRoleId" Type="int" Nullable="false" />
+          <Property Name="PermissionName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <Association Name="FK__AuditLog__UserId__797309D9">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
@@ -231,7 +242,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Persmissi__Permi__56E8E7AB">
+        <Association Name="FK__Permissio__Permi__7B5B524B">
           <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
           <End Role="PermissionRole" Type="Self.PermissionRole" Multiplicity="*" />
           <ReferentialConstraint>
@@ -243,7 +254,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Persmissi__RoleI__57DD0BE4">
+        <Association Name="FK__Permissio__RoleI__7C4F7684">
           <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
           <End Role="PermissionRole" Type="Self.PermissionRole" Multiplicity="*" />
           <ReferentialConstraint>
@@ -255,7 +266,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProgramDa__Progr__40058253">
+        <Association Name="FK__ProgramDa__Progr__7D439ABD">
           <End Role="RadioPrograms" Type="Self.RadioPrograms" Multiplicity="1" />
           <End Role="ProgramDays" Type="Self.ProgramDays" Multiplicity="*" />
           <ReferentialConstraint>
@@ -320,6 +331,13 @@
           <EntitySet Name="Sponsors" EntityType="Self.Sponsors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WeatherAudit" EntityType="Self.WeatherAudit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vw_PermissionsRole" EntityType="Self.vw_PermissionsRole" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_PermissionsRole].[PersmissionRoleId] AS [PersmissionRoleId], 
+    [vw_PermissionsRole].[PermissionName] AS [PermissionName], 
+    [vw_PermissionsRole].[RoleName] AS [RoleName]
+    FROM [dbo].[vw_PermissionsRole] AS [vw_PermissionsRole]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__AuditLog__UserId__797309D9" Association="Self.FK__AuditLog__UserId__797309D9">
             <End Role="Users" EntitySet="Users" />
             <End Role="AuditLogs" EntitySet="AuditLogs" />
@@ -344,15 +362,15 @@
             <End Role="Categories" EntitySet="Categories" />
             <End Role="News" EntitySet="News" />
           </AssociationSet>
-          <AssociationSet Name="FK__Persmissi__Permi__56E8E7AB" Association="Self.FK__Persmissi__Permi__56E8E7AB">
+          <AssociationSet Name="FK__Permissio__Permi__7B5B524B" Association="Self.FK__Permissio__Permi__7B5B524B">
             <End Role="Permissions" EntitySet="Permissions" />
             <End Role="PermissionRole" EntitySet="PermissionRole" />
           </AssociationSet>
-          <AssociationSet Name="FK__Persmissi__RoleI__57DD0BE4" Association="Self.FK__Persmissi__RoleI__57DD0BE4">
+          <AssociationSet Name="FK__Permissio__RoleI__7C4F7684" Association="Self.FK__Permissio__RoleI__7C4F7684">
             <End Role="Roles" EntitySet="Roles" />
             <End Role="PermissionRole" EntitySet="PermissionRole" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProgramDa__Progr__40058253" Association="Self.FK__ProgramDa__Progr__40058253">
+          <AssociationSet Name="FK__ProgramDa__Progr__7D439ABD" Association="Self.FK__ProgramDa__Progr__7D439ABD">
             <End Role="RadioPrograms" EntitySet="RadioPrograms" />
             <End Role="ProgramDays" EntitySet="ProgramDays" />
           </AssociationSet>
@@ -401,7 +419,6 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="CustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CustomerSurname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="CustomersComments" Relationship="Self.FK__Customers__Custo__74AE54BC" FromRole="Customers" ToRole="CustomersComments" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Customers__UserI__6E01572D" FromRole="Customers" ToRole="Users" />
@@ -474,7 +491,7 @@
           <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Users__UserRole__6B24EA82" FromRole="Roles" ToRole="Users" />
-          <NavigationProperty Name="PermissionRole" Relationship="VozDelEsteDBModel.FK__Persmissi__RoleI__57DD0BE41" FromRole="Roles" ToRole="PermissionRole" />
+          <NavigationProperty Name="PermissionRole" Relationship="VozDelEsteDBModel.FK__Permissio__RoleI__7C4F7684" FromRole="Roles" ToRole="PermissionRole1" />
         </EntityType>
         <EntityType Name="Sponsors">
           <Key>
@@ -484,6 +501,7 @@
           <Property Name="SponsorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SponsorDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SponsorPlan" Type="Int32" />
+          <Property Name="SponsorImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -491,7 +509,7 @@
           </Key>
           <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserPassword" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserRole" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AuditLogs" Relationship="Self.FK__AuditLog__UserId__797309D9" FromRole="Users" ToRole="AuditLogs" />
@@ -662,15 +680,16 @@
           </AssociationSet>
           <EntitySet Name="CurrencyAudit" EntityType="VozDelEsteDBModel.CurrencyAudit" />
           <EntitySet Name="WeatherAudit" EntityType="VozDelEsteDBModel.WeatherAudit" />
-          <EntitySet Name="PermissionRole" EntityType="VozDelEsteDBModel.PermissionRole" />
-          <EntitySet Name="Permissions" EntityType="VozDelEsteDBModel.Permissions" />
-          <AssociationSet Name="FK__Persmissi__Permi__56E8E7AB1" Association="VozDelEsteDBModel.FK__Persmissi__Permi__56E8E7AB1">
-            <End Role="Permissions" EntitySet="Permissions" />
-            <End Role="PermissionRole" EntitySet="PermissionRole" />
+          <EntitySet Name="PermissionRoleSet" EntityType="VozDelEsteDBModel.PermissionRole" />
+          <EntitySet Name="PermissionsSet" EntityType="VozDelEsteDBModel.Permissions" />
+          <EntitySet Name="vw_PermissionsRole" EntityType="VozDelEsteDBModel.vw_PermissionsRole" />
+          <AssociationSet Name="FK__Permissio__Permi__7B5B524B" Association="VozDelEsteDBModel.FK__Permissio__Permi__7B5B524B">
+            <End Role="Permissions1" EntitySet="PermissionsSet" />
+            <End Role="PermissionRole1" EntitySet="PermissionRoleSet" />
           </AssociationSet>
-          <AssociationSet Name="FK__Persmissi__RoleI__57DD0BE41" Association="VozDelEsteDBModel.FK__Persmissi__RoleI__57DD0BE41">
+          <AssociationSet Name="FK__Permissio__RoleI__7C4F7684" Association="VozDelEsteDBModel.FK__Permissio__RoleI__7C4F7684">
             <End Role="Roles" EntitySet="Roles" />
-            <End Role="PermissionRole" EntitySet="PermissionRole" />
+            <End Role="PermissionRole1" EntitySet="PermissionRoleSet" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ProgramDays">
@@ -696,13 +715,13 @@
         </Association>
         <EntityType Name="CurrencyAudit">
           <Key>
-            <PropertyRef Name="RateId" />
+            <PropertyRef Name="AuditId" />
           </Key>
-          <Property Name="RateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UYUUSD" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
           <Property Name="UYUARS" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
           <Property Name="UYUBRL" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
+          <Property Name="AuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="WeatherAudit">
           <Key>
@@ -712,7 +731,6 @@
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="Temp" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Feels_like" Type="Int32" Nullable="false" />
           <Property Name="Temp_min" Type="Int32" Nullable="false" />
           <Property Name="Temp_max" Type="Int32" Nullable="false" />
@@ -726,8 +744,8 @@
           <Property Name="PersmissionRoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PermissionId" Type="Int32" Nullable="false" />
           <Property Name="RoleId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Permissions" Relationship="VozDelEsteDBModel.FK__Persmissi__Permi__56E8E7AB1" FromRole="PermissionRole" ToRole="Permissions" />
-          <NavigationProperty Name="Roles" Relationship="VozDelEsteDBModel.FK__Persmissi__RoleI__57DD0BE41" FromRole="PermissionRole" ToRole="Roles" />
+          <NavigationProperty Name="Permissions" Relationship="VozDelEsteDBModel.FK__Permissio__Permi__7B5B524B" FromRole="PermissionRole1" ToRole="Permissions1" />
+          <NavigationProperty Name="Roles" Relationship="VozDelEsteDBModel.FK__Permissio__RoleI__7C4F7684" FromRole="PermissionRole1" ToRole="Roles" />
         </EntityType>
         <EntityType Name="Permissions">
           <Key>
@@ -735,28 +753,38 @@
           </Key>
           <Property Name="PermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PermissionName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="PermissionRole" Relationship="VozDelEsteDBModel.FK__Persmissi__Permi__56E8E7AB1" FromRole="Permissions" ToRole="PermissionRole" />
+          <NavigationProperty Name="PermissionRole" Relationship="VozDelEsteDBModel.FK__Permissio__Permi__7B5B524B" FromRole="Permissions1" ToRole="PermissionRole1" />
         </EntityType>
-        <Association Name="FK__Persmissi__Permi__56E8E7AB1">
-          <End Type="VozDelEsteDBModel.Permissions" Role="Permissions" Multiplicity="1" />
-          <End Type="VozDelEsteDBModel.PermissionRole" Role="PermissionRole" Multiplicity="*" />
+        <EntityType Name="vw_PermissionsRole">
+          <Key>
+            <PropertyRef Name="PersmissionRoleId" />
+            <PropertyRef Name="PermissionName" />
+            <PropertyRef Name="RoleName" />
+          </Key>
+          <Property Name="PersmissionRoleId" Type="Int32" Nullable="false" />
+          <Property Name="PermissionName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK__Permissio__Permi__7B5B524B">
+          <End Type="VozDelEsteDBModel.Permissions" Role="Permissions1" Multiplicity="1" />
+          <End Type="VozDelEsteDBModel.PermissionRole" Role="PermissionRole1" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Permissions">
+            <Principal Role="Permissions1">
               <PropertyRef Name="PermissionId" />
             </Principal>
-            <Dependent Role="PermissionRole">
+            <Dependent Role="PermissionRole1">
               <PropertyRef Name="PermissionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Persmissi__RoleI__57DD0BE41">
+        <Association Name="FK__Permissio__RoleI__7C4F7684">
           <End Type="VozDelEsteDBModel.Roles" Role="Roles" Multiplicity="1" />
-          <End Type="VozDelEsteDBModel.PermissionRole" Role="PermissionRole" Multiplicity="*" />
+          <End Type="VozDelEsteDBModel.PermissionRole" Role="PermissionRole1" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Roles">
               <PropertyRef Name="RoleId" />
             </Principal>
-            <Dependent Role="PermissionRole">
+            <Dependent Role="PermissionRole1">
               <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
@@ -794,7 +822,6 @@
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
                 <ScalarProperty Name="CustomerSurname" ColumnName="CustomerSurname" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -866,6 +893,7 @@
           <EntitySetMapping Name="Sponsors">
             <EntityTypeMapping TypeName="VozDelEsteDBModel.Sponsors">
               <MappingFragment StoreEntitySet="Sponsors">
+                <ScalarProperty Name="SponsorImage" ColumnName="SponsorImage" />
                 <ScalarProperty Name="SponsorID" ColumnName="SponsorID" />
                 <ScalarProperty Name="SponsorName" ColumnName="SponsorName" />
                 <ScalarProperty Name="SponsorDescription" ColumnName="SponsorDescription" />
@@ -895,11 +923,11 @@
           <EntitySetMapping Name="CurrencyAudit">
             <EntityTypeMapping TypeName="VozDelEsteDBModel.CurrencyAudit">
               <MappingFragment StoreEntitySet="CurrencyAudit">
+                <ScalarProperty Name="AuditId" ColumnName="AuditId" />
                 <ScalarProperty Name="UYUBRL" ColumnName="UYUBRL" />
                 <ScalarProperty Name="UYUARS" ColumnName="UYUARS" />
                 <ScalarProperty Name="UYUUSD" ColumnName="UYUUSD" />
                 <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-                <ScalarProperty Name="RateId" ColumnName="RateId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -911,7 +939,6 @@
                 <ScalarProperty Name="Temp_max" ColumnName="Temp_max" />
                 <ScalarProperty Name="Temp_min" ColumnName="Temp_min" />
                 <ScalarProperty Name="Feels_like" ColumnName="Feels_like" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
                 <ScalarProperty Name="Temp" ColumnName="Temp" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
@@ -919,7 +946,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PermissionRole">
+          <EntitySetMapping Name="PermissionRoleSet">
             <EntityTypeMapping TypeName="VozDelEsteDBModel.PermissionRole">
               <MappingFragment StoreEntitySet="PermissionRole">
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
@@ -928,7 +955,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Permissions">
+          <EntitySetMapping Name="PermissionsSet">
             <EntityTypeMapping TypeName="VozDelEsteDBModel.Permissions">
               <MappingFragment StoreEntitySet="Permissions">
                 <ScalarProperty Name="PermissionName" ColumnName="PermissionName" />
@@ -936,7 +963,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="vw_PermissionsRole">
+            <EntityTypeMapping TypeName="VozDelEsteDBModel.vw_PermissionsRole">
+              <MappingFragment StoreEntitySet="vw_PermissionsRole">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="PermissionName" ColumnName="PermissionName" />
+                <ScalarProperty Name="PersmissionRoleId" ColumnName="PersmissionRoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

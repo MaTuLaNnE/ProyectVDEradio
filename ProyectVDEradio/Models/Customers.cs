@@ -24,7 +24,6 @@ namespace ProyectVDEradio.Models
         public int UserId { get; set; }
         public string CustomerName { get; set; }
         public string CustomerSurname { get; set; }
-        public string Email { get; set; }
         public System.DateTime BirthDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -15,6 +15,9 @@ using ProyectVDEradio.Utils.WeatherForecastAPI;
 using ProyectVDEradio.Utils;
 using Newtonsoft.Json;
 using ProyectVDEradio.DataAccess.APIsRepository;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Web.Services.Description;
 
 namespace ProyectVDEradio.Controllers
 {
@@ -69,14 +72,14 @@ namespace ProyectVDEradio.Controllers
                     var response = await client.GetStringAsync(urlCurrency);
                     var currency = Utils.CurrencyApi.FromJson(response);
 
-                    usd = 1/currency.Quotes.Uyuusd ?? 0;
-                    ars = 1/currency.Quotes.Uyuars ?? 0;
-                    brl = 1/currency.Quotes.Uyubrl ?? 0;
+                    usd = 1 / currency.Quotes.Uyuusd ?? 0;
+                    ars = 1 / currency.Quotes.Uyuars ?? 0;
+                    brl = 1 / currency.Quotes.Uyubrl ?? 0;
 
                     // Insertar en CurrencyAudit
                     await service.InsertCurrencyAuditAsync(usd, ars, brl);
                     //api.AddCurrencyAudit(usd, ars, brl); // ARREGLAR ESTO Y DESDE LA API
-                } 
+                }
             }
             else
             {
@@ -95,6 +98,49 @@ namespace ProyectVDEradio.Controllers
             };
 
             return View("Categoria", modelo);
+        }
+        public JsonResult GetCurrencyHistory()
+        {
+            try
+            {
+                var service = new CurrencyService();
+                var historial = service.GetCurrencyHistory();
+
+                var data = new
+                {
+                    labels = historial.Select(h => h.Timestamp.ToString("dd/MM HH:mm")).ToArray(),
+                    datasets = new[]
+                    {
+                new {
+                    label = "USD",
+                    data = historial.Select(h => h.UYUUSD).ToArray(),
+                    borderColor = "#28a745",
+                    backgroundColor = "rgba(40, 167, 69, 0.1)",
+                    tension = 0.1
+                },
+                new {
+                    label = "ARS",
+                    data = historial.Select(h => h.UYUARS).ToArray(),
+                    borderColor = "#007bff",
+                    backgroundColor = "rgba(0, 123, 255, 0.1)",
+                    tension = 0.1
+                },
+                new {
+                    label = "BRL",
+                    data = historial.Select(h => h.UYUBRL).ToArray(),
+                    borderColor = "#ffc107",
+                    backgroundColor = "rgba(255, 193, 7, 0.1)",
+                    tension = 0.1
+                }
+            }
+                };
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult IndexDeportes()
@@ -168,7 +214,7 @@ namespace ProyectVDEradio.Controllers
         public async Task<ActionResult> IndexClima()
         {
             var modelo = new WeatherViewModel();
-
+            var service = new WeatherService();
 
             modelo.noticias = db.News
                 .Include(n => n.Categories)
@@ -179,6 +225,14 @@ namespace ProyectVDEradio.Controllers
 
             // --- Clima actual ---
             string urlClima = "https://api.openweathermap.org/data/2.5/weather?lat=-34.90&lon=-54.95&appid=7d3b86d0d678a4b70d2a0d0d027d78f1&units=metric&lang=es";
+
+            var existingWeatherToday = service.GetWeatherHistory(1);
+            if (existingWeatherToday.Count == 0 ||
+                existingWeatherToday.All(w => w.TimeStamp.Date != DateTime.Today))
+            {
+                // No hay registro de hoy, insertar nuevo
+                await service.InsertWeatherAuditAsync(modelo.Weather);
+            }
 
             using (HttpClient client = new HttpClient())
             {
@@ -227,9 +281,62 @@ namespace ProyectVDEradio.Controllers
                                  })
                                 .ToList();
 
+                return View("Categoria", modelo);
             }
+        }
 
-            return View("Categoria", modelo);
+        public JsonResult GetWeatherHistory(int days = 7)
+        {
+            try
+            {
+                var service = new WeatherService(); // O WeatherService si lo separas
+                var historial = service.GetWeatherHistory(days);
+
+                // Agrupar por día para el gráfico
+                var groupedData = historial
+                    .GroupBy(h => h.TimeStamp.Date)
+                    .Select(g => new
+                    {
+                        Date = g.Key,
+                        Description = g.First().Description,
+                        Icon = g.First().Icon,
+                        AvgTemp = g.Average(x => (double)x.Temp),
+                        Count = g.Count()
+                    })
+                    .OrderBy(x => x.Date)
+                    .ToList();
+
+                var data = new
+                {
+                    labels = groupedData.Select(g => g.Date.ToString("dd/MM")).ToArray(),
+                    datasets = new[]
+                    {
+                new
+                {
+                    label = "Temperatura Promedio (°C)",
+                    data = groupedData.Select(g => Math.Round(g.AvgTemp, 1)).ToArray(),
+                    borderColor = "#007bff",
+                    backgroundColor = "rgba(0, 123, 255, 0.1)",
+                    tension = 0.1
+                }
+            },
+                    // Datos adicionales para la tabla
+                    weatherData = groupedData.Select(g => new
+                    {
+                        date = g.Date.ToString("dddd, dd/MM/yyyy", new CultureInfo("es-ES")),
+                        description = g.Description,
+                        icon = g.Icon,
+                        avgTemp = Math.Round(g.AvgTemp, 1),
+                        count = g.Count
+                    }).ToArray()
+                };
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
 
