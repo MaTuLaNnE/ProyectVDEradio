@@ -18,7 +18,6 @@ namespace ProyectVDEradio.Models
         public System.DateTime TimeStamp { get; set; }
         public decimal Temp { get; set; }
         public string Icon { get; set; }
-        public string Description { get; set; }
         public int Feels_like { get; set; }
         public int Temp_min { get; set; }
         public int Temp_max { get; set; }

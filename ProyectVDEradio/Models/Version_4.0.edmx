@@ -25,9 +25,9 @@
         </EntityType>
         <EntityType Name="CurrencyAudit">
           <Key>
-            <PropertyRef Name="RateId" />
+            <PropertyRef Name="AuditId" />
           </Key>
-          <Property Name="RateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuditId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Timestamp" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UYUUSD" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="UYUARS" Type="decimal" Precision="10" Scale="3" Nullable="false" />
@@ -132,6 +132,7 @@
           <Property Name="SponsorName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SponsorDescription" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SponsorPlan" Type="int" />
+          <Property Name="SponsorImage" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -151,7 +152,6 @@
           <Property Name="TimeStamp" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="Temp" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="Icon" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Feels_like" Type="int" Nullable="false" />
           <Property Name="Temp_min" Type="int" Nullable="false" />
           <Property Name="Temp_max" Type="int" Nullable="false" />
@@ -230,7 +230,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Persmissi__Permi__56E8E7AB">
+        <Association Name="FK__Permissio__Permi__6D0D32F4">
           <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
           <End Role="PermissionRole" Type="Self.PermissionRole" Multiplicity="*" />
           <ReferentialConstraint>
@@ -242,7 +242,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Persmissi__RoleI__57DD0BE4">
+        <Association Name="FK__Permissio__RoleI__6E01572D">
           <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
           <End Role="PermissionRole" Type="Self.PermissionRole" Multiplicity="*" />
           <ReferentialConstraint>
@@ -254,7 +254,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProgramDa__Progr__40058253">
+        <Association Name="FK__ProgramDa__Progr__6EF57B66">
           <End Role="RadioPrograms" Type="Self.RadioPrograms" Multiplicity="1" />
           <End Role="ProgramDays" Type="Self.ProgramDays" Multiplicity="*" />
           <ReferentialConstraint>
@@ -343,15 +343,15 @@
             <End Role="Categories" EntitySet="Categories" />
             <End Role="News" EntitySet="News" />
           </AssociationSet>
-          <AssociationSet Name="FK__Persmissi__Permi__56E8E7AB" Association="Self.FK__Persmissi__Permi__56E8E7AB">
+          <AssociationSet Name="FK__Permissio__Permi__6D0D32F4" Association="Self.FK__Permissio__Permi__6D0D32F4">
             <End Role="Permissions" EntitySet="Permissions" />
             <End Role="PermissionRole" EntitySet="PermissionRole" />
           </AssociationSet>
-          <AssociationSet Name="FK__Persmissi__RoleI__57DD0BE4" Association="Self.FK__Persmissi__RoleI__57DD0BE4">
+          <AssociationSet Name="FK__Permissio__RoleI__6E01572D" Association="Self.FK__Permissio__RoleI__6E01572D">
             <End Role="Roles" EntitySet="Roles" />
             <End Role="PermissionRole" EntitySet="PermissionRole" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProgramDa__Progr__40058253" Association="Self.FK__ProgramDa__Progr__40058253">
+          <AssociationSet Name="FK__ProgramDa__Progr__6EF57B66" Association="Self.FK__ProgramDa__Progr__6EF57B66">
             <End Role="RadioPrograms" EntitySet="RadioPrograms" />
             <End Role="ProgramDays" EntitySet="ProgramDays" />
           </AssociationSet>
@@ -482,6 +482,7 @@
           <Property Name="SponsorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SponsorDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SponsorPlan" Type="Int32" />
+          <Property Name="SponsorImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -694,13 +695,13 @@
         </Association>
         <EntityType Name="CurrencyAudit">
           <Key>
-            <PropertyRef Name="RateId" />
+            <PropertyRef Name="AuditId" />
           </Key>
-          <Property Name="RateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UYUUSD" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
           <Property Name="UYUARS" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
           <Property Name="UYUBRL" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
+          <Property Name="AuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="WeatherAudit">
           <Key>
@@ -710,7 +711,6 @@
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="Temp" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Feels_like" Type="Int32" Nullable="false" />
           <Property Name="Temp_min" Type="Int32" Nullable="false" />
           <Property Name="Temp_max" Type="Int32" Nullable="false" />
@@ -863,6 +863,7 @@
           <EntitySetMapping Name="Sponsors">
             <EntityTypeMapping TypeName="VozDelEsteDBModel.Sponsors">
               <MappingFragment StoreEntitySet="Sponsors">
+                <ScalarProperty Name="SponsorImage" ColumnName="SponsorImage" />
                 <ScalarProperty Name="SponsorID" ColumnName="SponsorID" />
                 <ScalarProperty Name="SponsorName" ColumnName="SponsorName" />
                 <ScalarProperty Name="SponsorDescription" ColumnName="SponsorDescription" />
@@ -892,11 +893,11 @@
           <EntitySetMapping Name="CurrencyAudit">
             <EntityTypeMapping TypeName="VozDelEsteDBModel.CurrencyAudit">
               <MappingFragment StoreEntitySet="CurrencyAudit">
+                <ScalarProperty Name="AuditId" ColumnName="AuditId" />
                 <ScalarProperty Name="UYUBRL" ColumnName="UYUBRL" />
                 <ScalarProperty Name="UYUARS" ColumnName="UYUARS" />
                 <ScalarProperty Name="UYUUSD" ColumnName="UYUUSD" />
                 <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-                <ScalarProperty Name="RateId" ColumnName="RateId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -908,7 +909,6 @@
                 <ScalarProperty Name="Temp_max" ColumnName="Temp_max" />
                 <ScalarProperty Name="Temp_min" ColumnName="Temp_min" />
                 <ScalarProperty Name="Feels_like" ColumnName="Feels_like" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
                 <ScalarProperty Name="Temp" ColumnName="Temp" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />

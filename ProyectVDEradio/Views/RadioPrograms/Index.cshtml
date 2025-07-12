@@ -4,6 +4,14 @@
 
     var currentTime = DateTime.Now.TimeOfDay;
     var currentDay = (int)DateTime.Now.DayOfWeek;
+
+    var now = DateTime.Now;
+    var today = now.Date;
+
+    var startTime = Model.RadioActual.StartTime;
+    var startDateTime = today + startTime;
+
+    var elapsed = now - startDateTime;
 }
 
 @if (Model.RadioActual == null)
@@ -101,34 +109,38 @@
 
 
         <!-- REPRODUCTOR DE RADIO -->
-        <div class="radio-player-section">
-            <h2>🎵 Reproductor en Vivo</h2>
+    <div class="radio-player-section">
+        <h2>🎵 Reproductor en Vivo</h2>
 
-            <div class="radio-player">
-                <div class="radio-header">
-                    <div class="radio-station">Radio Estación FM</div>
-                    <div class="radio-time" id="radioTime">00:00:00</div>
-                    <div class="radio-program" id="radioProgram">🎵 Cargando programa...</div>
+        <div class="radio-player">
+            <div class="radio-header">
+                <div class="radio-station">Radio Estación FM</div>
+                <div class="radio-time">
+                    @string.Format("{0:D2}:{1:D2}:{2:D2}", (int)elapsed.TotalHours, elapsed.Minutes, elapsed.Seconds)
                 </div>
+                <div class="radio-program" id="radioProgram">@Model.RadioActual.ProgramName</div>
+            </div>
 
-                <div class="radio-visualizer">
-                    <div id="visualizerBars"></div>
-                    <div class="radio-status" id="radioStatus" style="display: none;">● EN VIVO</div>
-                    <div class="radio-message" id="radioMessage">Presiona ▶ para sintonizar</div>
-                </div>
+            <div class="radio-visualizer">
+                <div id="visualizerBars"></div>
+            </div>
 
-                <div class="radio-controls">
-                    <button class="radio-play-btn" id="playBtn" onclick="toggleRadio()">▶</button>
-                    <button class="radio-stop-btn" id="stopBtn" onclick="stopRadio()">⏹</button>
+            <div class="radio-status" id="radioStatus" style="display: none; color: red; align-self: center">● EN VIVO</div>
+            <div class="radio-message" id="radioMessage" style="color: green; align-self: center">Presiona ▶ para sintonizar</div>
 
-                    <div class="radio-volume">
-                        <div class="volume-label" id="volumeLabel">Volumen: 50%</div>
-                        <input type="range" class="volume-slider" id="volumeSlider"
-                               min="0" max="100" value="50" onchange="updateVolume(this.value)">
-                    </div>
+
+            <div class="radio-controls">
+                <button class="radio-play-btn" id="playBtn" onclick="toggleRadio()">▶</button>
+                <button class="radio-stop-btn" id="stopBtn" onclick="stopRadio()">⏹</button>
+
+                <div class="radio-volume">
+                    <div class="volume-label" id="volumeLabel">Volumen: 50%</div>
+                    <input type="range" class="volume-slider" id="volumeSlider"
+                           min="0" max="100" value="50" onchange="updateVolume(this.value)">
                 </div>
             </div>
         </div>
+    </div>
     </div>
 }
 
