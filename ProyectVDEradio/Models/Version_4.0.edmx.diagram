@@ -28,7 +28,6 @@
         <EntityTypeShape EntityType="VozDelEsteDBModel.ProgramDays" Width="1.5" PointX="7.75" PointY="16" />
         <AssociationConnector Association="VozDelEsteDBModel.FK__ProgramDa__Progr__40058253" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.CurrencyAudit" Width="1.5" PointX="5.375" PointY="0.75" />
-        <EntityTypeShape EntityType="VozDelEsteDBModel.WeatherAudit" Width="1.5" PointX="8.625" PointY="1.125" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.PermissionRole" Width="1.5" PointX="3" PointY="0.875" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.Permissions" Width="1.5" PointX="0.75" PointY="1.125" />
         <AssociationConnector Association="VozDelEsteDBModel.FK__Persmissi__Permi__56E8E7AB1" />

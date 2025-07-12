@@ -144,20 +144,6 @@
           <Property Name="UserPassword" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="UserRole" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="WeatherAudit">
-          <Key>
-            <PropertyRef Name="WeatherAuditId" />
-          </Key>
-          <Property Name="WeatherAuditId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TimeStamp" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Temp" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="Icon" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Feels_like" Type="int" Nullable="false" />
-          <Property Name="Temp_min" Type="int" Nullable="false" />
-          <Property Name="Temp_max" Type="int" Nullable="false" />
-          <Property Name="Sunrise" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Sunset" Type="datetime2" Precision="7" Nullable="false" />
-        </EntityType>
         <Association Name="FK__AuditLog__UserId__797309D9">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
@@ -318,7 +304,6 @@
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sponsors" EntityType="Self.Sponsors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="WeatherAudit" EntityType="Self.WeatherAudit" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__AuditLog__UserId__797309D9" Association="Self.FK__AuditLog__UserId__797309D9">
             <End Role="Users" EntitySet="Users" />
             <End Role="AuditLogs" EntitySet="AuditLogs" />
@@ -660,7 +645,6 @@
             <End Role="ProgramDays" EntitySet="ProgramDays" />
           </AssociationSet>
           <EntitySet Name="CurrencyAudit" EntityType="VozDelEsteDBModel.CurrencyAudit" />
-          <EntitySet Name="WeatherAudit" EntityType="VozDelEsteDBModel.WeatherAudit" />
           <EntitySet Name="PermissionRole" EntityType="VozDelEsteDBModel.PermissionRole" />
           <EntitySet Name="Permissions" EntityType="VozDelEsteDBModel.Permissions" />
           <AssociationSet Name="FK__Persmissi__Permi__56E8E7AB1" Association="VozDelEsteDBModel.FK__Persmissi__Permi__56E8E7AB1">
@@ -702,20 +686,6 @@
           <Property Name="UYUARS" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
           <Property Name="UYUBRL" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
           <Property Name="AuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="WeatherAudit">
-          <Key>
-            <PropertyRef Name="WeatherAuditId" />
-          </Key>
-          <Property Name="WeatherAuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Temp" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
-          <Property Name="Icon" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Feels_like" Type="Int32" Nullable="false" />
-          <Property Name="Temp_min" Type="Int32" Nullable="false" />
-          <Property Name="Temp_max" Type="Int32" Nullable="false" />
-          <Property Name="Sunrise" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Sunset" Type="DateTime" Nullable="false" Precision="7" />
         </EntityType>
         <EntityType Name="PermissionRole">
           <Key>
@@ -898,21 +868,6 @@
                 <ScalarProperty Name="UYUARS" ColumnName="UYUARS" />
                 <ScalarProperty Name="UYUUSD" ColumnName="UYUUSD" />
                 <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="WeatherAudit">
-            <EntityTypeMapping TypeName="VozDelEsteDBModel.WeatherAudit">
-              <MappingFragment StoreEntitySet="WeatherAudit">
-                <ScalarProperty Name="Sunset" ColumnName="Sunset" />
-                <ScalarProperty Name="Sunrise" ColumnName="Sunrise" />
-                <ScalarProperty Name="Temp_max" ColumnName="Temp_max" />
-                <ScalarProperty Name="Temp_min" ColumnName="Temp_min" />
-                <ScalarProperty Name="Feels_like" ColumnName="Feels_like" />
-                <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="Temp" ColumnName="Temp" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="WeatherAuditId" ColumnName="WeatherAuditId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
