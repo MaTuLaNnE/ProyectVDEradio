@@ -38,8 +38,7 @@ namespace ProyectVDEradio.Controllers
                                      .Include(p => p.ProgramDays)
                                      .Where(p => p.StartTime < currentTime || (p.StartTime > p.EndTime && currentTime < p.EndTime))
                                      .OrderByDescending(p => p.StartTime)
-                                     .FirstOrDefault()
-
+                                     .FirstOrDefault(),
 
 
             };
