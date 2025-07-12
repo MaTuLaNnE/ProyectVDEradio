@@ -17,7 +17,8 @@ namespace ProyectVDEradio.Controllers
         private VozDelEsteDBEntities db = new VozDelEsteDBEntities();
 
         // GET: Users
-        [Authorize(Roles = "Administrador")]
+        // GET: Users
+        [AuthorizePermiso("UsersTable")]
         public ActionResult Index()
         {
             var users = db.Users.Include(u => u.Roles);
@@ -25,7 +26,6 @@ namespace ProyectVDEradio.Controllers
         }
 
         // GET: Users/Details/5
-        [AuthorizePermiso("ViewUser")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -41,7 +41,7 @@ namespace ProyectVDEradio.Controllers
         }
 
         // GET: Users/Create
-        [AuthorizePermiso("CreateUser")]
+        [AuthorizePermiso("CreateUsers")]
         public ActionResult Create()
         {
             var model = new CreateUserViewModel
@@ -81,10 +81,10 @@ namespace ProyectVDEradio.Controllers
                 {
                     var cliente = new Customers
                     {
-                        UserId = user.UserId, 
+                        UserId = user.UserId,
                         CustomerName = model.Nombre,
                         CustomerSurname = model.Apellido,
-                        BirthDate = model.FechaNacimiento?.Date ?? DateTime.Now 
+                        BirthDate = model.FechaNacimiento?.Date ?? DateTime.Now
                     };
                     db.Customers.Add(cliente);
                     db.SaveChanges();
@@ -102,9 +102,7 @@ namespace ProyectVDEradio.Controllers
             return View(model);
         }
 
-
         // GET: Users/Edit/5
-        [AuthorizePermiso("EditUser")] 
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -123,7 +121,6 @@ namespace ProyectVDEradio.Controllers
         // POST: Users/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
-        [AuthorizePermiso("EditUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "UserId,UserName,Email,UserPassword,UserRole")] Users users)
@@ -139,7 +136,6 @@ namespace ProyectVDEradio.Controllers
         }
 
         // GET: Users/Delete/5
-        [AuthorizePermiso("DeleteUser")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
