@@ -26,12 +26,41 @@ document.querySelectorAll('.crud-btn').forEach(btn => {
     });
 });
 
+
+
+// Pa crear el usuario
+
+//document.getElementById("roleSelect").addEventListener("change", function () {
+//    var valor = this.value;
+//    var clienteCampos = document.getElementById("clienteCampos");
+//    if (valor === "3") { // ID del rol Cliente
+//        clienteCampos.style.display = "block";
+//    } else {
+//        clienteCampos.style.display = "none";
+//    }
+//});
+
+
+
+// Script para mostrar/ocultar campos de cliente
 document.getElementById("roleSelect").addEventListener("change", function () {
     var valor = this.value;
     var clienteCampos = document.getElementById("clienteCampos");
+
     if (valor === "3") { // ID del rol Cliente
-        clienteCampos.style.display = "block";
+        clienteCampos.classList.add("show");
     } else {
-        clienteCampos.style.display = "none";
+        clienteCampos.classList.remove("show");
     }
+});
+
+// Efectos de interacción mejorados
+document.querySelectorAll('.form-control').forEach(input => {
+    input.addEventListener('focus', function () {
+        this.parentElement.style.transform = 'translateY(-2px)';
+    });
+
+    input.addEventListener('blur', function () {
+        this.parentElement.style.transform = 'translateY(0)';
+    });
 });

@@ -3,67 +3,161 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<div class="container">
+    <div class="section">
+        <h2>Crear Usuario</h2>
+        <h4>Nuevo Usuario del Sistema</h4>
+        <div class="form-divider"></div>
 
-    <div class="form-horizontal">
-        <h4>Users</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group has-icon">
+                <label class="form-label required">Nombre de Usuario</label>
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese el nombre de usuario" } })
+                <span class="input-icon">👤</span>
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "field-validation-error" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            <div class="form-group has-icon">
+                <label class="form-label required">Correo Electrónico</label>
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "usuario@ejemplo.com", type = "email" } })
+                <span class="input-icon">📧</span>
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "field-validation-error" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserPassword, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserPassword, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserPassword, "", new { @class = "text-danger" })
+            <div class="form-group has-icon">
+                <label class="form-label required">Contraseña</label>
+                @Html.EditorFor(model => model.UserPassword, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese una contraseña segura", type = "password" } })
+                <span class="input-icon">🔒</span>
+                @Html.ValidationMessageFor(model => model.UserPassword, "", new { @class = "field-validation-error" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserRole, "UserRole", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(m => m.UserRole, Model.RolesDisponibles, "-- Seleccionar Rol --", new { id = "roleSelect" })
-                @Html.ValidationMessageFor(model => model.UserRole, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="form-label required">Rol del Usuario</label>
+                <div class="dropdown-select">
+                    @Html.DropDownListFor(m => m.UserRole, Model.RolesDisponibles, "-- Seleccionar Rol --", new { @class = "form-control", id = "roleSelect" })
+                </div>
+                @Html.ValidationMessageFor(model => model.UserRole, "", new { @class = "field-validation-error" })
             </div>
-        </div>
 
-        <div id="clienteCampos" style="display:none;">
-            @Html.LabelFor(m => m.Nombre)
-            @Html.TextBoxFor(m => m.Nombre)
+            <div id="clienteCampos" class="cliente-campos">
+                <div class="cliente-title">Información del Cliente</div>
 
-            @Html.LabelFor(m => m.Apellido)
-            @Html.TextBoxFor(m => m.Apellido)
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required">Nombre</label>
+                        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control", placeholder = "Nombre del cliente" })
+                        @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "field-validation-error" })
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Apellido</label>
+                        @Html.TextBoxFor(m => m.Apellido, new { @class = "form-control", placeholder = "Apellido del cliente" })
+                        @Html.ValidationMessageFor(m => m.Apellido, "", new { @class = "field-validation-error" })
+                    </div>
+                </div>
 
-            @Html.LabelFor(m => m.FechaNacimiento)
-            @Html.TextBoxFor(m => m.FechaNacimiento, "{0:yyyy-MM-dd}", new { type = "date" })
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <div class="form-group">
+                    <label class="form-label required">Fecha de Nacimiento</label>
+                    @Html.TextBoxFor(m => m.FechaNacimiento, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.FechaNacimiento, "", new { @class = "field-validation-error" })
+                </div>
             </div>
+
+            <div class="btn-container">
+                <input type="submit" value="✅ Crear Usuario" class="btn btn-primary" />
+                <input type="reset" value="🔄 Limpiar Formulario" class="btn btn-secondary" />
+            </div>
+        }
+
+        <div class="back-link">
+            <a href="@Url.Action("Index", "Users")" class="crud-btn btn-listar">
+                ← Volver al Panel de Gestión de Usuarios
+            </a>
+        </div>
+        <div class="back-link">
+            <a href="@Url.Action("Index", "Management")" class="crud-btn btn-listar">
+                ← Volver al Panel de Gestión
+            </a>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+
+
+@*<div class="container">
+        <section class="section">
+
+            <h2>Crear Usuario</h2>
+
+            <h4>Nuevo Usuario del Sistema</h4>
+
+            <div class="form-divider"></div>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>Users</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.UserPassword, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.UserPassword, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserRole, "UserRole", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(m => m.UserRole, Model.RolesDisponibles, "-- Seleccionar Rol --", new { id = "roleSelect" })
+                            @Html.ValidationMessageFor(model => model.UserRole, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div id="clienteCampos" style="display:none;">
+                        @Html.LabelFor(m => m.Nombre)
+                        @Html.TextBoxFor(m => m.Nombre)
+
+                        @Html.LabelFor(m => m.Apellido)
+                        @Html.TextBoxFor(m => m.Apellido)
+
+                        @Html.LabelFor(m => m.FechaNacimiento)
+                        @Html.TextBoxFor(m => m.FechaNacimiento, "{0:yyyy-MM-dd}", new { type = "date" })
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@

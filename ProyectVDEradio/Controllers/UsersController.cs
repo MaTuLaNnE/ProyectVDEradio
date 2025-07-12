@@ -57,7 +57,7 @@ namespace ProyectVDEradio.Controllers
 
         // POST: Users/Create
 
-        [AuthorizePermiso("CreateUser")]
+        [AuthorizePermiso("CreateUsers")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateUserViewModel model)
