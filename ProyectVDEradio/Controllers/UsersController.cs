@@ -196,25 +196,31 @@ namespace ProyectVDEradio.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Users users = db.Users.Find(id);
-            db.Users.Remove(users);
-            // Si el usuario es un cliente, también eliminamos sus datos de cliente
+            // Buscar y eliminar comentarios primero
             var customer = db.Customers.FirstOrDefault(c => c.UserId == id);
             if (customer != null)
             {
-                db.Customers.Remove(customer);
+                var comments = db.CustomersComments
+                                 .Where(c => c.CustomerId == customer.CustomerId)
+                                 .ToList();
+
+                foreach (var comment in comments)
+                {
+                    db.CustomersComments.Remove(comment);
+                }
+
+                db.Customers.Remove(customer); // Ahora sí se puede eliminar el cliente
             }
+
+            // Luego eliminar el usuario
+            Users users = db.Users.Find(id);
+            if (users != null)
+            {
+                db.Users.Remove(users);
+            }
+
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
