@@ -4,54 +4,91 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Sponsors</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.SponsorName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SponsorName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SponsorName, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SponsorDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SponsorDescription, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SponsorDescription, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    <body style="background: linear-gradient(135deg, #667eea, #764ba2); margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: white;">
+        <section style="padding: 40px 0;">
+            <div class="container" style="max-width: 700px; margin: auto; background: rgba(255,255,255,0.1); padding: 40px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); backdrop-filter: blur(10px);">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SponsorPlan, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SponsorPlan, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SponsorPlan, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="page-header" style="text-align: center; margin-bottom: 30px;">
+                    <h1 style="margin: 0;">Radio VDE</h1>
+                    <h2 style="margin: 10px 0 0; font-weight: 300;">Panel de Administración</h2>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SponsorImage, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SponsorImage, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SponsorImage, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-container">
+                    <h2 class="form-title" style="text-align: center; margin-bottom: 20px;">Crear Nuevo Sponsor</h2>
+                    <div class="form-divider" style="height: 3px; width: 60px; background: white; margin: 0 auto 20px; border-radius: 5px;"></div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                    <div class="form-info" style="margin-bottom: 25px; text-align: center;">
+                        <h3 style="margin-bottom: 10px;">📢 Información del Sponsor</h3>
+                        <p>Complete todos los campos para agregar un nuevo sponsor a la radio.</p>
+                        <p>La imagen debe ser una URL válida y la descripción debe ser clara y concisa.</p>
+                    </div>
+
+                    <form method="post" action="/Sponsors/Create">
+                        <input name="__RequestVerificationToken" type="hidden" value="token_placeholder" />
+
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label class="form-label" for="SponsorName">Nombre del Sponsor</label>
+                            <input class="form-control"
+                                   type="text"
+                                   id="SponsorName"
+                                   name="SponsorName"
+                                   placeholder="Ingrese el nombre del sponsor"
+                                   required
+                                   style="width: 100%; padding: 12px; border-radius: 12px; border: none; outline: none; margin-top: 5px;" />
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label class="form-label" for="SponsorDescription">Descripción</label>
+                            <textarea class="form-control"
+                                      id="SponsorDescription"
+                                      name="SponsorDescription"
+                                      placeholder="Ingrese una descripción detallada del sponsor"
+                                      required
+                                      style="width: 100%; padding: 12px; border-radius: 12px; border: none; outline: none; margin-top: 5px; resize: vertical;"></textarea>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label class="form-label" for="SponsorPlan">Plan del Sponsor</label>
+                            <select class="form-control" id="SponsorPlan" name="SponsorPlan" required
+                                    style="width: 100%; padding: 12px; border-radius: 12px; border: none; outline: none; margin-top: 5px;">
+                                <option value="">Seleccione un plan</option>
+                                <option value="Básico">Básico</option>
+                                <option value="Premium">Premium</option>
+                                <option value="Gold">Gold</option>
+                                <option value="Platinum">Platinum</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 30px;">
+                            <label class="form-label" for="SponsorImage">URL de la Imagen</label>
+                            <input class="form-control"
+                                   type="url"
+                                   id="SponsorImage"
+                                   name="SponsorImage"
+                                   placeholder="https://ejemplo.com/imagen.jpg"
+                                   required
+                                   style="width: 100%; padding: 12px; border-radius: 12px; border: none; outline: none; margin-top: 5px;" />
+                        </div>
+
+                        <div class="form-actions" style="text-align: center;">
+                            <button type="submit" class="btn btn-primary"
+                                    style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; transition: all 0.3s ease;">
+                                ✅ Crear Sponsor
+                            </button>
+                            <a href="/Sponsors" class="btn btn-secondary"
+                               style="margin-left: 15px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
+                                ↩️ Volver
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </body>
 }
 
 <div>
