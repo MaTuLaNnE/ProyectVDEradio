@@ -297,6 +297,7 @@
     <Content Include="Content\LoginStyles\Login.css" />
     <Content Include="Content\PagesStyles\Management.css" />
     <Content Include="Content\UsersCRUDStyles\UsersCreate.css" />
+    <Content Include="Content\UsersCRUDStyles\UsersDelete.css" />
     <Content Include="Content\UsersCRUDStyles\UsersViewsStyles.css" />
     <Content Include="favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -39,7 +39,8 @@ namespace ProyectVDEradio
                       "~/Content/Clima.css",
                       "~/Content/PagesStyles/Management.css",
                       "~/Content/UsersCRUDStyles/UsersCreate.css",
-                      "~/Content/UsersCRUDStyles/UsersViewsStyles.css"));
+                      "~/Content/UsersCRUDStyles/UsersViewsStyles.css",
+                      "~/Content/UsersCRUDStyles/UsersDelete.css"));
         }
     }
 }

@@ -106,6 +106,7 @@ namespace ProyectVDEradio.Controllers
         }
 
         // GET: Users/Edit/5
+        [AuthorizePermiso("UpdateUser")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -143,6 +144,7 @@ namespace ProyectVDEradio.Controllers
         // POST: Users/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
+        [AuthorizePermiso("UpdateUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(CreateUserViewModel model)
@@ -173,6 +175,7 @@ namespace ProyectVDEradio.Controllers
 
 
         // GET: Users/Delete/5
+        [AuthorizePermiso("DeleteUser")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -188,12 +191,19 @@ namespace ProyectVDEradio.Controllers
         }
 
         // POST: Users/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [AuthorizePermiso("DeleteUser")]
+        [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Users users = db.Users.Find(id);
             db.Users.Remove(users);
+            // Si el usuario es un cliente, también eliminamos sus datos de cliente
+            var customer = db.Customers.FirstOrDefault(c => c.UserId == id);
+            if (customer != null)
+            {
+                db.Customers.Remove(customer);
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
         }
