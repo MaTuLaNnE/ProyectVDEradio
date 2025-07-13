@@ -1,0 +1,55 @@
+﻿@model ProyectVDEradio.Models.Sponsors
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Sponsors</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SponsorName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SponsorName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SponsorDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SponsorDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SponsorPlan)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SponsorPlan)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SponsorImage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SponsorImage)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
