@@ -36,6 +36,7 @@ namespace ProyectVDEradio.Controllers
         }
 
         // GET: Sponsor/Create
+        [AuthorizePermiso("SponsorsCreate")]
         public ActionResult Create()
         {
             return View();
@@ -63,6 +64,7 @@ namespace ProyectVDEradio.Controllers
         }
 
         // GET: Sponsor/Edit/5
+        [AuthorizePermiso("SponsorsEdit")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -78,6 +80,7 @@ namespace ProyectVDEradio.Controllers
         // POST: Sponsor/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizePermiso("SponsorsEdit")]
         public ActionResult Edit(Sponsors sponsor)
         {
             if (ModelState.IsValid)
@@ -105,6 +108,7 @@ namespace ProyectVDEradio.Controllers
         // POST: Sponsor/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AuthorizePermiso("SponsorsDelete")]
         public ActionResult DeleteConfirmed(int id)
         {
             var sponsor = db.Sponsors.Find(id);
