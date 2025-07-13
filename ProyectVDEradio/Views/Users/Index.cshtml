@@ -1,51 +1,217 @@
-﻿@model IEnumerable<ProyectVDEradio.Models.Users>
+﻿@model IEnumerable<ProyectVDEradio.ViewModels.UsersViewModel>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserPassword)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Roles.RoleName)
-        </th>
-        <th></th>
-    </tr>
+<div class="container">
+    <div class="section">
+        <h2>Gestión de Usuarios</h2>
+        <div class="subtitle">Administra todos los usuarios del sistema </div>
+        <div class="form-divider"></div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserPassword)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Roles.RoleName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.UserId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.UserId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.UserId })
-        </td>
-    </tr>
-}
+        <div class="table-header">
+            <div class="table-title">
+                <span class="user-count">Total: @(Model?.Count() ?? 0) usuarios</span>
+            </div>
+            <div class="table-actions">
+                @Html.ActionLink("➕ Crear Nuevo Usuario", "Create", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
 
-</table>
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-box" placeholder="Buscar usuarios por nombre, email o rol..." id="searchInput">
+        </div>
+
+        <div class="table-container">
+            @if (Model != null && Model.Any())
+            {
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre de Usuario</th>
+                            <th>Correo Electronico</th>
+                            <th>Contraseña</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+
+                                        <div class="user-details">
+                                            <h4>@Html.DisplayFor(modelItem => item.UserName)</h4>
+                                            <span>ID: @item.UserId</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    <span class="password-field">••••••••</span>
+                                </td>
+                                <td>
+                                    @{
+                                        var roleClass = "role-cliente";
+                                        var roleName = item.RoleName;
+                                        switch (roleName.ToLower())
+                                        {
+                                            case "administrador":
+                                                roleClass = "role-admin";
+                                                break;
+                                            case "editor":
+                                                roleClass = "role-editor";
+                                                break;
+                                            case "moderador":
+                                                roleClass = "role-moderador";
+                                                break;
+                                            default:
+                                                roleClass = "role-cliente";
+                                                break;
+                                        }
+                                    }
+                                    <span class="role-badge @roleClass">
+                                        @Html.DisplayFor(modelItem => item.RoleName)
+                                    </span>
+                                </td>
+                                <td class="actions-cell">
+                                    @Html.ActionLink("✏️ Editar", "Edit", new { id = item.UserId }, new { @class = "action-btn btn-warning" })
+                                    @Html.ActionLink("🗑️ Eliminar", "Delete", new { id = item.UserId }, new { @class = "action-btn btn-danger" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="no-users">
+                    <div class="no-users-icon">👤</div>
+                    <h3>No hay usuarios registrados</h3>
+                    <p>Comienza creando tu primer usuario del sistema</p>
+                    @Html.ActionLink("Crear Primer Usuario", "Create", null, new { @class = "btn btn-primary", style = "margin-top: 20px;" })
+                </div>
+            }
+
+
+        </div>
+        <h2>Usuarios Clientes</h2>
+        <div class="subtitle">Usuarios registrados en la pagina del tipo cliente</div>
+        <div class="table-container">
+            @if (Model.Any(u => u.RoleName == "Cliente"))
+            {
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre de Usuario </th>
+                            <th>Nombre del Cliente</th>
+                            <th>Apellido del Cliente</th>
+                            <th>Fecha de Nacimiento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cliente in Model.Where(u => u.RoleName == "Cliente"))
+                        {
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+
+                                        <div class="user-details">
+                                            <h4>@Html.DisplayFor(modelItem => cliente.UserName)</h4>
+                                            <span>ID: @cliente.UserId</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => cliente.CustomerName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => cliente.CustomerSurname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => cliente.BirthDate)
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="no-users">
+                    <div class="no-users-icon">👤</div>
+                    <h3>No hay usuarios registrados</h3>
+                </div>
+            }
+
+
+        </div>
+
+        <div class="pagination">
+            <div class="pagination-info">
+                Mostrando @(Model?.Count() ?? 0) usuarios
+            </div>
+        </div>
+
+        <div class="back-link">
+            @Html.ActionLink("← Volver al Panel de Gestión", "Index", "Home")
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@*<h2>Index</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserPassword)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Roles.RoleName)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserPassword)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Roles.RoleName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.UserId }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.UserId })
+            </td>
+        </tr>
+    }
+
+    </table>*@
