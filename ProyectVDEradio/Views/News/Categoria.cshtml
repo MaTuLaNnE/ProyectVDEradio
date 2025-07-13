@@ -41,10 +41,31 @@
         </ul>
     </div>
 
+
+
     <section class="section">
-        <h2>Historial de cotizaciones</h2>
-        <article class="noticia-item"></article>
-</section>
+        <section class="section">
+            <h2>Historial de cotizaciones</h2>
+            <div class="chart-container">
+                <canvas id="currencyChart" width="400" height="200"></canvas>
+            </div>
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #28a745;"></span>
+                    <span>USD - Dólar Estadounidense</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #007bff;"></span>
+                    <span>ARS - Peso Argentino</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #ffc107;"></span>
+                    <span>BRL - Real Brasileño</span>
+                </div>
+            </div>
+        </section>
+    </section>
+
 }
 
 @if (esClima)
@@ -144,5 +165,109 @@
 
     </div>
 </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtener datos del historial
+    fetch('@Url.Action("GetCurrencyHistory", "News")')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error('Error:', data.error);
+                document.querySelector('.chart-container').innerHTML =
+                    '<p style="text-align: center; color: #dc3545;">Error al cargar el historial de cotizaciones</p>';
+                return;
+            }
+
+            const ctx = document.getElementById('currencyChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Evolución de Cotizaciones (UYU)',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        legend: {
+                            display: false // Usamos nuestra propia leyenda
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Fecha y Hora'
+                            },
+                            ticks: {
+                                maxTicksLimit: 10
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Valor en UYU'
+                            },
+                            beginAtZero: false,
+                            // Hacer el eje Y más sensible a cambios pequeños
+                            afterDataLimits: function(scale) {
+                                const range = scale.max - scale.min;
+                                const padding = range * 0.05; // 5% de padding
+                                scale.min = scale.min - padding;
+                                scale.max = scale.max + padding;
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    elements: {
+                        point: {
+                            radius: 4,
+                            hoverRadius: 8
+                        },
+                        line: {
+                            borderWidth: 2
+                        }
+                    },
+                    // Configuración del tooltip para mostrar cambios porcentuales
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    const datasetIndex = context.datasetIndex;
+                                    const index = context.dataIndex;
+                                    const dataset = context.chart.data.datasets[datasetIndex];
+
+                                    if (index > 0) {
+                                        const current = dataset.data[index];
+                                        const previous = dataset.data[index - 1];
+                                        const change = current - previous;
+                                        const changePercent = ((change / previous) * 100).toFixed(3);
+
+                                        return `Cambio: ${change >= 0 ? '+' : ''}${change.toFixed(4)} UYU (${changePercent}%)`;
+                                    }
+                                    return 'Primer registro';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.querySelector('.chart-container').innerHTML =
+                '<p style="text-align: center; color: #dc3545;">Error al cargar el historial de cotizaciones</p>';
+        });
+});
+</script>
 
 

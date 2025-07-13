@@ -97,6 +97,51 @@ namespace ProyectVDEradio.Controllers
             return View("Categoria", modelo);
         }
 
+        public JsonResult GetCurrencyHistory()
+        {
+            try
+            {
+                var service = new CurrencyService();
+                var historial = service.GetCurrencyHistory();
+
+                var data = new
+                {
+                    labels = historial.Select(h => h.Timestamp.ToString("dd/MM HH:mm")).ToArray(),
+                    datasets = new[]
+                    {
+                new {
+                    label = "USD",
+                    data = historial.Select(h => h.UYUUSD).ToArray(),
+                    borderColor = "#28a745",
+                    backgroundColor = "rgba(40, 167, 69, 0.1)",
+                    tension = 0.1
+                },
+                new {
+                    label = "ARS",
+                    data = historial.Select(h => h.UYUARS).ToArray(),
+                    borderColor = "#007bff",
+                    backgroundColor = "rgba(0, 123, 255, 0.1)",
+                    tension = 0.1
+                },
+                new {
+                    label = "BRL",
+                    data = historial.Select(h => h.UYUBRL).ToArray(),
+                    borderColor = "#ffc107",
+                    backgroundColor = "rgba(255, 193, 7, 0.1)",
+                    tension = 0.1
+                }
+            }
+                };
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         public ActionResult IndexDeportes()
         {
             var noticias = db.News

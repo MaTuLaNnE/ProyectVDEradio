@@ -40,15 +40,6 @@ namespace ProyectVDEradio.ViewModels
 
     }
 
-    public class Currency
-    {
-        public string Source { get; set; }
-        public long TimeStamp { get; set; }
-        public decimal UYUBRL { get; set; }
-        public decimal UYUUSD { get; set; }
-        public decimal UYUARS { get; set; }
-    }
-
     public class ForecastData
     {
         public DateTime Fecha { get; set; }
@@ -61,6 +52,25 @@ namespace ProyectVDEradio.ViewModels
         public double Viento { get; set; }
         public int Presion { get; set; }
         public double Sensacion { get; set; }
+    }
+
+    //------------------ Currencies ------------------
+
+    public class Currency
+    {
+        public string Source { get; set; }
+        public long TimeStamp { get; set; }
+        public decimal UYUBRL { get; set; }
+        public decimal UYUUSD { get; set; }
+        public decimal UYUARS { get; set; }
+    }
+    public class CurrencyAuditHistory
+    {
+        public int AuditId { get; set; }
+        public DateTime Timestamp { get; set; }
+        public decimal UYUUSD { get; set; }
+        public decimal UYUARS { get; set; }
+        public decimal UYUBRL { get; set; }
     }
 
 }
