@@ -1,96 +1,62 @@
 ﻿@model ProyectVDEradio.Models.Sponsors
-
 @{
     ViewBag.Title = "Create";
 }
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<div class="container">
+    <div class="section">
+        <h2>Crear Sponsor</h2>
+        <h4>Nuevo Sponsor de la Radio</h4>
+        <div class="form-divider"></div>
 
-    <body style="background: linear-gradient(135deg, #667eea, #764ba2); margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: white;">
-        <section style="padding: 40px 0;">
-            <div class="container" style="max-width: 700px; margin: auto; background: rgba(255,255,255,0.1); padding: 40px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); backdrop-filter: blur(10px);">
+        @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
 
-                <div class="page-header" style="text-align: center; margin-bottom: 30px;">
-                    <h1 style="margin: 0;">Radio VDE</h1>
-                    <h2 style="margin: 10px 0 0; font-weight: 300;">Panel de Administración</h2>
-                </div>
+        @using (Html.BeginForm())
+        {
+        @Html.AntiForgeryToken()
 
-                <div class="form-container">
-                    <h2 class="form-title" style="text-align: center; margin-bottom: 20px;">Crear Nuevo Sponsor</h2>
-                    <div class="form-divider" style="height: 3px; width: 60px; background: white; margin: 0 auto 20px; border-radius: 5px;"></div>
+        <div class="form-group has-icon">
+            <label class="form-label required">Nombre del Sponsor</label>
+            @Html.TextBoxFor(model => model.SponsorName, new { @class = "form-control", placeholder = "Ingrese el nombre del sponsor" })
+            <span class="input-icon">🏷️</span>
+            @Html.ValidationMessageFor(model => model.SponsorName, "", new { @class = "field-validation-error" })
+        </div>
 
-                    <div class="form-info" style="margin-bottom: 25px; text-align: center;">
-                        <h3 style="margin-bottom: 10px;">📢 Información del Sponsor</h3>
-                        <p>Complete todos los campos para agregar un nuevo sponsor a la radio.</p>
-                        <p>La imagen debe ser una URL válida y la descripción debe ser clara y concisa.</p>
-                    </div>
+        <div class="form-group has-icon">
+            <label class="form-label required">Descripción</label>
+            @Html.TextAreaFor(model => model.SponsorDescription, new { @class = "form-control", placeholder = "Descripción detallada del sponsor", rows = "3" })
+            <span class="input-icon">📝</span>
+            @Html.ValidationMessageFor(model => model.SponsorDescription, "", new { @class = "field-validation-error" })
+        </div>
 
-                    <form method="post" action="/Sponsors/Create">
-                        <input name="__RequestVerificationToken" type="hidden" value="token_placeholder" />
+        <div class="form-group">
+            <label class="form-label required">Plan del Sponsor</label>
+            @Html.TextBoxFor(model => model.SponsorPlan, new { @class = "form-control", placeholder = "Ingrese el plan de anuncios del sponsor" })
+            @Html.ValidationMessageFor(model => model.SponsorPlan, "", new { @class = "field-validation-error" })
+        </div>
 
-                        <div class="form-group" style="margin-bottom: 20px;">
-                            <label class="form-label" for="SponsorName">Nombre del Sponsor</label>
-                            <input class="form-control"
-                                   type="text"
-                                   id="SponsorName"
-                                   name="SponsorName"
-                                   placeholder="Ingrese el nombre del sponsor"
-                                   required
-                                   style="width: 100%; padding: 12px; border-radius: 12px; border: none; outline: none; margin-top: 5px;" />
-                        </div>
+        <div class="form-group has-icon">
+            <label class="form-label">URL de la Imagen</label>
+            @Html.TextBoxFor(model => model.SponsorImage, new { @class = "form-control", placeholder = "https://ejemplo.com/imagen.jpg", type = "url" })
+            <span class="input-icon">🖼️</span>
+            @Html.ValidationMessageFor(model => model.SponsorImage, "", new { @class = "field-validation-error" })
+        </div>
 
-                        <div class="form-group" style="margin-bottom: 20px;">
-                            <label class="form-label" for="SponsorDescription">Descripción</label>
-                            <textarea class="form-control"
-                                      id="SponsorDescription"
-                                      name="SponsorDescription"
-                                      placeholder="Ingrese una descripción detallada del sponsor"
-                                      required
-                                      style="width: 100%; padding: 12px; border-radius: 12px; border: none; outline: none; margin-top: 5px; resize: vertical;"></textarea>
-                        </div>
+        <div class="btn-container">
+            <input type="submit" value="✅ Crear Sponsor" class="btn btn-primary" />
+            <input type="reset" value="🔄 Limpiar Formulario" class="btn btn-secondary" />
+        </div>
+        }
 
-                        <div class="form-group" style="margin-bottom: 20px;">
-                            <label class="form-label" for="SponsorPlan">Plan del Sponsor</label>
-                            <select class="form-control" id="SponsorPlan" name="SponsorPlan" required
-                                    style="width: 100%; padding: 12px; border-radius: 12px; border: none; outline: none; margin-top: 5px;">
-                                <option value="">Seleccione un plan</option>
-                                <option value="Básico">Básico</option>
-                                <option value="Premium">Premium</option>
-                                <option value="Gold">Gold</option>
-                                <option value="Platinum">Platinum</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group" style="margin-bottom: 30px;">
-                            <label class="form-label" for="SponsorImage">URL de la Imagen</label>
-                            <input class="form-control"
-                                   type="url"
-                                   id="SponsorImage"
-                                   name="SponsorImage"
-                                   placeholder="https://ejemplo.com/imagen.jpg"
-                                   required
-                                   style="width: 100%; padding: 12px; border-radius: 12px; border: none; outline: none; margin-top: 5px;" />
-                        </div>
-
-                        <div class="form-actions" style="text-align: center;">
-                            <button type="submit" class="btn btn-primary"
-                                    style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; transition: all 0.3s ease;">
-                                ✅ Crear Sponsor
-                            </button>
-                            <a href="/Sponsors" class="btn btn-secondary"
-                               style="margin-left: 15px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
-                                ↩️ Volver
-                            </a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </body>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+        <div class="back-link">
+            <a href="@Url.Action("Index", "Sponsors")" class="crud-btn btn-listar">
+                ← Volver al Panel de Sponsors
+            </a>
+        </div>
+        <div class="back-link">
+            <a href="@Url.Action("Index", "Management")" class="crud-btn btn-listar">
+                ← Volver al Panel de Gestión
+            </a>
+        </div>
+    </div>
 </div>
