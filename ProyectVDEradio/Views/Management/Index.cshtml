@@ -78,6 +78,34 @@
                 </div>
             </div>
         }
+        @if (User.IsInRole("Administrador"))
+        {
+            <div class="gestion-card" data-role="Administrador,Editor">
+                <div class="gestion-header" onclick="toggleCard(this)">
+                    <h3 class="gestion-title">
+                        Gestión de Sponsors
+                        <span class="permission-badge">Administradores y Editores</span>
+                    </h3>
+                    <span class="gestion-icon">▼</span>
+                </div>
+                <div class="gestion-content">
+                    <div class="gestion-info">
+                        <h4>Permisos y Funcionalidades</h4>
+                        <p><strong>Acceso:</strong> Usuarios con rol de Administrador o Editor</p>
+                        <p><strong>Descripción:</strong> Sistema para administrar los sponsors y socios comerciales de la radio. Permite agregar, editar, eliminar y visualizar detalles.</p>
+                        <p><strong>Funciones:</strong> CRUD de sponsors, gestión de frecuencia de aparición y control de imágenes asociadas.</p>
+                    </div>
+                    <div class="crud-buttons">
+                        <a href="@Url.Action("Index", "Sponsors")" class="crud-btn btn-listar">
+                            📢 Listar Sponsors
+                        </a>
+                        <a href="@Url.Action("Create", "Sponsors")" class="crud-btn btn-crear">
+                            ➕ Crear Sponsor
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
         <!-- Gestión de Comentarios - Futuro (Ejemplo de cómo se vería) -->
         <div class="gestion-card no-access">
             <div class="gestion-header">

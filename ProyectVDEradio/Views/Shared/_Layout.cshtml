@@ -12,7 +12,6 @@
     <header class="navbar">
         <div class="navbar-container">
             <div class="navbar-content">
-
                 <a href="/" class="logo-link">
                     <img src="~/Content/Images/Navbar_Icon.png" alt="Voz del Este" class="logo">
                 </a>
@@ -21,7 +20,6 @@
                     <p>Bienvenido @User.Identity.Name</p>
                 }
                 <nav>
-
                     <a href="@Url.Action("Index","Home")">Inicio</a>
                     <a href="@Url.Action("Index", "RadioPrograms")">Programacion</a>
                     <div class="dropdown">
@@ -41,25 +39,20 @@
                             <a href="@Url.Action("IndexInternacional", "News")" class="dropdown-item">Internacional</a>
                         </div>
                     </div>
-
                     @if (User.IsInRole("Administrador") || User.IsInRole("Editor"))
                     {
                         <a href="@Url.Action("Index", "Management")">Panel de Gestion</a>
                     }
-
                     @if (User.Identity.IsAuthenticated)
                     {
                         <a href="@Url.Action("Logout", "Account")">Cerrar sesion</a>
-
                     }
                     else
                     {
                         <a href="@Url.Action("Login", "Account")">Iniciar sesion</a>
                     }
-
-
-
                 </nav>
+
                 <div class="navbar-clima">
                     <div class="clima-icon" id="navbarClimaIcon">
                         <img src="" alt="Icono del clima" style="width: 40px; height: 40px; display: none;">
@@ -80,21 +73,87 @@
     </div>
     <hr />
     <footer class="footer">
-        <div class="container">
-            <p><i class="fa-regular fa-copyright"></i> @DateTime.Now.Year Voz del Este - Todos los derechos reservados</p>
-            <p>
+        <!-- Ondas de sonido en el fondo -->
+        <div class="sound-waves">
+            <div class="sound-wave"></div>
+            <div class="sound-wave"></div>
+            <div class="sound-wave"></div>
+            <div class="sound-wave"></div>
+            <div class="sound-wave"></div>
+        </div>
 
-                <a href="#"><i class="fa-solid fa-envelope"></i> Contacto</a> |
-                <a href="#"><i class="fa-brands fa-square-instagram"></i> Instagram</a> |
-                <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a> |
-                <a href="#"><i class="fa-brands fa-square-x-twitter"></i> Twitter</a>
-            </p>
-            <p style="margin-top: 10px; color: #81c784;">
-                <i class="fa-solid fa-location-dot"></i> Maldonado, Uruguay @Html.Raw("&#8226") <i class="fa-solid fa-square-phone"></i> +598 42 123456 @Html.Raw("&#8226; &#128251; FM 101.5")
-            </p>
+        <div class="footer-container">
+            <div class="footer-content">
+                <!-- Contacto - Izquierda -->
+                <div class="footer-block left">
+                    <div class="contact-compact">
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <span>Maldonado, Uruguay</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                            <span>+598 42 123456</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                            <span>info@vozdeleste.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-radio"></i></div>
+                            <span>FM 101.5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Centro - Derechos reservados -->
+                <div class="footer-block center">
+                    <div class="footer-center">
+                        <div class="footer-logo"><i class="fas fa-microphone"></i> VOZ DEL ESTE</div>
+                        <div class="footer-copyright">
+                            © 2025 Voz del Este - Todos los derechos reservados
+                        </div>
+                        <div class="footer-links">
+                            <a href="#">Privacidad</a>
+                            <a href="#">Términos</a>
+                            <a href="#">Cookies</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Redes Sociales - Derecha -->
+                <div class="footer-block right">
+                    <div class="social-compact">
+                        <div class="social-text">Síguenos</div>
+                        <div class="social-links">
+                            <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-link whatsapp"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                Diseñado con <i class="fas fa-heart" style="color: #e74c3c;"></i> para la comunidad de Maldonado
+            </div>
         </div>
     </footer>
 
+    <script>
+
+        document.querySelectorAll('.footer-section').forEach(section => {
+            section.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-5px)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+
+            section.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
 
     @*@Scripts.Render("~/bundles/main")*@
     @Scripts.Render("~/bundles/clima")
