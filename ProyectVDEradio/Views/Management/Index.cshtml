@@ -39,6 +39,35 @@
                 </div>
             </div>
         }
+
+        <!-- Gestión de Permisos - Solo Administradores -->
+        @if (User.IsInRole("Administrador"))
+        {
+            <div class="gestion-card" data-role="Administrador">
+                <div class="gestion-header" onclick="toggleCard(this)">
+                    <h3 class="gestion-title">
+                        Gestión de Permisos
+                        <span class="permission-badge">Solo Administradores</span>
+                    </h3>
+                    <span class="gestion-icon">▼</span>
+                </div>
+                <div class="gestion-content">
+                    <div class="gestion-info">
+                        <h4>Permisos y Funcionalidades</h4>
+                        <p><strong>Acceso:</strong> Exclusivo para usuarios con rol de Administrador</p>
+                        <p><strong>Descripción:</strong> Gestión completa del sistema de asignacion de Permisos a los roles.</p>
+                        <p><strong>Funciones:</strong> CRUD completo de Permisos.</p>
+                    </div>
+                    <div class="crud-buttons">
+                        <a href="@Url.Action("PermissionPanel", "Permissions")" class="crud-btn btn-listar">
+                            📋 Gestor de Permisos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+
         <!-- Gestión de Noticias - Administradores y Editores -->
 
         @if (User.IsInRole("Administrador") || User.IsInRole("Editor"))

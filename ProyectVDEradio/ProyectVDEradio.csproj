@@ -157,6 +157,7 @@
     <Compile Include="Controllers\CurrencyAPIController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagementController.cs" />
+    <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\RadioProgramsController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\RadioProgramsController.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="Utils\WeatherAPI.cs" />
     <Compile Include="Utils\WeatherForecastAPI.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\PermissionRoleViewModel.cs" />
     <Compile Include="ViewModels\RadioProgramsViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModel.cs" />
     <Compile Include="ViewModels\WeatherViewModel.cs" />
@@ -296,6 +298,7 @@
     <Content Include="Content\Images\VozDelEste_Icon_Navbar.ico" />
     <Content Include="Content\LoginStyles\Login.css" />
     <Content Include="Content\PagesStyles\Management.css" />
+    <Content Include="Content\PermissionsStyles\Permission.css" />
     <Content Include="Content\UsersCRUDStyles\UsersCreate.css" />
     <Content Include="Content\UsersCRUDStyles\UsersDelete.css" />
     <Content Include="Content\UsersCRUDStyles\UsersViewsStyles.css" />
@@ -372,6 +375,7 @@
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Permissions\PermissionPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
