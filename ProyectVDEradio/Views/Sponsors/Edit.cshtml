@@ -9,51 +9,56 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Sponsors</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.SponsorID)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SponsorName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SponsorName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SponsorName, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    <div class="container">
+        <div class="section">
+            <div class="form-horizontal">
+                <h4>Sponsors</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.SponsorID)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SponsorDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SponsorDescription, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SponsorDescription, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SponsorName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SponsorName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SponsorName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SponsorPlan, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SponsorPlan, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SponsorPlan, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SponsorDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SponsorDescription, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SponsorDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SponsorImage, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SponsorImage, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SponsorImage, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SponsorPlan, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SponsorPlan, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SponsorPlan, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SponsorImage, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SponsorImage, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SponsorImage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 }
 
 <div>
