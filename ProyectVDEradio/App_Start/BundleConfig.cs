@@ -37,7 +37,9 @@ namespace ProyectVDEradio
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/Site.css",
                       "~/Content/Clima.css",
-                      "~/Content/PagesStyles/Management.css"));
+                      "~/Content/PagesStyles/Management.css",
+                      "~/Content/UsersCRUDStyles/UsersCreate.css",
+                      "~/Content/UsersCRUDStyles/UsersViewsStyles.css"));
         }
     }
 }

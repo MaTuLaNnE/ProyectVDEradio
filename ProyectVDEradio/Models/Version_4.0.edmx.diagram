@@ -8,10 +8,10 @@
         <EntityTypeShape EntityType="VozDelEsteDBModel.Categories" Width="1.5" PointX="6" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.Customers" Width="1.5" PointX="5.25" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.CustomersComments" Width="1.5" PointX="7.5" PointY="9.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="VozDelEsteDBModel.Hosts" Width="1.5" PointX="5.25" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VozDelEsteDBModel.Hosts" Width="1.5" PointX="9.625" PointY="10.25" IsExpanded="true" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.News" Width="1.5" PointX="8.25" PointY="6" IsExpanded="true" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.ProgramHosts" Width="1.5" PointX="9.875" PointY="13.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="VozDelEsteDBModel.RadioPrograms" Width="1.5" PointX="5.25" PointY="13.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="VozDelEsteDBModel.RadioPrograms" Width="1.5" PointX="3.125" PointY="12.125" IsExpanded="true" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.Roles" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.Sponsors" Width="1.5" PointX="2" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.Users" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
@@ -23,7 +23,7 @@
         <AssociationConnector Association="VozDelEsteDBModel.FK__News__AuthorId__71D1E811" ManuallyRouted="false" />
         <AssociationConnector Association="VozDelEsteDBModel.FK__ProgramHo__Progr__4D94879B" ManuallyRouted="false" />
         <AssociationConnector Association="VozDelEsteDBModel.FK__Users__UserRole__6B24EA82" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="VozDelEsteDBModel.ProgramDays" Width="1.5" PointX="7.75" PointY="16" />
+        <EntityTypeShape EntityType="VozDelEsteDBModel.ProgramDays" Width="1.5" PointX="0.625" PointY="9.625" />
         <AssociationConnector Association="VozDelEsteDBModel.FK__ProgramDa__Progr__40058253" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.CurrencyAudit" Width="1.5" PointX="5.375" PointY="0.75" />
         <EntityTypeShape EntityType="VozDelEsteDBModel.PermissionRole" Width="1.5" PointX="3" PointY="0.875" />

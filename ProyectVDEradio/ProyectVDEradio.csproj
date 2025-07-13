@@ -240,6 +240,7 @@
     <Compile Include="Utils\WeatherForecastAPI.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\RadioProgramsViewModel.cs" />
+    <Compile Include="ViewModels\UsersViewModel.cs" />
     <Compile Include="ViewModels\WeatherViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +296,8 @@
     <Content Include="Content\Images\VozDelEste_Icon_Navbar.ico" />
     <Content Include="Content\LoginStyles\Login.css" />
     <Content Include="Content\PagesStyles\Management.css" />
+    <Content Include="Content\UsersCRUDStyles\UsersCreate.css" />
+    <Content Include="Content\UsersCRUDStyles\UsersViewsStyles.css" />
     <Content Include="favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -366,7 +369,6 @@
     <Content Include="Views\Management\Index.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
-    <Content Include="Views\Users\Details.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
   </ItemGroup>

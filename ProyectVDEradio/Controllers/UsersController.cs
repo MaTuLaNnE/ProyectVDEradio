@@ -17,28 +17,31 @@ namespace ProyectVDEradio.Controllers
         private VozDelEsteDBEntities db = new VozDelEsteDBEntities();
 
         // GET: Users
-        // GET: Users
         [AuthorizePermiso("UsersTable")]
         public ActionResult Index()
         {
-            var users = db.Users.Include(u => u.Roles);
-            return View(users.ToList());
+            var users = db.Users
+                .Include(u => u.Roles)
+                .Include(u => u.Customers) // ← incluye datos de cliente si existen
+                .ToList();
+
+            var viewModel = users.Select(u => new UsersViewModel
+            {
+                UserId = u.UserId,
+                UserName = u.UserName,
+                Email = u.Email,
+                UserRole = u.UserRole,
+                RoleName = u.Roles.RoleName,
+                CustomerName = u.Customers.FirstOrDefault() != null ? u.Customers.FirstOrDefault().CustomerName : null,
+                CustomerSurname = u.Customers.FirstOrDefault() != null ? u.Customers.FirstOrDefault().CustomerSurname : null,
+                BirthDate = u.Customers.FirstOrDefault() != null ? u.Customers.FirstOrDefault().BirthDate : (DateTime?)null
+
+            });
+
+            return View(viewModel);
         }
 
-        // GET: Users/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Users users = db.Users.Find(id);
-            if (users == null)
-            {
-                return HttpNotFound();
-            }
-            return View(users);
-        }
+
 
         // GET: Users/Create
         [AuthorizePermiso("CreateUsers")]
@@ -57,7 +60,7 @@ namespace ProyectVDEradio.Controllers
 
         // POST: Users/Create
 
-        [AuthorizePermiso("CreateUser")]
+        [AuthorizePermiso("CreateUsers")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateUserViewModel model)
@@ -106,34 +109,68 @@ namespace ProyectVDEradio.Controllers
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Users users = db.Users.Find(id);
-            if (users == null)
-            {
+
+            var user = db.Users.Find(id);
+            if (user == null)
                 return HttpNotFound();
+
+            var viewModel = new CreateUserViewModel
+            {
+                UserId = user.UserId,
+                UserName = user.UserName,
+                Email = user.Email,
+                // Podés dejar UserPassword vacío si no vas a editarlo
+                UserRole = user.UserRole,
+                RolesDisponibles = new SelectList(db.Roles, "RoleId", "RoleName", user.UserRole)
+            };
+
+            if (viewModel.UserRole == 3)
+            {
+                var cliente = new Customers
+                {
+                    UserId = viewModel.UserId,
+                    CustomerName = viewModel.Nombre,
+                    CustomerSurname = viewModel.Apellido,
+                    BirthDate = viewModel.FechaNacimiento?.Date ?? DateTime.Now
+                };
             }
-            ViewBag.UserRole = new SelectList(db.Roles, "RoleId", "RoleName", users.UserRole);
-            return View(users);
+
+            return View(viewModel);
         }
+
 
         // POST: Users/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,UserName,Email,UserPassword,UserRole")] Users users)
+        public ActionResult Edit(CreateUserViewModel model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(users).State = EntityState.Modified;
+                var user = db.Users.Find(model.UserId);
+                if (user == null)
+                    return HttpNotFound();
+
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+                user.UserRole = model.UserRole;
+
+                if (!string.IsNullOrWhiteSpace(model.UserPassword))
+                {
+                    user.UserPassword = PasswordHelper.HashPassword(model.UserPassword);
+                }
+
+                db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserRole = new SelectList(db.Roles, "RoleId", "RoleName", users.UserRole);
-            return View(users);
+
+            model.RolesDisponibles = new SelectList(db.Roles, "RoleId", "RoleName", model.UserRole);
+            return View(model);
         }
+
 
         // GET: Users/Delete/5
         public ActionResult Delete(int? id)
