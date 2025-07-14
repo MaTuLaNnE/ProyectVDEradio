@@ -12,13 +12,12 @@ namespace ProyectVDEradio.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CurrencyAudits
+    public partial class CurrencyAudit
     {
-        public int CurrencyAuditId { get; set; }
-        public System.DateTime CurrencyAuditDate { get; set; }
-        public int CurrencyTypeId { get; set; }
-        public Nullable<double> CurrencyValue { get; set; }
-    
-        public virtual CurrencyTypes CurrencyTypes { get; set; }
+        public System.DateTime Timestamp { get; set; }
+        public decimal UYUUSD { get; set; }
+        public decimal UYUARS { get; set; }
+        public decimal UYUBRL { get; set; }
+        public int AuditId { get; set; }
     }
 }

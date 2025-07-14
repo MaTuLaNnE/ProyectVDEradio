@@ -1,0 +1,165 @@
+﻿@model IEnumerable<ProyectVDEradio.Models.Sponsors>
+
+@{
+    ViewData["Title"] = "Gestión de Sponsors";
+}
+
+<div class="container">
+    <!-- Header Section -->
+    <div class="section">
+        <div class="program-header">
+            <h1>@ViewData["Title"]</h1>
+            <p style="color: #666; font-size: 1.1rem; margin-top: 10px;">
+                Administra los sponsors y socios comerciales de la radio
+            </p>
+        </div>
+
+        <!-- Botón para crear nuevo sponsor -->
+        <div style="text-align: center; margin-bottom: 30px;">
+            @Html.ActionLink("Crear nuevo Sponsor", "Create", null, new { @class = "leer-mas", @style = "font-size: 1.1rem; padding: 12px 25px;" })
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="program-stats">
+            <div class="stat-item">
+                <div class="stat-number">@Model.Count()</div>
+                <div class="stat-label">Total Sponsors</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">@Model.Where(s => s.SponsorPlan >= 10).Count()</div>
+                <div class="stat-label">Alta Frecuencia (10+)</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">@Model.Where(s => s.SponsorPlan >= 5 && s.SponsorPlan < 10).Count()</div>
+                <div class="stat-label">Media Frecuencia (5-9)</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">@Model.Where(s => s.SponsorPlan < 5).Count()</div>
+                <div class="stat-label">Baja Frecuencia (1-4)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sponsors Grid -->
+    <div class="section">
+        <h2 style="margin-bottom: 30px; text-align: center;">Nuestros Sponsors</h2>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="noticia-grid">
+                @foreach (var sponsor in Model.OrderByDescending(s => s.SponsorPlan))
+                {
+                    <div class="noticia-item">
+                        <!-- Imagen del sponsor -->
+                        <div class="program-image-container" style="margin: 0; padding: 20px; background: #f8f9fa;">
+                            @if (!string.IsNullOrEmpty(sponsor.SponsorImage))
+                            {
+                                <img src="@sponsor.SponsorImage" alt="@sponsor.SponsorName"
+                                     style="width: 100%; max-width: 200px; height: 120px; object-fit: contain; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);" />
+                            }
+                            else
+                            {
+                                <div style="width: 100%; height: 120px; background: linear-gradient(135deg, #e9ecef, #f8f9fa); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #666; font-size: 0.9rem;">
+                                    Sin imagen
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Contenido del sponsor -->
+                        <div class="noticia-content">
+                            <h4 style="color: #0d47a1; font-size: 1.3rem; margin-bottom: 15px; font-weight: 600;">
+                                @sponsor.SponsorName
+                            </h4>
+
+                            <!-- Badge de frecuencia -->
+                            @{
+                                string planStyle = "";
+                                string planText = "";
+
+                                if (sponsor.SponsorPlan >= 10)
+                                {
+                                    planStyle = "background: linear-gradient(135deg, #8e24aa, #5e35b1); color: white;";
+                                    planText = "Alta Frecuencia";
+                                }
+                                else if (sponsor.SponsorPlan >= 5)
+                                {
+                                    planStyle = "background: linear-gradient(135deg, #ffc107, #ff8f00); color: white;";
+                                    planText = "Media Frecuencia";
+                                }
+                                else
+                                {
+                                    planStyle = "background: linear-gradient(135deg, #607d8b, #455a64); color: white;";
+                                    planText = "Baja Frecuencia";
+                                }
+                            }
+
+                            <div style="margin-bottom: 15px;">
+                                <span style="@planStyle padding: 5px 15px; border-radius: 15px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: inline-block;">
+                                    @planText
+                                </span>
+                            </div>
+
+                            <!-- Información de frecuencia -->
+                            <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
+                                <div style="font-size: 1.8rem; font-weight: bold; color: #0d47a1; margin-bottom: 5px;">
+                                    @sponsor.SponsorPlan
+                                </div>
+                                <div style="color: #666; font-size: 0.9rem;">
+                                    @(sponsor.SponsorPlan == 1 ? "vez por día" : "veces por día")
+                                </div>
+                            </div>
+
+                            <!-- Descripción -->
+                            <p style="color: #666; line-height: 1.5; margin-bottom: 20px; font-size: 0.95rem;">
+                                @(sponsor.SponsorDescription?.Length > 150 ? sponsor.SponsorDescription.Substring(0, 150) + "..." : sponsor.SponsorDescription)
+                            </p>
+
+                            <!-- Botones de acción -->
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                                @Html.ActionLink("✏️ Editar", "Edit", new { id = sponsor.SponsorID }, new { @class = "leer-mas", @style = "font-size: 0.9rem; padding: 8px 16px; background: linear-gradient(135deg, #28a745, #1e7e34); margin: 0;" })
+                                @Html.ActionLink("🗑️ Eliminar", "Delete", new { id = sponsor.SponsorID }, new { @class = "leer-mas", @style = "font-size: 0.9rem; padding: 8px 16px; background: linear-gradient(135deg, #dc3545, #c82333); margin: 0;", onclick = "return confirm('¿Estás seguro de que quieres eliminar este sponsor?');" })
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <!-- Estado vacío -->
+            <div style="text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 20px; margin: 30px 0;">
+                <div style="font-size: 4rem; color: #ccc; margin-bottom: 20px;">📢</div>
+                <h3 style="color: #666; margin-bottom: 15px; font-size: 1.4rem;">No hay sponsors registrados</h3>
+                <p style="color: #999; margin-bottom: 25px; font-size: 1.1rem;">
+                    Comienza agregando el primer sponsor para tu radio
+                </p>
+                @Html.ActionLink("Agregar primer sponsor", "Create", null, new { @class = "leer-mas", @style = "font-size: 1.1rem; padding: 12px 25px;" })
+            </div>
+        }
+    </div>
+
+    <!-- Sección de información adicional -->
+    <div class="section">
+        <h2 style="margin-bottom: 20px;">Información sobre Frecuencias</h2>
+        <div class="info-grid">
+            <div class="host-card" style="background: linear-gradient(135deg, #8e24aa, #5e35b1); color: white; border-radius: 15px;">
+                <div style="text-align: center;">
+                    <h3 style="color: white; margin-bottom: 10px;">Alta Frecuencia</h3>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin: 0;">10 o más reproducciones por día</p>
+                </div>
+            </div>
+            <div class="host-card" style="background: linear-gradient(135deg, #ffc107, #ff8f00); color: white; border-radius: 15px;">
+                <div style="text-align: center;">
+                    <h3 style="color: white; margin-bottom: 10px;">Media Frecuencia</h3>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin: 0;">Entre 5 y 9 reproducciones por día</p>
+                </div>
+            </div>
+            <div class="host-card" style="background: linear-gradient(135deg, #607d8b, #455a64); color: white; border-radius: 15px;">
+                <div style="text-align: center;">
+                    <h3 style="color: white; margin-bottom: 10px;">Baja Frecuencia</h3>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin: 0;">Entre 1 y 4 reproducciones por día</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

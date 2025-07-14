@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "NewsTable";
+}
+
+@model List<ProyectVDEradio.Models.News>
+
+<h2>Gestión de Noticias</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Categoría</th>
+            <th>Autor</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var noticia in Model)
+        {
+            <tr>
+                <td>
+
+                    <div class="user-info">
+
+                        <div class="user-details">
+                            <h4>@noticia.ArticleTitle</h4>
+                            <span>ID: @noticia.ArticleID</span>
+                        </div>
+                    </div>
+
+                </td>
+                <td>@noticia.Categories.CategoryName</td>
+                <td>@noticia.Users.UserName</td>
+                <td>@noticia.ArticleDate.ToShortDateString()</td>
+                <td>
+                    @Html.ActionLink("✏️ Editar", "Edit", new { id = noticia.ArticleID }, new { @class = "btn btn-warning" })
+                    @Html.ActionLink("🗑️ Eliminar", "Delete", new { id = noticia.ArticleID }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.ActionLink("➕ Nueva Noticia", "Create", null, new { @class = "btn btn-primary" })
+

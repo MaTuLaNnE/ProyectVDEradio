@@ -1,0 +1,273 @@
+﻿@model ProyectVDEradio.ViewModels.WeatherViewModel
+@using System.Globalization
+@{
+    ViewBag.Title = "Categoria";
+    var esEconomia = Model.noticias.FirstOrDefault()?.Categories.CategoryName == "Economía";
+    var esClima = Model.noticias.FirstOrDefault()?.Categories.CategoryName == "Clima";
+    var amanecer = DateTimeOffset.FromUnixTimeSeconds(Model.Weather.Amanecer).ToLocalTime().ToString("HH:mm");
+    var atardecer = DateTimeOffset.FromUnixTimeSeconds(Model.Weather.Atardecer).ToLocalTime().ToString("HH:mm");
+    string iconoClima = "https://openweathermap.org/img/wn/" + Model.Weather.Icono + "@2x.png";
+
+}
+
+
+@if (esEconomia)
+{
+    <div class="monedas-card">
+        <h2>💱 Cotizaciones Principales</h2>
+        <ul class="monedas-list">
+            <li>
+                <span class="flagImages">
+                    <img src="~/Content/Flags/Flag_of_the_United_States.png" height=55px />
+                </span>
+                <span>Dólar (USD)</span>
+                <strong class="currency-up">$@Model.Currency.UYUUSD.ToString("F2")</strong>
+            </li>
+            <li>
+                <span class="flagImages">
+                    <img src="~/Content/Flags/Flag_of_Argentina.png" height=55px />
+                </span>
+                <span>Peso Argentino (ARS)</span>
+                <strong class="currency-up">$@Model.Currency.UYUARS.ToString("F2")</strong>
+            </li>
+            <li>
+                <span class="flagImages">
+                    <img src="~/Content/Flags/Flag_of_Brazil.png" height=55px />
+                </span>
+                <span>Real Brasileño (BRL)</span>
+
+                <strong class="currency-down">$@Model.Currency.UYUBRL.ToString("F2")</strong>
+            </li>
+        </ul>
+    </div>
+
+
+
+    <section class="section">
+        <section class="section">
+            <h2>Historial de cotizaciones</h2>
+            <div class="chart-container">
+                <canvas id="currencyChart" width="400" height="200"></canvas>
+            </div>
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #28a745;"></span>
+                    <span>USD - Dólar Estadounidense</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #007bff;"></span>
+                    <span>ARS - Peso Argentino</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #ffc107;"></span>
+                    <span>BRL - Real Brasileño</span>
+                </div>
+            </div>
+        </section>
+    </section>
+
+}
+
+@if (esClima)
+{
+    <!-- Secciones específicas de Clima -->
+    <div class="clima-grid">
+        <!-- Clima Actual -->
+        <section class="section">
+            <div class="clima-actual-card">
+                <h3>Clima Actual</h3>
+                <div class="temp-principal">
+                    <span class="icono-clima-principal"><img src="@iconoClima" /></span>
+                    <span id="temp-actual">@Convert.ToInt16(Model.Weather.Temp)°C</span>
+                </div>
+                <div class="detalle-valor"> Maxima @Convert.ToInt16(Model.Weather.TempMax)°C - Minima @Convert.ToInt16(Model.Weather.TempMin)°C</div>
+                <div id="estado-actual">@Model.Weather.Estado</div>
+                <div class="clima-detalles">
+                    <div class="detalle-item">
+                        <strong>Humedad</strong>
+                        <div class="detalle-valor"> @Model.Weather.Humedad%</div>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Viento</strong>
+                        <div class="detalle-valor"> @Model.Weather.Viento m/s</div>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Presión</strong>
+                        <div class="detalle-valor" id="presion-actual">@Model.Weather.Presion hPa</div>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Sensacion Termica</strong>
+                        <div class="detalle-valor" id="uv-actual">@Model.Weather.Sensacion°C</div>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Amanecer</strong>
+                        <div class="detalle-valor" id="uv-actual">@amanecer</div>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Atardecer</strong>
+                        <div class="detalle-valor" id="uv-actual">@atardecer</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pronóstico -->
+        <section class="section">
+            <div class="pronostico-card">
+                <h3>📅 Pronóstico De Los Siguientes Días</h3>
+                <div class="pronostico-dias" id="pronostico-container">
+                    @foreach (var dia in Model.Forecast)
+                    {
+
+                        <div class="dia-pronostico">
+                            <div class="dia-nombre">@dia.Fecha.ToString("dddd", new CultureInfo("es-ES")).ToUpper()</div>
+                            <div class="dia-icono">
+                                <img src="@($"https://openweathermap.org/img/wn/{dia.Icono}@2x.png")" alt="@dia.Estado" />
+                            </div>
+                            <div class="dia-temp">
+                                <div class="temp-min">Maxima: @dia.TempMax°C</div>
+                                <div class="temp-min">Minima: @dia.TempMin°C</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    </div>
+
+}
+
+
+<section class="section">
+    <h2>📰 Últimas Noticias @Model.noticias.FirstOrDefault().Categories.CategoryName</h2>
+    <div class="noticia-grid">
+
+        @foreach (var noticia in Model.noticias)
+        {
+            <article class="noticia-item">
+                <img src="@noticia.ArticleImage" alt="Noticia" style="noticia-item">
+                <div class="noticia-content">
+                    <h4>@noticia.ArticleTitle</h4>
+                    <p>
+                        <strong>
+                            @noticia.ArticleDate.Day
+                            @noticia.ArticleDate.ToString("MMMM", new CultureInfo("es-ES")).ToUpper()
+                            @noticia.ArticleDate.Year
+                            @noticia.ArticleDate.ToString("t", new CultureInfo("es-ES"))
+                        </strong>
+                    </p>
+                    <p>@noticia.ArticleSubtitle</p>
+                    <a href="@Url.Action("Details", "News", new { id = noticia.ArticleID })" class="leer-mas">Leer más</a>
+                </div>
+
+            </article>
+        }
+
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtener datos del historial
+    fetch('@Url.Action("GetCurrencyHistory", "News")')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error('Error:', data.error);
+                document.querySelector('.chart-container').innerHTML =
+                    '<p style="text-align: center; color: #dc3545;">Error al cargar el historial de cotizaciones</p>';
+                return;
+            }
+
+            const ctx = document.getElementById('currencyChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Evolución de Cotizaciones (UYU)',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        legend: {
+                            display: false // Usamos nuestra propia leyenda
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Fecha y Hora'
+                            },
+                            ticks: {
+                                maxTicksLimit: 10
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Valor en UYU'
+                            },
+                            beginAtZero: false,
+                            // Hacer el eje Y más sensible a cambios pequeños
+                            afterDataLimits: function(scale) {
+                                const range = scale.max - scale.min;
+                                const padding = range * 0.05; // 5% de padding
+                                scale.min = scale.min - padding;
+                                scale.max = scale.max + padding;
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    elements: {
+                        point: {
+                            radius: 4,
+                            hoverRadius: 8
+                        },
+                        line: {
+                            borderWidth: 2
+                        }
+                    },
+                    // Configuración del tooltip para mostrar cambios porcentuales
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    const datasetIndex = context.datasetIndex;
+                                    const index = context.dataIndex;
+                                    const dataset = context.chart.data.datasets[datasetIndex];
+
+                                    if (index > 0) {
+                                        const current = dataset.data[index];
+                                        const previous = dataset.data[index - 1];
+                                        const change = current - previous;
+                                        const changePercent = ((change / previous) * 100).toFixed(3);
+
+                                        return `Cambio: ${change >= 0 ? '+' : ''}${change.toFixed(4)} UYU (${changePercent}%)`;
+                                    }
+                                    return 'Primer registro';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.querySelector('.chart-container').innerHTML =
+                '<p style="text-align: center; color: #dc3545;">Error al cargar el historial de cotizaciones</p>';
+        });
+});
+</script>
+
+

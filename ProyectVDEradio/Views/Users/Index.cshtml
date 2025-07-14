@@ -1,0 +1,332 @@
+﻿@model IEnumerable<ProyectVDEradio.ViewModels.UsersViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="container">
+    <div class="section">
+        <h2>Gestión de Usuarios</h2>
+        <div class="subtitle">Administra todos los usuarios del sistema </div>
+        <div class="form-divider"></div>
+
+        <div class="table-header">
+            <div class="table-title">
+                <span class="user-count">Total: @(Model?.Count() ?? 0) usuarios</span>
+            </div>
+            <div class="table-actions">
+                @Html.ActionLink("➕ Crear Nuevo Usuario", "Create", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-box" placeholder="Buscar usuarios por nombre, email o rol..." id="searchInput">
+        </div>
+
+        <div class="table-container">
+            @if (Model != null && Model.Any())
+            {
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre de Usuario</th>
+                            <th>Correo Electronico</th>
+                            <th>Contraseña</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+
+                                        <div class="user-details">
+                                            <h4>@Html.DisplayFor(modelItem => item.UserName)</h4>
+                                            <span>ID: @item.UserId</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    <span class="password-field">••••••••</span>
+                                </td>
+                                <td>
+                                    @{
+                                        var roleClass = "role-cliente";
+                                        var roleName = item.RoleName;
+                                        switch (roleName.ToLower())
+                                        {
+                                            case "administrador":
+                                                roleClass = "role-admin";
+                                                break;
+                                            case "editor":
+                                                roleClass = "role-editor";
+                                                break;
+                                            case "moderador":
+                                                roleClass = "role-moderador";
+                                                break;
+                                            default:
+                                                roleClass = "role-cliente";
+                                                break;
+                                        }
+                                    }
+                                    <span class="role-badge @roleClass">
+                                        @Html.DisplayFor(modelItem => item.RoleName)
+                                    </span>
+                                </td>
+                                <td class="actions-cell">
+                                    @Html.ActionLink("✏️ Editar", "Edit", new { id = item.UserId }, new { @class = "action-btn btn-warning" })
+                                    @Html.Raw($"<a href='#' class='action-btn btn-danger' onclick=\"showDeleteModal('{item.UserName}', '{item.Email}', '{item.RoleName}', {item.UserId})\">🗑️ Eliminar</a>")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="no-users">
+                    <div class="no-users-icon">👤</div>
+                    <h3>No hay usuarios registrados</h3>
+                    <p>Comienza creando tu primer usuario del sistema</p>
+                    @Html.ActionLink("Crear Primer Usuario", "Create", null, new { @class = "btn btn-primary", style = "margin-top: 20px;" })
+                </div>
+            }
+
+
+        </div>
+        <h2>Usuarios Clientes</h2>
+        <div class="subtitle">Usuarios registrados en la pagina del tipo cliente</div>
+        <div class="table-container">
+            @if (Model.Any(u => u.RoleName == "Cliente"))
+            {
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre de Usuario </th>
+                            <th>Nombre del Cliente</th>
+                            <th>Apellido del Cliente</th>
+                            <th>Fecha de Nacimiento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cliente in Model.Where(u => u.RoleName == "Cliente"))
+                        {
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+
+                                        <div class="user-details">
+                                            <h4>@Html.DisplayFor(modelItem => cliente.UserName)</h4>
+                                            <span>ID: @cliente.UserId</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => cliente.CustomerName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => cliente.CustomerSurname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => cliente.BirthDate)
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="no-users">
+                    <div class="no-users-icon">👤</div>
+                    <h3>No hay usuarios registrados</h3>
+                </div>
+            }
+
+
+        </div>
+
+        <div class="pagination">
+            <div class="pagination-info">
+                Mostrando @(Model?.Count() ?? 0) usuarios
+            </div>
+        </div>
+
+        <div class="back-link">
+            @Html.ActionLink("← Volver al Panel de Gestión", "Index", "Management")
+        </div>
+    </div>
+</div>
+
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <button class="modal-close" onclick="closeDeleteModal()">×</button>
+            <span class="modal-icon">🗑️</span>
+            <h2 class="modal-title">Eliminar Usuario</h2>
+            <p class="modal-subtitle">Esta acción no se puede deshacer</p>
+        </div>
+
+        <div class="modal-body">
+            <div class="user-info-card">
+                <div class="user-avatar-large" id="modalUserAvatar">J</div>
+                <div class="user-details-card">
+                    <h4 id="modalUserName"></h4>
+                    <div class="user-detail-item">
+                        <span class="user-detail-label">Email:</span>
+                        <span class="user-detail-value" id="modalUserEmail">juan.perez@email.com</span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="user-detail-label">Rol:</span>
+                        <span class="role-badge-modal role-admin" id="modalUserRole">Administrador</span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="user-detail-label">ID:</span>
+                        <span class="user-detail-value" id="modalUserId">1</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-message">
+                <strong>¡Atención!</strong> Esta acción eliminará permanentemente el usuario y toda su información asociada.
+            </div>
+
+            <div class="consequences-list">
+                <li>Se eliminarán todos los datos del usuario</li>
+                <li>Se perderá el historial de actividades</li>
+                <li>No se podrán recuperar los datos posteriormente</li>
+                <li>Se notificará automáticamente al usuario</li>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="modal-btn btn-cancel" onclick="closeDeleteModal()">
+                ❌ Cancelar
+            </button>
+            @using (Html.BeginForm("DeleteConfirmed", "Users", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" id="hiddenUserIdToDelete" />
+                <button type="submit" class="modal-btn btn-delete">
+                    🗑️ Eliminar Usuario
+                </button>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    let userToDelete = null;
+
+    function showDeleteModal(userName, userEmail, userRole, userId) {
+        userToDelete = { userName, userEmail, userRole, userId };
+
+        // Actualizar contenido del modal
+        document.getElementById('modalUserName').textContent = userName;
+        document.getElementById('modalUserEmail').textContent = userEmail;
+        document.getElementById('modalUserRole').textContent = userRole;
+        document.getElementById('modalUserId').textContent = userId;
+        document.getElementById('modalUserAvatar').textContent = userName.charAt(0).toUpperCase();
+        document.getElementById('hiddenUserIdToDelete').value = userId;
+
+        // Actualizar avatar
+        const avatar = document.getElementById('modalUserAvatar');
+        avatar.textContent = userName.charAt(0).toUpperCase();
+
+        // Actualizar clase del rol
+        const roleElement = document.getElementById('modalUserRole');
+        roleElement.className = 'role-badge-modal';
+
+        switch (userRole.toLowerCase()) {
+            case 'administrador':
+                roleElement.classList.add('role-admin');
+                break;
+            case 'editor':
+                roleElement.classList.add('role-editor');
+                break;
+            case 'moderador':
+                roleElement.classList.add('role-moderador');
+                break;
+            default:
+                roleElement.classList.add('role-cliente');
+                break;
+        }
+
+        // Mostrar modal
+        const modal = document.getElementById('deleteModal');
+        modal.classList.add('active');
+
+        // Prevenir scroll del body
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.remove('active');
+
+        // Restaurar scroll del body
+        document.body.style.overflow = 'auto';
+
+        // Limpiar datos
+        userToDelete = null;
+    }
+
+    function confirmDelete() {
+        if (userToDelete) {
+            // Aquí iría la lógica para eliminar el usuario
+            // Por ejemplo, redirigir a la acción de eliminar
+            console.log('Eliminando usuario:', userToDelete);
+
+            // Simulación de eliminación exitosa
+            alert(`Usuario ${userToDelete.userName} eliminado exitosamente`);
+
+            // En una aplicación real, aquí harías:
+            // window.location.href = '/Users/Delete/' + userToDelete.userId;
+
+            closeDeleteModal();
+        }
+    }
+
+    // Cerrar modal al hacer clic fuera
+    document.getElementById('deleteModal').addEventListener('click', function (e) {
+        if (e.target === this) {
+            closeDeleteModal();
+        }
+    });
+
+    // Cerrar modal con tecla Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && document.getElementById('deleteModal').classList.contains('active')) {
+            closeDeleteModal();
+        }
+    });
+
+    // Estilos adicionales para los roles
+    const style = document.createElement('style');
+    style.textContent = `
+            .role-admin {
+                background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            }
+            .role-editor {
+                background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            }
+            .role-cliente {
+                background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+            }
+            .role-moderador {
+                background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+            }
+        `;
+    document.head.appendChild(style);
+</script>

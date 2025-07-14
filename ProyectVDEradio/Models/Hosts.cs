@@ -23,6 +23,7 @@ namespace ProyectVDEradio.Models
         public int HostId { get; set; }
         public string HostName { get; set; }
         public string HostDescription { get; set; }
+        public string HostImage { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProgramHosts> ProgramHosts { get; set; }

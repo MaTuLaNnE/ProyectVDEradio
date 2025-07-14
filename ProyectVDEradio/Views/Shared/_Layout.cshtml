@@ -1,36 +1,65 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voz del Este</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <header class="navbar">
         <div class="navbar-container">
             <div class="navbar-content">
-
                 <a href="/" class="logo-link">
                     <img src="~/Content/Images/Navbar_Icon.png" alt="Voz del Este" class="logo">
                 </a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <p>Bienvenido @User.Identity.Name</p>
+                }
                 <nav>
-
                     <a href="@Url.Action("Index","Home")">Inicio</a>
-                    <a href="@Url.Action("Index", "Program")">Programacion</a>
-                    <a href="@Url.Action("Index", "News")" >Noticias</a>
-                    <a href="@Url.Action("Index", "Login")">Login</a>
-
+                    <a href="@Url.Action("Index", "RadioPrograms")">Programacion</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle">
+                            Noticias
+                            <span class="dropdown-arrow"></span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="@Url.Action("IndexPolicial", "News")" class="dropdown-item">Policial</a>
+                            <a href="@Url.Action("IndexEconomia", "News")" class="dropdown-item">@Html.Raw("Econom&#237;a")</a>
+                            <a href="@Url.Action("IndexDeportes", "News")" class="dropdown-item">Deportes</a>
+                            <a href="@Url.Action("IndexTurismo", "News")" class="dropdown-item">Turismo</a>
+                            <a href="@Url.Action("IndexEmpresarial", "News")" class="dropdown-item">Empresarial</a>
+                            <a href="@Url.Action("IndexPolitica", "News")" class="dropdown-item">@Html.Raw("Pol&#237;tica")</a>
+                            <a href="@Url.Action("IndexClima", "News")" class="dropdown-item">Clima</a>
+                            <a href="@Url.Action("IndexTransporte", "News")" class="dropdown-item">Transporte</a>
+                            <a href="@Url.Action("IndexInternacional", "News")" class="dropdown-item">Internacional</a>
+                        </div>
+                    </div>
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Editor"))
+                    {
+                        <a href="@Url.Action("Index", "Management")">Panel de Gestion</a>
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a href="@Url.Action("Logout", "Account")">Cerrar sesion</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Login", "Account")">Iniciar sesion</a>
+                    }
                 </nav>
+
                 <div class="navbar-clima">
                     <div class="clima-icon" id="navbarClimaIcon">
-                        🌤️
+                        <img src="" alt="Icono del clima" style="width: 40px; height: 40px; display: none;">
                     </div>
                     <div class="clima-info">
-                        <div class="clima-temp" id="navbarTemp">22°C</div>
-                        <div class="clima-estado" id="navbarEstado">Parcialmente nublado</div>
+                        <div class="clima-temp" id="navbarTemp"></div>
+                        <div class="clima-estado" id="navbarEstado"></div>
                     </div>
                 </div>
             </div>
@@ -44,25 +73,94 @@
     </div>
     <hr />
     <footer class="footer">
-        <div class="container">
-            <p>© @DateTime.Now.Year Voz del Este - Todos los derechos reservados</p>
-            <p>
+        <!-- Ondas de sonido en el fondo -->
+        <div class="sound-waves">
+            <div class="sound-wave"></div>
+            <div class="sound-wave"></div>
+            <div class="sound-wave"></div>
+            <div class="sound-wave"></div>
+            <div class="sound-wave"></div>
+        </div>
 
-                <a href="#">📧 Contacto</a> |
-                <a href="#">📱 Instagram</a> |
-                <a href="#">👥 Facebook</a> |
-                <a href="#">🐦 Twitter</a>
-            </p>
-            <p style="margin-top: 10px; color: #81c784;">
-                📍 Maldonado, Uruguay • 📞 +598 42 123456 • 📻 FM 101.5
-            </p>
+        <div class="footer-container">
+            <div class="footer-content">
+                <!-- Contacto - Izquierda -->
+                <div class="footer-block left">
+                    <div class="contact-compact">
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <span>Maldonado, Uruguay</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                            <span>+598 99 123456</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                            <span>info@vozdeleste.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-radio"></i></div>
+                            <span>FM 101.5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Centro - Derechos reservados -->
+                <div class="footer-block center">
+                    <div class="footer-center">
+                        <div class="footer-logo"><i class="fas fa-microphone"></i> VOZ DEL ESTE</div>
+                        <div class="footer-copyright">
+                            © 2025 Voz del Este - Todos los derechos reservados
+                        </div>
+                        <div class="footer-links">
+                            <a href="#">Privacidad</a>
+                            <a href="#">Terminos</a>
+                            <a href="#">Cookies</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Redes Sociales - Derecha -->
+                <div class="footer-block right">
+                    <div class="social-compact">
+                        <div class="social-text">Siguenos</div>
+                        <div class="social-links">
+                            <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-link whatsapp"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                Disenado con <i class="fas fa-heart" style="color: #e74c3c;"></i> para la comunidad de Maldonado
+            </div>
         </div>
     </footer>
-    <
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/main")
+    <script>
+
+        document.querySelectorAll('.footer-section').forEach(section => {
+            section.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-5px)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+
+            section.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+
+    @*@Scripts.Render("~/bundles/main")*@
+    @Scripts.Render("~/bundles/clima")
+    @Scripts.Render("~/bundles/DropDown")
+    @Scripts.Render("~/bundles/Management")
     @RenderSection("scripts", required: false)
+
+
 </body>
 </html>
