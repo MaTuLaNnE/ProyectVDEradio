@@ -88,20 +88,39 @@
                         <p><strong>Funciones:</strong> CRUD de noticias, gestión de categorías, programación de publicaciones, moderación de comentarios.</p>
                     </div>
                     <div class="crud-buttons">
-                        <a href="/Noticias" class="crud-btn btn-listar">
+                        <a href="@Url.Action("NewsTable", "News")" class="crud-btn btn-listar">
                             📰 Listar Noticias
                         </a>
-                        <a href="/Noticias/Create" class="crud-btn btn-crear">
+                        <a href="@Url.Action("Create", "News")" class="crud-btn btn-crear">
                             ✍️ Crear Noticia
                         </a>
-                        <a href="/Noticias/Edit" class="crud-btn btn-editar">
-                            📝 Editar Noticias
+                    </div>
+                </div>
+            </div>
+        }
+        @if (User.IsInRole("Administrador"))
+        {
+            <div class="gestion-card" data-role="Administrador,Editor">
+                <div class="gestion-header" onclick="toggleCard(this)">
+                    <h3 class="gestion-title">
+                        Gestión de Sponsors
+                        <span class="permission-badge">Administradores y Editores</span>
+                    </h3>
+                    <span class="gestion-icon">▼</span>
+                </div>
+                <div class="gestion-content">
+                    <div class="gestion-info">
+                        <h4>Permisos y Funcionalidades</h4>
+                        <p><strong>Acceso:</strong> Usuarios con rol de Administrador o Editor</p>
+                        <p><strong>Descripción:</strong> Sistema para administrar los sponsors y socios comerciales de la radio. Permite agregar, editar, eliminar y visualizar detalles.</p>
+                        <p><strong>Funciones:</strong> CRUD de sponsors, gestión de frecuencia de aparición y control de imágenes asociadas.</p>
+                    </div>
+                    <div class="crud-buttons">
+                        <a href="@Url.Action("Index", "Sponsors")" class="crud-btn btn-listar">
+                            📢 Listar Sponsors
                         </a>
-                        <a href="/Noticias/Delete" class="crud-btn btn-eliminar">
-                            🗑️ Eliminar Noticias
-                        </a>
-                        <a href="/Noticias/Categorias" class="crud-btn btn-reportes">
-                            🏷️ Gestionar Categorías
+                        <a href="@Url.Action("Create", "Sponsors")" class="crud-btn btn-crear">
+                            ➕ Crear Sponsor
                         </a>
                     </div>
                 </div>

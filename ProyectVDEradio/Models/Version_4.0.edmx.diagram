@@ -30,7 +30,7 @@
         <EntityTypeShape EntityType="VozDelEsteDBModel.Permissions" Width="1.5" PointX="0.75" PointY="1.125" />
         <AssociationConnector Association="VozDelEsteDBModel.FK__Persmissi__Permi__56E8E7AB1" />
         <AssociationConnector Association="VozDelEsteDBModel.FK__Persmissi__RoleI__57DD0BE41" />
-        <EntityTypeShape EntityType="VozDelEsteDBModel.AuditLogs" Width="1.5" PointX="8.75" PointY="2.25" />
+        <EntityTypeShape EntityType="VozDelEsteDBModel.AuditLogs" Width="1.5" PointX="10.75" PointY="3.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
