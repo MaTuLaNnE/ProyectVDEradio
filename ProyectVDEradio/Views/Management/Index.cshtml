@@ -1,7 +1,10 @@
 ﻿
 @{
     ViewBag.Title = "Index";
+
 }
+
+
 
 <div class="container">
     <div class="section">
@@ -32,9 +35,9 @@
                         <a href="@Url.Action("Create", "Users")" class="crud-btn btn-crear">
                             ➕ Crear Usuario
                         </a>
-                        <a href="@Url.Action("Create", "Index")" class="crud-btn btn-reportes">
+                        @*<a href="@Url.Action("Create", "Index")" class="crud-btn btn-reportes">
                             📊 Reportes
-                        </a>
+                        </a>*@
                     </div>
                 </div>
             </div>
@@ -98,6 +101,44 @@
                 </div>
             </div>
         }
+
+
+        <!-- Gestión de Programas de Radio - Administradores y Editores -->
+
+        @if (User.IsInRole("Administrador") || User.IsInRole("Editor"))
+        {
+            <div class="gestion-card" data-role="Administrador,Editor">
+                <div class="gestion-header" onclick="toggleCard(this)">
+                    <h3 class="gestion-title">
+                        Gestión de Programas de Radio
+                        <span class="permission-badge">Administradores y Editores</span>
+                    </h3>
+                    <span class="gestion-icon">▼</span>
+                </div>
+                <div class="gestion-content">
+                    <div class="gestion-info">
+                        <h4>Permisos y Funcionalidades</h4>
+                        <p><strong>Acceso:</strong> Usuarios con rol de Administrador o Editor</p>
+                        <p><strong>Descripción:</strong> Sistema completo de gestión de Los programas de radio del sistema.</p>
+                        <p><strong>Funciones:</strong> CRUD de Programas de Radio.</p>
+                    </div>
+                    <div class="crud-buttons">
+                        <a href="@Url.Action("RadioProgramsTable", "RadioPrograms")" class="crud-btn btn-listar">
+                            📰 Listar Programas
+                        </a>
+                        <a href="@Url.Action("Create", "RadioPrograms")" class="crud-btn btn-crear">
+                            ✍️ Crear Programa de Radio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+
+
+        <!-- Gestión de Sponsors - Administradores y Editores -->
         @if (User.IsInRole("Administrador"))
         {
             <div class="gestion-card" data-role="Administrador,Editor">
