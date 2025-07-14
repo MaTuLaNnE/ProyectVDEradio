@@ -6,70 +6,77 @@
 
 
 <div class="container">
-    <h2>Crear Nueva Noticia</h2>
-    @using (Html.BeginForm("Create", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        @Html.AntiForgeryToken()
-        <div class="form-horizontal">
+    <div class="section">
+        <h2>Crear Nueva Noticia</h2>
+        <h4>Cargar nueva noticia en el portal</h4>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Title)
-                </div>
-            </div>
+        @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.ArticleSubtitle, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.ArticleSubtitle, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.ArticleSubtitle)
-                </div>
-            </div>
+        <div class="form-divider"></div>
+        @using (Html.BeginForm("Create", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows = 10 })
-                    @Html.ValidationMessageFor(model => model.Content)
+                <div class="form-group has-icon">
+                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Title)
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.CategoryId, "Categoría", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.CategoryId, Model.CategoriasDisponibles, "Seleccione una categoría", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.CategoryId)
+                <div class="form-group has-icon">
+                    @Html.LabelFor(model => model.ArticleSubtitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ArticleSubtitle, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ArticleSubtitle)
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.ArticleImage, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.ArticleImage, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.ArticleImage)
-                    <small class="form-text text-muted">Ingrese una URL o nombre de archivo (si luego se maneja subida real).</small>
+                <div class="form-group has-icon">
+                    @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows = 10 })
+                        @Html.ValidationMessageFor(model => model.Content)
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.ArticleDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.ArticleDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                    @Html.ValidationMessageFor(model => model.ArticleDate)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CategoryId, "Categoría", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.CategoryId, Model.CategoriasDisponibles, "Seleccione una categoría", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CategoryId)
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Guardar Noticia" class="btn btn-success" />
-                    @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-default" })
+                <div class="form-group has-icon">
+                    @Html.LabelFor(model => model.ArticleImage, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ArticleImage, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ArticleImage)
+                        <small class="form-text text-muted">Ingrese una URL o nombre de archivo (si luego se maneja subida real).</small>
+                    </div>
                 </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ArticleDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ArticleDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        @Html.ValidationMessageFor(model => model.ArticleDate)
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Guardar Noticia" class="btn btn-success" />
+                        @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-default" })
+                    </div>
+                </div>
+
             </div>
-           
-        </div>
-    }
+        }
+    </div>
 </div>
 
 <div>
