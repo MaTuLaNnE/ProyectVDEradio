@@ -88,20 +88,11 @@
                         <p><strong>Funciones:</strong> CRUD de noticias, gestión de categorías, programación de publicaciones, moderación de comentarios.</p>
                     </div>
                     <div class="crud-buttons">
-                        <a href="/Noticias" class="crud-btn btn-listar">
+                        <a href="@Url.Action("NewsTable", "News")" class="crud-btn btn-listar">
                             📰 Listar Noticias
                         </a>
-                        <a href="/Noticias/Create" class="crud-btn btn-crear">
+                        <a href="@Url.Action("Create", "News")" class="crud-btn btn-crear">
                             ✍️ Crear Noticia
-                        </a>
-                        <a href="/Noticias/Edit" class="crud-btn btn-editar">
-                            📝 Editar Noticias
-                        </a>
-                        <a href="/Noticias/Delete" class="crud-btn btn-eliminar">
-                            🗑️ Eliminar Noticias
-                        </a>
-                        <a href="/Noticias/Categorias" class="crud-btn btn-reportes">
-                            🏷️ Gestionar Categorías
                         </a>
                     </div>
                 </div>

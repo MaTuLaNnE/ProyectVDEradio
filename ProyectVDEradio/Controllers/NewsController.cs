@@ -15,6 +15,8 @@ using ProyectVDEradio.Utils.WeatherForecastAPI;
 using ProyectVDEradio.Utils;
 using Newtonsoft.Json;
 using ProyectVDEradio.DataAccess.APIsRepository;
+using System.Security.Claims;
+
 
 namespace ProyectVDEradio.Controllers
 {
@@ -326,9 +328,16 @@ namespace ProyectVDEradio.Controllers
         // GET: News/Create
         public ActionResult Create()
         {
-            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "CategoryName");
-            ViewBag.AuthorId = new SelectList(db.Users, "UserId", "UserName");
-            return View();
+            var model = new CreateNewsViewModel
+            {
+                CategoriasDisponibles = db.Categories.Select(c => new SelectListItem
+                {
+                    Value = c.CategoryId.ToString(),
+                    Text = c.CategoryName
+                }).ToList()
+            };
+
+            return View(model);
         }
 
         // POST: News/Create
@@ -336,18 +345,43 @@ namespace ProyectVDEradio.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ArticleID,ArticleTitle,ArticleContent,ArticleDate,ArticleImage,AuthorId,CategoryId,ArticleSubtitle")] News news)
+        public ActionResult Create(CreateNewsViewModel model)
         {
             if (ModelState.IsValid)
             {
-                db.News.Add(news);
+                var userIdClaim = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier);
+                int userId = int.Parse(userIdClaim.Value);
+
+                var noticia = new News
+                {
+                    ArticleTitle = model.Title,
+                    ArticleContent = model.Content,
+                    CategoryId = model.CategoryId,
+                    ArticleSubtitle = model.ArticleSubtitle,
+                    ArticleImage = model.ArticleImage,
+                    ArticleDate = DateTime.Now,
+                    AuthorId = userId,
+                };
+
+                db.News.Add(noticia);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("index", "Management");
             }
 
-            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "CategoryName", news.CategoryId);
-            ViewBag.AuthorId = new SelectList(db.Users, "UserId", "UserName", news.AuthorId);
-            return View(news);
+            // Volvemos a cargar las categorías si hay error
+            model.CategoriasDisponibles = db.Categories.Select(c => new SelectListItem
+            {
+                Value = c.CategoryId.ToString(),
+                Text = c.CategoryName
+            }).ToList();
+
+            return View(model);
+        }
+
+        public ActionResult NewsTable()
+        {
+            var noticias = db.News.Include("Categories").Include("Users").ToList();
+            return View(noticias);
         }
 
         // GET: News/Edit/5
@@ -357,14 +391,32 @@ namespace ProyectVDEradio.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            News news = db.News.Find(id);
-            if (news == null)
+
+            var noticia = db.News.Find(id);
+            if (noticia == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "CategoryName", news.CategoryId);
-            ViewBag.AuthorId = new SelectList(db.Users, "UserId", "UserName", news.AuthorId);
-            return View(news);
+
+            var model = new EditNewsViewModel
+            {
+                ArticleID = noticia.ArticleID,
+                ArticleTitle = noticia.ArticleTitle,
+                ArticleContent = noticia.ArticleContent,
+                CategoryId = noticia.CategoryId,
+                ArticleDate = noticia.ArticleDate,
+                ArticleImage = noticia.ArticleImage,
+                ArticleSubtitle = noticia.ArticleSubtitle,
+                AuthorId = noticia.AuthorId,
+                CategoriasDisponibles = db.Categories.Select(c => new SelectListItem
+                {
+                    Value = c.CategoryId.ToString(),
+                    Text = c.CategoryName,
+                    Selected = c.CategoryId == noticia.CategoryId
+                }).ToList()
+            };
+
+            return View(model);
         }
 
         // POST: News/Edit/5
@@ -372,17 +424,37 @@ namespace ProyectVDEradio.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ArticleID,ArticleTitle,ArticleContent,ArticleDate,ArticleImage,AuthorId,CategoryId,ArticleSubtitle")] News news)
+        public ActionResult Edit(EditNewsViewModel model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(news).State = EntityState.Modified;
+                var noticia = db.News.Find(model.ArticleID);
+                if (noticia == null)
+                {
+                    return HttpNotFound();
+                }
+
+                noticia.ArticleTitle = model.ArticleTitle;
+                noticia.ArticleContent = model.ArticleContent;
+                noticia.CategoryId = model.CategoryId;
+                noticia.ArticleDate = model.ArticleDate;
+                noticia.ArticleImage = model.ArticleImage;
+                noticia.AuthorId = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier) != null ? 
+                    int.Parse(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value) : 0;  
+                noticia.ArticleSubtitle = model.ArticleSubtitle;
+
+                db.Entry(noticia).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("NewsTable");
             }
-            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "CategoryName", news.CategoryId);
-            ViewBag.AuthorId = new SelectList(db.Users, "UserId", "UserName", news.AuthorId);
-            return View(news);
+
+            model.CategoriasDisponibles = db.Categories.Select(c => new SelectListItem
+            {
+                Value = c.CategoryId.ToString(),
+                Text = c.CategoryName
+            });
+
+            return View(model);
         }
 
         // GET: News/Delete/5
