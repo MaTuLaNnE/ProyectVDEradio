@@ -1,7 +1,10 @@
 ﻿
 @{
     ViewBag.Title = "Index";
+
 }
+
+
 
 <div class="container">
     <div class="section">
@@ -32,13 +35,42 @@
                         <a href="@Url.Action("Create", "Users")" class="crud-btn btn-crear">
                             ➕ Crear Usuario
                         </a>
-                        <a href="@Url.Action("Create", "Index")" class="crud-btn btn-reportes">
+                        @*<a href="@Url.Action("Create", "Index")" class="crud-btn btn-reportes">
                             📊 Reportes
+                        </a>*@
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Gestión de Permisos - Solo Administradores -->
+        @if (User.IsInRole("Administrador"))
+        {
+            <div class="gestion-card" data-role="Administrador">
+                <div class="gestion-header" onclick="toggleCard(this)">
+                    <h3 class="gestion-title">
+                        Gestión de Permisos
+                        <span class="permission-badge">Solo Administradores</span>
+                    </h3>
+                    <span class="gestion-icon">▼</span>
+                </div>
+                <div class="gestion-content">
+                    <div class="gestion-info">
+                        <h4>Permisos y Funcionalidades</h4>
+                        <p><strong>Acceso:</strong> Exclusivo para usuarios con rol de Administrador</p>
+                        <p><strong>Descripción:</strong> Gestión completa del sistema de asignacion de Permisos a los roles.</p>
+                        <p><strong>Funciones:</strong> CRUD completo de Permisos.</p>
+                    </div>
+                    <div class="crud-buttons">
+                        <a href="@Url.Action("PermissionPanel", "Permissions")" class="crud-btn btn-listar">
+                            📋 Gestor de Permisos
                         </a>
                     </div>
                 </div>
             </div>
         }
+
+
         <!-- Gestión de Noticias - Administradores y Editores -->
 
         @if (User.IsInRole("Administrador") || User.IsInRole("Editor"))
@@ -59,25 +91,54 @@
                         <p><strong>Funciones:</strong> CRUD de noticias, gestión de categorías, programación de publicaciones, moderación de comentarios.</p>
                     </div>
                     <div class="crud-buttons">
-                        <a href="/Noticias" class="crud-btn btn-listar">
+                        <a href="@Url.Action("NewsTable", "News")" class="crud-btn btn-listar">
                             📰 Listar Noticias
                         </a>
-                        <a href="/Noticias/Create" class="crud-btn btn-crear">
+                        <a href="@Url.Action("Create", "News")" class="crud-btn btn-crear">
                             ✍️ Crear Noticia
-                        </a>
-                        <a href="/Noticias/Edit" class="crud-btn btn-editar">
-                            📝 Editar Noticias
-                        </a>
-                        <a href="/Noticias/Delete" class="crud-btn btn-eliminar">
-                            🗑️ Eliminar Noticias
-                        </a>
-                        <a href="/Noticias/Categorias" class="crud-btn btn-reportes">
-                            🏷️ Gestionar Categorías
                         </a>
                     </div>
                 </div>
             </div>
         }
+
+
+        <!-- Gestión de Programas de Radio - Administradores y Editores -->
+
+        @if (User.IsInRole("Administrador") || User.IsInRole("Editor"))
+        {
+            <div class="gestion-card" data-role="Administrador,Editor">
+                <div class="gestion-header" onclick="toggleCard(this)">
+                    <h3 class="gestion-title">
+                        Gestión de Programas de Radio
+                        <span class="permission-badge">Administradores y Editores</span>
+                    </h3>
+                    <span class="gestion-icon">▼</span>
+                </div>
+                <div class="gestion-content">
+                    <div class="gestion-info">
+                        <h4>Permisos y Funcionalidades</h4>
+                        <p><strong>Acceso:</strong> Usuarios con rol de Administrador o Editor</p>
+                        <p><strong>Descripción:</strong> Sistema completo de gestión de Los programas de radio del sistema.</p>
+                        <p><strong>Funciones:</strong> CRUD de Programas de Radio.</p>
+                    </div>
+                    <div class="crud-buttons">
+                        <a href="@Url.Action("RadioProgramsTable", "RadioPrograms")" class="crud-btn btn-listar">
+                            📰 Listar Programas
+                        </a>
+                        <a href="@Url.Action("Create", "RadioPrograms")" class="crud-btn btn-crear">
+                            ✍️ Crear Programa de Radio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+
+
+        <!-- Gestión de Sponsors - Administradores y Editores -->
         @if (User.IsInRole("Administrador"))
         {
             <div class="gestion-card" data-role="Administrador,Editor">
@@ -124,6 +185,8 @@
                 </div>
             </div>
         </div>
+
+
 
     </div>
 </div>

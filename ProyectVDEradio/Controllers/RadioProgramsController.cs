@@ -28,7 +28,7 @@ namespace ProyectVDEradio.Controllers
                             .Include(p => p.ProgramDays)
                             .Include(p => p.ProgramHosts.Select(ph => ph.Hosts))
                             .Include(p => p.CustomersComments.Select(c => c.Customers))
-                            .ToList() // Necesario para evaluar TimeSpan correctamente en C#
+                            .ToList() 
                             .Where(p => p.ProgramDays.Any(d => d.WeekDay == currentDay))
                             .FirstOrDefault(p =>
                                 (p.StartTime < p.EndTime && currentTime >= p.StartTime && currentTime < p.EndTime) || // dentro del mismo día
@@ -61,7 +61,16 @@ namespace ProyectVDEradio.Controllers
         }
 
 
+        public ActionResult RadioProgramsTable()
+        {
+            var programas = db.RadioPrograms
+                           .Include(p => p.ProgramHosts.Select(ph => ph.Hosts))
+                           .Include(p => p.ProgramDays)
+                           .ToList();
 
+
+            return View(programas);
+        }
 
 
 
@@ -84,7 +93,16 @@ namespace ProyectVDEradio.Controllers
         // GET: RadioPrograms/Create
         public ActionResult Create()
         {
-            return View();
+            var model = new CreateProgramViewModel
+            {
+                HostsDisponibles = db.Hosts.Select(h => new SelectListItem
+                {
+                    Value = h.HostId.ToString(),
+                    Text = h.HostName
+                }).ToList()
+            };
+
+            return View(model);
         }
 
         // POST: RadioPrograms/Create
@@ -92,17 +110,56 @@ namespace ProyectVDEradio.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProgramId,ProgramName,Image,Description,StartTime,EndTime")] RadioPrograms radioPrograms)
+        public ActionResult Create(CreateProgramViewModel model)
         {
             if (ModelState.IsValid)
             {
-                db.RadioPrograms.Add(radioPrograms);
+                var nuevoPrograma = new RadioPrograms
+                {
+                    ProgramName = model.ProgramName,
+                    Image = model.Image,
+                    Description = model.Description,
+                    StartTime = model.StartTime,
+                    EndTime = model.EndTime
+                };
+
+                db.RadioPrograms.Add(nuevoPrograma);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                // Agregar días de emisión
+                foreach (var dia in model.SelectedDays ?? new List<int>())
+                {
+                    db.ProgramDays.Add(new ProgramDays
+                    {
+                        ProgramId = nuevoPrograma.ProgramId,
+                        WeekDay = dia
+                    });
+                }
+
+                // Agregar hosts
+                foreach (var hostId in model.SelectedHostIds ?? new List<int>())
+                {
+                    db.ProgramHosts.Add(new ProgramHosts
+                    {
+                        ProgramId = nuevoPrograma.ProgramId,
+                        HostId = hostId
+                    });
+                }
+
+                db.SaveChanges();
+                return RedirectToAction("index", "Management");
             }
 
-            return View(radioPrograms);
+            // Si falla, volver a llenar dropdown
+            model.HostsDisponibles = db.Hosts.Select(h => new SelectListItem
+            {
+                Value = h.HostId.ToString(),
+                Text = h.HostName
+            }).ToList();
+
+            return View(model);
         }
+
 
         // GET: RadioPrograms/Edit/5
         public ActionResult Edit(int? id)

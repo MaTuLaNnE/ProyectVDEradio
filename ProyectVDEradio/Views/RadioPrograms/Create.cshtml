@@ -1,4 +1,4 @@
-﻿@model ProyectVDEradio.Models.RadioPrograms
+﻿@model ProyectVDEradio.ViewModels.CreateProgramViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -7,60 +7,56 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>RadioPrograms</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProgramName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ProgramName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ProgramName, "", new { @class = "text-danger" })
-            </div>
-        </div>
+<div class="form-horizontal">
+    <h4>Nuevo Programa de Radio</h4>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    @Html.LabelFor(m => m.ProgramName)
+    @Html.TextBoxFor(m => m.ProgramName, new { @class = "form-control" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    @Html.LabelFor(m => m.Image)
+    @Html.TextBoxFor(m => m.Image, new { @class = "form-control" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    @Html.LabelFor(m => m.Description)
+    @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    @Html.LabelFor(m => m.StartTime)
+    @Html.TextBoxFor(m => m.StartTime, new { @type = "time", @class = "form-control" })
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+    @Html.LabelFor(m => m.EndTime)
+    @Html.TextBoxFor(m => m.EndTime, new { @type = "time", @class = "form-control" })
+
+    <label>Días de Emisión</label>
+    @{
+        string[] dias = { "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" };
+        for (int i = 0; i < 7; i++)
+        {
+            <div>
+                <label>
+                    <input type="checkbox" name="SelectedDays" value="@i" /> @dias[i]
+                </label>
             </div>
-        </div>
+        }
+    }
+
+    <label>Conductores</label>
+    <div>
+        @foreach (var host in Model.HostsDisponibles)
+        {
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="SelectedHostIds" value="@host.Value" />
+                    @host.Text
+                </label>
+            </div>
+        }
     </div>
+
+    <br />
+    <button type="submit" class="btn btn-success">Guardar Programa</button>
+</div>
 }
 
 <div>
