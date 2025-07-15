@@ -119,10 +119,10 @@
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
-
+/*
 .btn-listar {
     background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
-}
+}*/
 
 .btn-crear {
     background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);

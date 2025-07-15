@@ -54,14 +54,97 @@
                             <td>@noticia.ArticleDate.ToShortDateString()</td>
                             <td>
                                 @Html.ActionLink("✏️ Editar", "Edit", new { id = noticia.ArticleID }, new { @class = "btn btn-warning" })
-                                @Html.ActionLink("🗑️ Eliminar", "Delete", new { id = noticia.ArticleID }, new { @class = "btn btn-danger" })
+                                @Html.Raw($"<a href='#' class='action-btn btn-danger' onclick=\"showDeleteModal('{noticia.ArticleTitle}', '{noticia.ArticleID}')\">🗑️ Eliminar</a>")
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
-        @Html.ActionLink("➕ Nueva Noticia", "Create", null, new { @class = "btn btn-primary" })
+
+        <!-- MODAL ELIMINAR NOTICIA -->
+        <div id="deleteModal" class="modal-overlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <button class="modal-close" onclick="closeDeleteNewsModal()">×</button>
+                    <span class="modal-icon">🗑️</span>
+                    <h2 class="modal-title">Eliminar Noticia</h2>
+                    <p class="modal-subtitle">Esta acción no se puede deshacer</p>
+                </div>
+
+                <div class="modal-body">
+                    <div class="user-info-card">
+                        <div class="user-avatar-large" id="modalNewsAvatar">N</div>
+                        <div class="user-details-card">
+                            <h4 id="modalNewsTitle"></h4>
+                            <div class="user-detail-item">
+                                <span class="user-detail-label">ID:</span>
+                                <span class="user-detail-value" id="modalNewsId"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warning-message">
+                        <strong>¡Atención!</strong> Esta acción eliminará permanentemente la noticia y toda su información asociada.
+                    </div>
+
+                    <div class="consequences-list">
+                        <li>Se eliminará el contenido de la noticia</li>
+                        <li>No se podrá recuperar posteriormente</li>
+                        <li>La noticia desaparecerá de la web</li>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="modal-btn btn-cancel" onclick="closeDeleteNewsModal()">
+                        ❌ Cancelar
+                    </button>
+                    @using (Html.BeginForm("DeleteConfirmed", "News", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" id="hiddenNewsIdToDelete" />
+                        <button type="submit" class="modal-btn btn-delete">
+                            🗑️ Eliminar Noticia
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+
+        <div class="back-link">
+            <a href="@Url.Action("Index", "Management")" class="crud-btn btn-listar">
+                ← Volver al Panel de Gestión
+            </a>
+        </div>
 
     </div>
 </div>
+
+<script>
+
+    function showDeleteNewsModal(title, id) {
+        document.getElementById('modalNewsTitle').textContent = title;
+        document.getElementById('modalNewsId').textContent = id;
+        document.getElementById('modalNewsAvatar').textContent = title.charAt(0).toUpperCase();
+        document.getElementById('hiddenNewsIdToDelete').value = id;
+
+        const modal = document.getElementById('deleteModal');
+        document.getElementById('deleteModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDeleteNewsModal() {
+        const modal = document.getElementById('deleteModal');
+        document.getElementById('deleteModal').classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('deleteModal').addEventListener('click', function (e) {
+        if (e.target === this) {
+            closeDeleteNewsModal();
+        }
+    });
+
+
+</script>

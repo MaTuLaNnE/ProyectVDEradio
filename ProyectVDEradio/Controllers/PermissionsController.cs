@@ -1,4 +1,5 @@
 ﻿using ProyectVDEradio.Models;
+using ProyectVDEradio.Utils;
 using ProyectVDEradio.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,12 @@ namespace ProyectVDEradio.Controllers
     {
 
         private VozDelEsteDBEntities db = new VozDelEsteDBEntities();
+
+
+
+
         // GET: Permissions
+        [AuthorizePermiso("PermissionPanel")]
         public ActionResult PermissionPanel()
         {
             var roles = db.Roles.ToList();
@@ -43,6 +49,7 @@ namespace ProyectVDEradio.Controllers
 
 
         [HttpPost]
+        [AuthorizePermiso("PermissionEdit")]
         public ActionResult GuardarPermisos(string[] PermisosAsignados)
         {
             var relacionesActuales = db.PermissionRole.ToList();

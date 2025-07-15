@@ -116,24 +116,22 @@ namespace ProyectVDEradio.Controllers
             if (user == null)
                 return HttpNotFound();
 
-            var viewModel = new CreateUserViewModel
+            var viewModel = new EditUserViewModel
             {
                 UserId = user.UserId,
                 UserName = user.UserName,
                 Email = user.Email,
-                // Podés dejar UserPassword vacío si no vas a editarlo
                 UserRole = user.UserRole,
                 RolesDisponibles = new SelectList(db.Roles, "RoleId", "RoleName", user.UserRole)
             };
 
             if (viewModel.UserRole == 3)
             {
-                var cliente = new Customers
+                var cliente = db.Customers.FirstOrDefault(c => c.UserId == user.UserId);
                 {
-                    UserId = viewModel.UserId,
-                    CustomerName = viewModel.Nombre,
-                    CustomerSurname = viewModel.Apellido,
-                    BirthDate = viewModel.FechaNacimiento?.Date ?? DateTime.Now
+                    viewModel.Nombre = cliente.CustomerName;
+                    viewModel.Apellido = cliente.CustomerSurname;
+                    viewModel.FechaNacimiento = cliente.BirthDate;
                 };
             }
 
@@ -147,7 +145,7 @@ namespace ProyectVDEradio.Controllers
         [AuthorizePermiso("UpdateUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(CreateUserViewModel model)
+        public ActionResult Edit(EditUserViewModel model)
         {
             if (ModelState.IsValid)
             {

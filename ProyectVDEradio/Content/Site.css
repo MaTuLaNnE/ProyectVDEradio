@@ -1709,12 +1709,6 @@ estilos create sponsors*/
 
 /* Estilos base que podrían estar faltando */
 
-.form-divider {
-    height: 3px;
-    background: linear-gradient(to right, #3498db, #2ecc71);
-    margin-bottom: 25px;
-    border-radius: 2px;
-}
 
 .form-group {
     margin-bottom: 20px;
@@ -1834,7 +1828,7 @@ estilos create sponsors*/
         color: white;
         text-decoration: none;
     }
-
+/*
 .btn-listar {
     background: #27ae60;
 }
@@ -1842,7 +1836,7 @@ estilos create sponsors*/
     .btn-listar:hover {
         background: #229954;
     }
-
+*/
 .field-validation-error {
     color: #e74c3c;
     font-size: 12px;

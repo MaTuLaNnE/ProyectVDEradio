@@ -10,9 +10,7 @@
         <h2>Crear Nueva Noticia</h2>
         <h4>Cargar nueva noticia en el portal</h4>
 
-        @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
-
-        <div class="form-divider"></div>
+        <div class="form-divider" style="width: auto; max-width: 100%;"></div>
         @using (Html.BeginForm("Create", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
@@ -68,19 +66,26 @@
                 </div>
 
                 <div class="btn-container">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Guardar Noticia" class="btn btn-success" />
-                        @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-default" })
-                    </div>
+
+                    <input type="submit" value="Crear Noticia" class="btn btn-primary" />
+                    @Html.ActionLink("Cancelar", "NewsTable", null, new { @class = "btn btn-secondary" })
+
                 </div>
 
             </div>
         }
-    </div>
-</div>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+        <div class="back-link">
+            <a href="@Url.Action("NewsTable", "News")" class="crud-btn btn-listar">
+                ← Volver al Panel de Gestión de Noticias
+            </a>
+        </div>
+        <div class="back-link">
+            <a href="@Url.Action("Index", "Management")" class="crud-btn btn-listar">
+                ← Volver al Panel de Gestión
+            </a>
+        </div>
+    </div>
 </div>
 
 @section Scripts {

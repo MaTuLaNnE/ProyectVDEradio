@@ -8,7 +8,7 @@
     <div class="section">
         <h2>Crear Usuario</h2>
         <h4>Nuevo Usuario del Sistema</h4>
-        <div class="form-divider"></div>
+        <div class="form-divider" style="width: auto; max-width: 100%;"></div>
 
         @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
 
@@ -75,7 +75,7 @@
         }
 
         <div class="back-link">
-            <a href="@Url.Action("Index", "Users")" class="crud-btn btn-listar">
+            <a href="@Url.Action("Index", "Users")" class="back-link a" style="color:black">
                 ← Volver al Panel de Gestión de Usuarios
             </a>
         </div>
