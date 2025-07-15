@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ProyectVDEradio.Models;
+using ProyectVDEradio.Utils;
 using ProyectVDEradio.ViewModels;
 
 namespace ProyectVDEradio.Controllers
@@ -61,6 +62,7 @@ namespace ProyectVDEradio.Controllers
         }
 
 
+        [AuthorizePermiso("ViewRadioPrograms")]
         public ActionResult RadioProgramsTable()
         {
             var programas = db.RadioPrograms
@@ -91,6 +93,7 @@ namespace ProyectVDEradio.Controllers
         }
 
         // GET: RadioPrograms/Create
+        [AuthorizePermiso("CreateRadioPrograms")]
         public ActionResult Create()
         {
             var model = new CreateProgramViewModel
@@ -110,6 +113,7 @@ namespace ProyectVDEradio.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizePermiso("CreateRadioPrograms")]
         public ActionResult Create(CreateProgramViewModel model)
         {
             if (ModelState.IsValid)
@@ -162,60 +166,143 @@ namespace ProyectVDEradio.Controllers
 
 
         // GET: RadioPrograms/Edit/5
+        [AuthorizePermiso("EditRadioPrograms")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            RadioPrograms radioPrograms = db.RadioPrograms.Find(id);
-            if (radioPrograms == null)
+
+            var programa = db.RadioPrograms
+                            .Include("ProgramDays")
+                            .Include("ProgramHosts")
+                            .FirstOrDefault(p => p.ProgramId == id);
+
+            if (programa == null)
             {
                 return HttpNotFound();
             }
-            return View(radioPrograms);
+
+            var model = new EditRadioProgramViewModel
+            {
+                ProgramId = programa.ProgramId,
+                ProgramName = programa.ProgramName,
+                Image = programa.Image,
+                Description = programa.Description,
+                StartTime = programa.StartTime,
+                EndTime = programa.EndTime,
+                SelectedDays = programa.ProgramDays.Select(d => d.WeekDay).ToList(),
+                SelectedHostIds = programa.ProgramHosts.Select(h => h.HostId).ToList(),
+                HostsDisponibles = db.Hosts.Select(h => new SelectListItem
+                {
+                    Value = h.HostId.ToString(),
+                    Text = h.HostName
+                }).ToList()
+            };
+
+            return View(model);
         }
+
 
         // POST: RadioPrograms/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProgramId,ProgramName,Image,Description,StartTime,EndTime")] RadioPrograms radioPrograms)
+        [AuthorizePermiso("EditRadioPrograms")]
+        public ActionResult Edit(EditRadioProgramViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                db.Entry(radioPrograms).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                model.HostsDisponibles = db.Hosts.Select(h => new SelectListItem
+                {
+                    Value = h.HostId.ToString(),
+                    Text = h.HostName
+                }).ToList();
+                return View(model);
             }
-            return View(radioPrograms);
-        }
 
-        // GET: RadioPrograms/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            RadioPrograms radioPrograms = db.RadioPrograms.Find(id);
-            if (radioPrograms == null)
+            var programa = db.RadioPrograms
+                            .Include("ProgramDays")
+                            .Include("ProgramHosts")
+                            .FirstOrDefault(p => p.ProgramId == model.ProgramId);
+
+            if (programa == null)
             {
                 return HttpNotFound();
             }
-            return View(radioPrograms);
+
+            // Actualizar propiedades básicas
+            programa.ProgramName = model.ProgramName;
+            programa.Image = model.Image;
+            programa.Description = model.Description;
+            programa.StartTime = model.StartTime;
+            programa.EndTime = model.EndTime;
+
+            db.ProgramDays.RemoveRange(programa.ProgramDays);
+            foreach (var dia in model.SelectedDays)
+            {
+                db.ProgramDays.Add(new ProgramDays
+                {
+                    ProgramId = programa.ProgramId,
+                    WeekDay = dia
+                });
+            }
+
+            db.ProgramHosts.RemoveRange(programa.ProgramHosts);
+            foreach (var hostId in model.SelectedHostIds)
+            {
+                db.ProgramHosts.Add(new ProgramHosts
+                {
+                    ProgramId = programa.ProgramId,
+                    HostId = hostId
+                });
+            }
+
+            db.Entry(programa).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return RedirectToAction("RadioProgramsTable");
         }
 
+
         // POST: RadioPrograms/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [AuthorizePermiso("DeleteRadioPrograms")]
+        [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             RadioPrograms radioPrograms = db.RadioPrograms.Find(id);
+
+            var comments = db.CustomersComments
+                 .Where(c => c.ProgramId == radioPrograms.ProgramId)
+                 .ToList();
+
+            foreach (var comment in comments)
+            {
+                db.CustomersComments.Remove(comment);
+            }
+
+            var programDays = db.ProgramDays
+                .Where(pd => pd.ProgramId == radioPrograms.ProgramId)
+                .ToList();
+            foreach (var programDay in programDays)
+                {
+                db.ProgramDays.Remove(programDay);
+            }
+            var programHosts = db.ProgramHosts
+                .Where(ph => ph.ProgramId == radioPrograms.ProgramId)
+                .ToList();
+            foreach (var programHost in programHosts)
+                {
+                db.ProgramHosts.Remove(programHost);
+            }
+
+
             db.RadioPrograms.Remove(radioPrograms);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("RadioProgramsTable");
         }
 
         protected override void Dispose(bool disposing)
@@ -229,6 +316,7 @@ namespace ProyectVDEradio.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizePermiso("CreateComment")]
         public ActionResult AddComment(int ProgramId, string CustomerName, string Comment)
         {
             try

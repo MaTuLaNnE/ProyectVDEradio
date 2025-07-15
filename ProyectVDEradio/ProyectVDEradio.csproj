@@ -235,6 +235,7 @@
     <Compile Include="ViewModels\CreateProgramViewModel.cs" />
     <Compile Include="ViewModels\CreateUserViewModel.cs" />
     <Compile Include="ViewModels\EditNewsViewModel.cs" />
+    <Compile Include="ViewModels\EditRadioProgramViewModel.cs" />
     <Compile Include="ViewModels\EditUserViewModel.cs" />
     <Compile Include="Utils\CurrencyAPI.cs" />
     <Compile Include="Utils\CurrencyService.cs" />

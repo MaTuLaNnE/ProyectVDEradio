@@ -284,15 +284,12 @@
 
     function confirmDelete() {
         if (userToDelete) {
-            // Aquí iría la lógica para eliminar el usuario
-            // Por ejemplo, redirigir a la acción de eliminar
             console.log('Eliminando usuario:', userToDelete);
 
             // Simulación de eliminación exitosa
             alert(`Usuario ${userToDelete.userName} eliminado exitosamente`);
 
-            // En una aplicación real, aquí harías:
-            // window.location.href = '/Users/Delete/' + userToDelete.userId;
+
 
             closeDeleteModal();
         }

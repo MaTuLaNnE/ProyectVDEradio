@@ -1,4 +1,5 @@
-﻿@model List<ProyectVDEradio.Models.RadioPrograms>
+﻿
+@model List<ProyectVDEradio.Models.RadioPrograms>
 @{
     ViewBag.Title = "RadioProgramsTable";
 }
@@ -8,67 +9,332 @@
     {
         switch (day)
         {
-            case 0: return "Domingo";
-            case 1: return "Lunes";
-            case 2: return "Martes";
-            case 3: return "Miércoles";
-            case 4: return "Jueves";
-            case 5: return "Viernes";
-            case 6: return "Sábado";
+            case 0: return "Dom";
+            case 1: return "Lun";
+            case 2: return "Mar";
+            case 3: return "Mié";
+            case 4: return "Jue";
+            case 5: return "Vie";
+            case 6: return "Sáb";
             default: return "¿?";
         }
     }
 }
 
-<h2 class="mb-4">Gestión de Programas de Radio</h2>
+<div class="container">
+    <div class="section">
+        <h2>Gestión de Programas de Radio</h2>
+        <div class="subtitle">Administra todos los programas de radio del sistema</div>
+        <div class="form-divider" style="width: auto; max-width: 100%;"></div>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Imagen</th>
-            <th>Descripción</th>
-            <th>Horario</th>
-            <th>Conductores</th>
-            <th>Días</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var program in Model)
-        {
-            <tr>
-                <td>@program.ProgramName</td>
-                <td>
-                    @if (!string.IsNullOrEmpty(program.Image))
-                    {
-                        <img src="@program.Image" alt="Imagen" style="max-height: 50px;" />
-                    }
-                    else
-                    {
-                        <span class="text-muted">Sin imagen</span>
-                    }
-                </td>
-                <td>@program.Description</td>
-                <td>@program.StartTime.ToString(@"hh\:mm") - @program.EndTime.ToString(@"hh\:mm")</td>
-                <td>
-                    @string.Join(", ", program.ProgramHosts.Select(h => h.Hosts.HostName))
-                </td>
-                <td>
-                    @if (program.ProgramDays != null && program.ProgramDays.Any())
-                    {
-                        string.Join(", ", program.ProgramDays.Select(d => GetDayName(d.WeekDay)));
-                    }
-                    else
-                    {
-                        <em>Sin días</em>
-                    }
-                </td>
-                <td>
-                    @Html.ActionLink("✏️ Editar", "Edit", new { id = program.ProgramId }, new { @class = "btn btn-sm btn-warning" })
-                    @Html.ActionLink("🗑️ Eliminar", "Delete", new { id = program.ProgramId }, new { @class = "btn btn-sm btn-danger", onclick = "return confirm('¿Seguro que deseas eliminar este programa?');" })
-                </td>
-            </tr>
+        <div class="table-header">
+            <div class="table-title">
+                <span class="user-count">Total: @(Model?.Count() ?? 0) programas</span>
+            </div>
+            <div class="table-actions">
+                @Html.ActionLink(" Crear Nuevo Programa", "Create", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-box" placeholder="Buscar programas por nombre, descripción o conductor..." id="searchInput">
+        </div>
+
+        <div class="table-container">
+            @if (Model != null && Model.Any())
+            {
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Programa</th>
+                            <th>Descripción</th>
+                            <th>Horario</th>
+                            <th>Conductores</th>
+                            <th>Días</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var program in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-details">
+                                            <h4>@Html.DisplayFor(modelItem => program.ProgramName)</h4>
+                                            <span>ID: @program.ProgramId</span>
+                                            @if (!string.IsNullOrEmpty(program.Image))
+                                            {
+                                                <div style="margin-top: 5px;">
+                                                    <img src="@program.Image" alt="Imagen del programa" style="max-height: 40px; border-radius: 4px;" />
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(program.Description))
+                                    {
+                                        <span title="@program.Description">
+                                            @(program.Description.Length > 50 ? program.Description.Substring(0, 50) + "..." : program.Description)
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Sin descripción</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="schedule-info">
+                                        <strong>@program.StartTime.ToString(@"hh\:mm")</strong>
+                                        <span> - </span>
+                                        <strong>@program.EndTime.ToString(@"hh\:mm")</strong>
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (program.ProgramHosts != null && program.ProgramHosts.Any())
+                                    {
+                                        <div class="hosts-list">
+                                            @foreach (var host in program.ProgramHosts.Take(2))
+                                            {
+                                                <span class="host-badge">@host.Hosts.HostName</span>
+                                            }
+                                            @if (program.ProgramHosts.Count() > 2)
+                                            {
+                                                <span class="host-badge more-hosts">+@(program.ProgramHosts.Count() - 2)</span>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Sin conductores</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (program.ProgramDays != null && program.ProgramDays.Any())
+                                    {
+                                        <div class="days-list">
+                                            @foreach (var day in program.ProgramDays.Take(3))
+                                            {
+                                                <span class="day-badge">@GetDayName(day.WeekDay)</span>
+                                            }
+                                            @if (program.ProgramDays.Count() > 3)
+                                            {
+                                                <span class="day-badge more-days">+@(program.ProgramDays.Count() - 3)</span>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Sin días</span>
+                                    }
+                                </td>
+                                <td class="actions-cell">
+                                    @Html.ActionLink(" Editar", "Edit", new { id = program.ProgramId }, new { @class = "action-btn btn-warning" })
+                                    @Html.Raw($"<a href='#' class='action-btn btn-danger' onclick=\"showDeleteModal('{program.ProgramName}', '{program.ProgramId}', '{program.Description}')\"> Eliminar</a>")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="no-users">
+                    <div class="no-users-icon">📻</div>
+                    <h3>No hay programas de radio registrados</h3>
+                    <p>Comienza creando tu primer programa de radio</p>
+                    @Html.ActionLink("Crear Primer Programa", "Create", null, new { @class = "btn btn-primary", style = "margin-top: 20px;" })
+                </div>
+            }
+        </div>
+
+        <div class="pagination">
+            <div class="pagination-info">
+                Mostrando @(Model?.Count() ?? 0) programas
+            </div>
+        </div>
+
+        <div class="back-link">
+            <a href="@Url.Action("Index", "Management")" class="crud-btn btn-listar">
+                ← Volver al Panel de Gestión
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <button class="modal-close" onclick="closeDeleteModal()">×</button>
+            <span class="modal-icon">🗑️</span>
+            <h2 class="modal-title">Eliminar Programa</h2>
+            <p class="modal-subtitle">Esta acción no se puede deshacer</p>
+        </div>
+
+        <div class="modal-body">
+            <div class="user-info-card">
+                <div class="user-avatar-large" id="modalProgramAvatar"></div>
+                <div class="user-details-card">
+                    <h4 id="modalProgramName"></h4>
+                    <div class="user-detail-item">
+                        <span class="user-detail-label">Descripción:</span>
+                        <span class="user-detail-value" id="modalProgramDescription"></span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="user-detail-label">ID:</span>
+                        <span class="user-detail-value" id="modalProgramId"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-message">
+                <strong>¡Atención!</strong> Esta acción eliminará permanentemente el programa y toda su información asociada.
+            </div>
+
+            <div class="consequences-list">
+                <li>Se eliminarán todos los datos del programa</li>
+                <li>Se perderá el historial de emisiones</li>
+                <li>Se eliminarán las asignaciones de conductores</li>
+                <li>No se podrán recuperar los datos posteriormente</li>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="modal-btn btn-cancel" onclick="closeDeleteModal()">
+                ❌ Cancelar
+            </button>
+            @using (Html.BeginForm("DeleteConfirmed", "RadioPrograms", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" id="hiddenProgramIdToDelete" />
+                <button type="submit" class="modal-btn btn-delete">
+                   Eliminar Programa
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    let programToDelete = null;
+
+    function showDeleteModal(programName, programId, programDescription) {
+        programToDelete = { programName, programId, programDescription };
+
+        // Actualizar contenido del modal
+        document.getElementById('modalProgramName').textContent = programName;
+        document.getElementById('modalProgramDescription').textContent = programDescription || 'Sin descripción';
+        document.getElementById('modalProgramId').textContent = programId;
+        document.getElementById('hiddenProgramIdToDelete').value = programId;
+
+        // Actualizar avatar
+        const avatar = document.getElementById('modalProgramAvatar');
+        avatar.textContent = programName.charAt(0).toUpperCase();
+
+        // Mostrar modal
+        const modal = document.getElementById('deleteModal');
+        modal.classList.add('active');
+
+        // Prevenir scroll del body
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.remove('active');
+
+        // Restaurar scroll del body
+        document.body.style.overflow = 'auto';
+
+        // Limpiar datos
+        programToDelete = null;
+    }
+
+    // Cerrar modal al hacer clic fuera
+    document.getElementById('deleteModal').addEventListener('click', function (e) {
+        if (e.target === this) {
+            closeDeleteModal();
         }
-    </tbody>
-</table>
+    });
+
+    // Cerrar modal con tecla Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && document.getElementById('deleteModal').classList.contains('active')) {
+            closeDeleteModal();
+        }
+    });
+
+    // Funcionalidad de búsqueda
+    document.getElementById('searchInput').addEventListener('input', function (e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('.modern-table tbody tr');
+
+        rows.forEach(row => {
+            const programName = row.cells[0].textContent.toLowerCase();
+            const description = row.cells[1].textContent.toLowerCase();
+            const hosts = row.cells[3].textContent.toLowerCase();
+
+            if (programName.includes(searchTerm) || description.includes(searchTerm) || hosts.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+
+    // Estilos adicionales para los nuevos elementos
+    const style = document.createElement('style');
+    style.textContent = `
+        .schedule-info {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .hosts-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .host-badge {
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .host-badge.more-hosts {
+            background: linear-gradient(135deg, #757575 0%, #424242 100%);
+        }
+
+        .days-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .day-badge {
+            background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .day-badge.more-days {
+            background: linear-gradient(135deg, #757575 0%, #424242 100%);
+        }
+
+        .text-muted {
+            color: #666;
+            font-style: italic;
+        }
+    `;
+    document.head.appendChild(style);
+</script>
