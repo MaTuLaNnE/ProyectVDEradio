@@ -19,6 +19,8 @@ namespace ProyectVDEradio.ViewModels
         [EmailAddress]
         public string Email { get; set; }
 
+        public string UserPassword { get; set; }
+
         [Display(Name = "Rol")]
         public int UserRole { get; set; }
 
@@ -29,8 +31,6 @@ namespace ProyectVDEradio.ViewModels
         [Display(Name = "Fecha de Nacimiento")]
         [DataType(DataType.Date)]
         public DateTime? FechaNacimiento { get; set; }
-
-        public bool EsCliente => UserRole == 3; // o el ID del rol de Cliente
 
         public IEnumerable<SelectListItem> RolesDisponibles { get; set; }
 

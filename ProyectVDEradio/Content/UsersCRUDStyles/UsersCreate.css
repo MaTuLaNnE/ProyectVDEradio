@@ -77,6 +77,38 @@
         padding-right: 45px;
     }
 
+.cliente-camposEdit {
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8ff 100%);
+    border: 2px solid rgba(76, 175, 80, 0.3);
+    border-radius: 15px;
+    padding: 25px;
+    margin: 25px 0;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    max-height: 0;
+    transition: all 0.5s ease;
+}
+
+    .cliente-camposEdit.show {
+        opacity: 1;
+        max-height: 500px;
+        padding: 25px;
+        margin: 25px 0;
+    }
+
+    .cliente-camposEdit::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+    }
+
+
+
 .cliente-campos {
     background: linear-gradient(135deg, #e8f5e8 0%, #f0f8ff 100%);
     border: 2px solid rgba(76, 175, 80, 0.3);
