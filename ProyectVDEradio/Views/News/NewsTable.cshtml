@@ -2,149 +2,259 @@
 @{
     ViewBag.Title = "NewsTable";
 }
-
 @model List<ProyectVDEradio.Models.News>
-
-
-
-
 
 <div class="container">
     <div class="section">
         <h2>Gestión de Noticias</h2>
-        <div class="subtitle">Administra todos los usuarios del sistema </div>
-        <div class="form-divider"></div>
+        <div class="subtitle">Administra todas las noticias del sistema</div>
+        <div class="form-divider" style="width: auto; max-width: 100%;"></div>
 
         <div class="table-header">
             <div class="table-title">
-                <span class="user-count">Total: @(Model?.Count() ?? 0) usuarios</span>
+                <span class="user-count">Total: @(Model?.Count() ?? 0) noticias</span>
             </div>
             <div class="table-actions">
                 @Html.ActionLink("➕ Crear Nueva Noticia", "Create", null, new { @class = "btn btn-primary" })
             </div>
         </div>
-        <div class="table-container">
-            <table class=modern-table>
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Categoría</th>
-                        <th>Autor</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var noticia in Model)
-                    {
-                        <tr>
-                            <td>
 
-                                <div class="user-info">
-
-                                    <div class="user-details">
-                                        <h4>@noticia.ArticleTitle</h4>
-                                        <span>ID: @noticia.ArticleID</span>
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td>@noticia.Categories.CategoryName</td>
-                            <td>@noticia.Users.UserName</td>
-                            <td>@noticia.ArticleDate.ToShortDateString()</td>
-                            <td>
-                                @Html.ActionLink("✏️ Editar", "Edit", new { id = noticia.ArticleID }, new { @class = "btn btn-warning" })
-                                @Html.Raw($"<a href='#' class='action-btn btn-danger' onclick=\"showDeleteModal('{noticia.ArticleTitle}', '{noticia.ArticleID}')\">🗑️ Eliminar</a>")
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-box" placeholder="Buscar noticias por título, categoría o autor..." id="searchInput">
         </div>
 
-        <!-- MODAL ELIMINAR NOTICIA -->
-        <div id="deleteModal" class="modal-overlay">
-            <div class="modal-container">
-                <div class="modal-header">
-                    <button class="modal-close" onclick="closeDeleteNewsModal()">×</button>
-                    <span class="modal-icon">🗑️</span>
-                    <h2 class="modal-title">Eliminar Noticia</h2>
-                    <p class="modal-subtitle">Esta acción no se puede deshacer</p>
+        <div class="table-container">
+            @if (Model != null && Model.Any())
+            {
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Categoría</th>
+                            <th>Autor</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var noticia in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-details">
+                                            <h4>@Html.DisplayFor(modelItem => noticia.ArticleTitle)</h4>
+                                            <span>ID: @noticia.ArticleID</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    @{
+                                        var categoryClass = "role-cliente";
+                                        var categoryName = noticia.Categories?.CategoryName ?? "Sin categoría";
+                                        switch (categoryName.ToLower())
+                                        {
+                                            case "deportes":
+                                                categoryClass = "role-admin";
+                                                break;
+                                            case "política":
+                                                categoryClass = "role-editor";
+                                                break;
+                                            case "cultura":
+                                                categoryClass = "role-moderador";
+                                                break;
+                                            case "tecnología":
+                                                categoryClass = "role-admin";
+                                                break;
+                                            default:
+                                                categoryClass = "role-cliente";
+                                                break;
+                                        }
+                                    }
+                                    <span class="role-badge @categoryClass">
+                                        @Html.DisplayFor(modelItem => noticia.Categories.CategoryName)
+                                    </span>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => noticia.Users.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => noticia.ArticleDate)
+                                </td>
+                                <td class="actions-cell">
+                                    @Html.ActionLink("✏️ Editar", "Edit", new { id = noticia.ArticleID }, new { @class = "action-btn btn-warning" })
+                                    @Html.Raw($"<a href='#' class='action-btn btn-danger' onclick=\"showDeleteModal('{noticia.ArticleTitle}', '{noticia.Categories?.CategoryName ?? "Sin categoría"}', '{noticia.Users?.UserName ?? "Sin autor"}', {noticia.ArticleID})\">🗑️ Eliminar</a>")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="no-users">
+                    <div class="no-users-icon">📰</div>
+                    <h3>No hay noticias registradas</h3>
+                    <p>Comienza creando tu primera noticia del sistema</p>
+                    @Html.ActionLink("Crear Primera Noticia", "Create", null, new { @class = "btn btn-primary", style = "margin-top: 20px;" })
                 </div>
+            }
+        </div>
 
-                <div class="modal-body">
-                    <div class="user-info-card">
-                        <div class="user-avatar-large" id="modalNewsAvatar">N</div>
-                        <div class="user-details-card">
-                            <h4 id="modalNewsTitle"></h4>
-                            <div class="user-detail-item">
-                                <span class="user-detail-label">ID:</span>
-                                <span class="user-detail-value" id="modalNewsId"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="warning-message">
-                        <strong>¡Atención!</strong> Esta acción eliminará permanentemente la noticia y toda su información asociada.
-                    </div>
-
-                    <div class="consequences-list">
-                        <li>Se eliminará el contenido de la noticia</li>
-                        <li>No se podrá recuperar posteriormente</li>
-                        <li>La noticia desaparecerá de la web</li>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button class="modal-btn btn-cancel" onclick="closeDeleteNewsModal()">
-                        ❌ Cancelar
-                    </button>
-                    @using (Html.BeginForm("DeleteConfirmed", "News", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="id" id="hiddenNewsIdToDelete" />
-                        <button type="submit" class="modal-btn btn-delete">
-                            🗑️ Eliminar Noticia
-                        </button>
-                    }
-                </div>
+        <div class="pagination">
+            <div class="pagination-info">
+                Mostrando @(Model?.Count() ?? 0) noticias
             </div>
         </div>
-
 
         <div class="back-link">
             <a href="@Url.Action("Index", "Management")" class="crud-btn btn-listar">
                 ← Volver al Panel de Gestión
             </a>
         </div>
+    </div>
+</div>
 
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <button class="modal-close" onclick="closeDeleteModal()">×</button>
+            <span class="modal-icon">🗑️</span>
+            <h2 class="modal-title">Eliminar Noticia</h2>
+            <p class="modal-subtitle">Esta acción no se puede deshacer</p>
+        </div>
+
+        <div class="modal-body">
+            <div class="user-info-card">
+                <div class="user-avatar-large" id="modalNewsAvatar">📰</div>
+                <div class="user-details-card">
+                    <h4 id="modalNewsTitle"></h4>
+                    <div class="user-detail-item">
+                        <span class="user-detail-label">Categoría:</span>
+                        <span id="modalNewsCategory"></span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="user-detail-label">Autor:</span>
+                        <span class="user-detail-value" id="modalNewsAuthor"></span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="user-detail-label">ID:</span>
+                        <span class="user-detail-value" id="modalNewsId"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-message">
+                <strong>¡Atención!</strong> Esta acción eliminará permanentemente la noticia y toda su información asociada.
+            </div>
+
+            <div class="consequences-list">
+                <li>Se eliminará toda la información de la noticia</li>
+                <li>Se perderá el historial de visualizaciones</li>
+                <li>No se podrán recuperar los datos posteriormente</li>
+                <li>Se notificará automáticamente a los editores</li>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="modal-btn btn-cancel" onclick="closeDeleteModal()">
+                ❌ Cancelar
+            </button>
+            @using (Html.BeginForm("DeleteConfirmed", "News", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" id="hiddenNewsIdToDelete" />
+                <button type="submit" class="modal-btn btn-delete">
+                    🗑️ Eliminar Noticia
+                </button>
+            }
+        </div>
     </div>
 </div>
 
 <script>
+    let newsToDelete = null;
 
-    function showDeleteNewsModal(title, id) {
-        document.getElementById('modalNewsTitle').textContent = title;
-        document.getElementById('modalNewsId').textContent = id;
-        document.getElementById('modalNewsAvatar').textContent = title.charAt(0).toUpperCase();
-        document.getElementById('hiddenNewsIdToDelete').value = id;
+    function showDeleteModal(newsTitle, newsCategory, newsAuthor, newsId) {
+        newsToDelete = { newsTitle, newsCategory, newsAuthor, newsId };
 
+        // Actualizar contenido del modal
+        document.getElementById('modalNewsTitle').textContent = newsTitle;
+        document.getElementById('modalNewsCategory').textContent = newsCategory;
+        document.getElementById('modalNewsAuthor').textContent = newsAuthor;
+        document.getElementById('modalNewsId').textContent = newsId;
+        document.getElementById('hiddenNewsIdToDelete').value = newsId;
+
+        // Actualizar avatar con icono de noticia
+        const avatar = document.getElementById('modalNewsAvatar');
+        avatar.textContent = '📰';
+
+        // Actualizar clase de la categoría
+        const categoryElement = document.getElementById('modalNewsCategory');
+ 
+        // Mostrar modal
         const modal = document.getElementById('deleteModal');
-        document.getElementById('deleteModal').classList.add('active');
+        modal.classList.add('active');
+
+        // Prevenir scroll del body
         document.body.style.overflow = 'hidden';
     }
 
-    function closeDeleteNewsModal() {
+    function closeDeleteModal() {
         const modal = document.getElementById('deleteModal');
-        document.getElementById('deleteModal').classList.remove('active');
+        modal.classList.remove('active');
+
+        // Restaurar scroll del body
         document.body.style.overflow = 'auto';
+
+        // Limpiar datos
+        newsToDelete = null;
     }
 
+    function confirmDelete() {
+        if (newsToDelete) {
+            console.log('Eliminando noticia:', newsToDelete);
+
+            // Simulación de eliminación exitosa
+            alert(`Noticia ${newsToDelete.newsTitle} eliminada exitosamente`);
+
+            closeDeleteModal();
+        }
+    }
+
+    // Cerrar modal al hacer clic fuera
     document.getElementById('deleteModal').addEventListener('click', function (e) {
         if (e.target === this) {
-            closeDeleteNewsModal();
+            closeDeleteModal();
         }
+    });
+
+    // Cerrar modal con tecla Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && document.getElementById('deleteModal').classList.contains('active')) {
+            closeDeleteModal();
+        }
+    });
+
+    // Funcionalidad de búsqueda
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const tableRows = document.querySelectorAll('.modern-table tbody tr');
+
+        tableRows.forEach(row => {
+            const title = row.querySelector('h4').textContent.toLowerCase();
+            const category = row.querySelector('.role-badge').textContent.toLowerCase();
+            const author = row.cells[2].textContent.toLowerCase();
+
+            if (title.includes(searchTerm) || category.includes(searchTerm) || author.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
     });
 
 
 </script>
+
