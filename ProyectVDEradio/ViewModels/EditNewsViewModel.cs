@@ -11,9 +11,11 @@ namespace ProyectVDEradio.ViewModels
     {
         public int ArticleID { get; set; }
 
+        [Display(Name = "Titulo De La Noticia")]
         [Required(ErrorMessage = "El título es obligatorio")]
         public string ArticleTitle { get; set; }
 
+        [Display(Name = "Contenido De La Noticia")]
         [Required(ErrorMessage = "El contenido es obligatorio")]
         [DataType(DataType.MultilineText)]
         public string ArticleContent { get; set; }

@@ -9,9 +9,11 @@ namespace ProyectVDEradio.ViewModels
 {
     public class CreateNewsViewModel
     {
+        [Display(Name = "Titulo De La Noticia")]
         public string Title { get; set; }
 
         [AllowHtml]
+        [Display(Name = "Contenido De La Noticia")]
         public string Content { get; set; }
 
         [Display(Name = "Categoría")]

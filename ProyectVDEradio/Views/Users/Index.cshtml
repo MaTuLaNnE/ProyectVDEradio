@@ -9,7 +9,8 @@
     <div class="section">
         <h2>Gestión de Usuarios</h2>
         <div class="subtitle">Administra todos los usuarios del sistema </div>
-        <div class="form-divider"></div>
+        <div class="form-divider" style="width: auto; max-width: 100%;"></div>
+
 
         <div class="table-header">
             <div class="table-title">
@@ -33,7 +34,6 @@
                         <tr>
                             <th>Nombre de Usuario</th>
                             <th>Correo Electronico</th>
-                            <th>Contraseña</th>
                             <th>Rol</th>
                             <th>Acciones</th>
                         </tr>
@@ -53,9 +53,6 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Email)
-                                </td>
-                                <td>
-                                    <span class="password-field">••••••••</span>
                                 </td>
                                 <td>
                                     @{
@@ -102,6 +99,7 @@
 
 
         </div>
+        <div class="form-divider" style="width: auto; max-width: 100%;"></div>
         <h2>Usuarios Clientes</h2>
         <div class="subtitle">Usuarios registrados en la pagina del tipo cliente</div>
         <div class="table-container">
@@ -162,7 +160,9 @@
         </div>
 
         <div class="back-link">
-            @Html.ActionLink("← Volver al Panel de Gestión", "Index", "Management")
+            <a href="@Url.Action("Index", "Management")" class="crud-btn btn-listar">
+                ← Volver al Panel de Gestión
+            </a>
         </div>
     </div>
 </div>

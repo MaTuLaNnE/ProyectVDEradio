@@ -326,6 +326,7 @@ namespace ProyectVDEradio.Controllers
 
 
         // GET: News/Create
+        [AuthorizePermiso("CreateNews")]
         public ActionResult Create()
         {
             var model = new CreateNewsViewModel
@@ -343,6 +344,7 @@ namespace ProyectVDEradio.Controllers
         // POST: News/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
+        [AuthorizePermiso("CreateNews")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateNewsViewModel model)
@@ -368,7 +370,6 @@ namespace ProyectVDEradio.Controllers
                 return RedirectToAction("index", "Management");
             }
 
-            // Volvemos a cargar las categorías si hay error
             model.CategoriasDisponibles = db.Categories.Select(c => new SelectListItem
             {
                 Value = c.CategoryId.ToString(),
@@ -378,6 +379,7 @@ namespace ProyectVDEradio.Controllers
             return View(model);
         }
 
+        [AuthorizePermiso("NewsList")]
         public ActionResult NewsTable()
         {
             var noticias = db.News.Include("Categories").Include("Users").ToList();
@@ -385,6 +387,7 @@ namespace ProyectVDEradio.Controllers
         }
 
         // GET: News/Edit/5
+        [AuthorizePermiso("UpdateNews")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -422,6 +425,7 @@ namespace ProyectVDEradio.Controllers
         // POST: News/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
+        [AuthorizePermiso("UpdateNews")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EditNewsViewModel model)
@@ -458,6 +462,7 @@ namespace ProyectVDEradio.Controllers
         }
 
         // GET: News/Delete/5
+        [AuthorizePermiso("DeleteNews")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -473,23 +478,20 @@ namespace ProyectVDEradio.Controllers
         }
 
         // POST: News/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [AuthorizePermiso("DeleteNews")]
+        [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             News news = db.News.Find(id);
-            db.News.Remove(news);
+            if (news != null)
+            {
+                db.News.Remove(news);
+            }
+   
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("NewsTable");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

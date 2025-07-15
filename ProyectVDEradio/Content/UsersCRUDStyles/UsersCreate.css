@@ -1,5 +1,5 @@
 ﻿.form-divider {
-    width: 80px;
+    width: auto;
     height: 4px;
     background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
     margin: 20px auto 30px;
@@ -261,7 +261,7 @@
 }
 
     .back-link a {
-        color: #1976d2;
+        color: white;
         text-decoration: none;
         font-weight: 500;
         transition: all 0.3s ease;

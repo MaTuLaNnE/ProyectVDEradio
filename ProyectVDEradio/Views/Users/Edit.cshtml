@@ -7,7 +7,7 @@
 <div class="container">
     <div class="section">
         <h2>Editar Usuario</h2>
-        <div class="form-divider"></div>
+        <div class="form-divider" style="width: auto; max-width: 100%;"></div>
 
         @using (Html.BeginForm())
         {
@@ -53,7 +53,7 @@
 
                 @if (Model.UserRole == 3)
                 {
-                    <div class="cliente-camposEdit">
+                    
                         <div class="cliente-title">Información del Cliente</div>
 
                         <div class="form-row">
@@ -74,7 +74,7 @@
                             @Html.TextBoxFor(m => m.FechaNacimiento, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.FechaNacimiento, "", new { @class = "field-validation-error" })
                         </div>
-                    </div>
+                  
                 }
 
 
