@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "NewsTable";
 }
 @model List<ProyectVDEradio.Models.News>
@@ -15,7 +14,7 @@
                 <span class="user-count">Total: @(Model?.Count() ?? 0) noticias</span>
             </div>
             <div class="table-actions">
-                @Html.ActionLink("➕ Crear Nueva Noticia", "Create", null, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Crear Nueva Noticia", "Create", null, new { @class = "btn btn-primary" })
             </div>
         </div>
 
@@ -198,6 +197,7 @@
         modal.classList.add('active');
 
         // Prevenir scroll del body
+
         document.body.style.overflow = 'hidden';
     }
 
@@ -206,6 +206,7 @@
         modal.classList.remove('active');
 
         // Restaurar scroll del body
+
         document.body.style.overflow = 'auto';
 
         // Limpiar datos
@@ -223,7 +224,6 @@
         }
     }
 
-    // Cerrar modal al hacer clic fuera
     document.getElementById('deleteModal').addEventListener('click', function (e) {
         if (e.target === this) {
             closeDeleteModal();
