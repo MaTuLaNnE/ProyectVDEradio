@@ -25,9 +25,22 @@ namespace ProyectVDEradio
             bundles.Add(new Bundle("~/bundles/main").Include(
             "~/Scripts/main.js"));
 
+            bundles.Add(new Bundle("~/bundles/Management").Include(
+                      "~/Scripts/PagesScripts/Management.js"));
+
+            bundles.Add(new Bundle("~/bundles/clima").Include(
+            "~/Scripts/clima.js"));
+
+            bundles.Add(new Bundle("~/bundles/dropdown").Include(
+            "~/Scripts/DropDown.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/Site.css"));
+                      "~/Content/Site.css",
+                      "~/Content/Clima.css",
+                      "~/Content/PagesStyles/Management.css",
+                      "~/Content/UsersCRUDStyles/UsersCreate.css",
+                      "~/Content/UsersCRUDStyles/UsersViewsStyles.css",
+                      "~/Content/UsersCRUDStyles/UsersDelete.css"));
         }
     }
 }

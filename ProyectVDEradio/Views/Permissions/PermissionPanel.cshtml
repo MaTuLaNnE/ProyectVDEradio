@@ -1,0 +1,337 @@
+﻿@model List<ProyectVDEradio.ViewModels.PermissionRoleViewModel>
+@{
+    ViewBag.Title = "PermissionPanel";
+}
+
+<style>
+    .container {
+        width: 95%;
+        max-width: 1400px;
+        margin: auto;
+        padding: 20px 0;
+    }
+
+    .section {
+        margin: 30px 0;
+        background: rgba(255,255,255,0.95);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
+        .section h2 {
+            margin-bottom: 10px;
+            color: #0d47a1;
+            font-size: 2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+            .section h2::before {
+                content: '🔐';
+                font-size: 1.8rem;
+            }
+
+    .subtitle {
+        color: #1976d2;
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+        opacity: 0.8;
+    }
+
+    .form-divider {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
+        margin: 20px 0 30px 0;
+        border-radius: 2px;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        text-decoration: none;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: white;
+    }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+    }
+
+    .btn-info {
+        background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+    }
+
+    .table-container {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        margin-bottom: 30px;
+    }
+
+    .modern-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+    }
+
+        .modern-table thead {
+            background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
+            color: white;
+        }
+
+            .modern-table thead th {
+                padding: 20px 15px;
+                text-align: left;
+                font-weight: 600;
+                position: relative;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            }
+
+                .modern-table thead th:not(:last-child)::after {
+                    content: '';
+                    position: absolute;
+                    right: 0;
+                    top: 25%;
+                    height: 50%;
+                    width: 1px;
+                    background: rgba(255, 255, 255, 0.3);
+                }
+
+        .modern-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+            .modern-table tbody tr:nth-child(even) {
+                background: rgba(245, 245, 245, 0.5);
+            }
+
+            .modern-table tbody tr:hover {
+                background: linear-gradient(135deg, rgba(33, 150, 243, 0.1) 0%, rgba(13, 71, 161, 0.1) 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+        .modern-table tbody td {
+            padding: 18px 15px;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+            .modern-table tbody td:first-child {
+                font-weight: 600;
+                color: #0d47a1;
+            }
+
+    .checkbox-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .custom-checkbox {
+        width: 20px;
+        height: 20px;
+        appearance: none;
+        border: 2px solid #1976d2;
+        border-radius: 4px;
+        background: white;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+        .custom-checkbox:checked {
+            background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+            border-color: #4caf50;
+        }
+
+            .custom-checkbox:checked::after {
+                content: '✓';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+        .custom-checkbox:hover {
+            border-color: #0d47a1;
+            box-shadow: 0 0 10px rgba(25, 118, 210, 0.3);
+        }
+
+    .permissions-info {
+        background: rgba(33, 150, 243, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 4px solid #1976d2;
+    }
+
+        .permissions-info p {
+            margin: 0;
+            color: #0d47a1;
+            font-size: 0.95rem;
+        }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: flex-end;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    /* Responsive design */
+    @@media (max-width: 768px) {
+        .section {
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .modern-table {
+            font-size: 0.85rem;
+        }
+
+            .modern-table thead th,
+            .modern-table tbody td {
+                padding: 12px 8px;
+            }
+
+        .form-actions {
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="section">
+        <h2>Gestión de Permisos</h2>
+        <div class="form-divider"></div>
+        <p class="subtitle">Configura los permisos para cada rol del sistema</p>
+
+        <div class="permissions-info">
+            <p>📋 Selecciona los permisos que deseas asignar a cada rol. Los cambios se aplicarán al hacer clic en "Guardar Cambios".</p>
+        </div>
+
+        @using (Html.BeginForm("GuardarPermisos", "Permissions", FormMethod.Post))
+        {
+            <div class="table-container">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Permiso</th>
+                            @foreach (var rol in Model)
+                            {
+                                <th>@rol.RoleName</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.First().Permisos.Count; i++)
+                        {
+                            var permiso = Model.First().Permisos[i];
+                            <tr>
+                                <td><strong>@permiso.PermissionName</strong></td>
+                                @for (int j = 0; j < Model.Count; j++)
+                                {
+                                    var rol = Model[j];
+                                    var estaAsignado = rol.Permisos[i].EstaAsignado;
+                                    <td>
+                                        <div class="checkbox-container">
+                                            <input type="checkbox"
+                                                   name="PermisosAsignados"
+                                                   value="@rol.RoleId-@permiso.PermissionId"
+                                                   class="custom-checkbox"
+                                                   @(estaAsignado ? "checked" : "") />
+                                        </div>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-info" onclick="resetCheckboxes()">
+                    <span>🔄</span>
+                    Restablecer
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <span>💾</span>
+                    Guardar Cambios
+                </button>
+
+
+            </div>
+            <div class="back-link">
+                <a href="@Url.Action("Index", "Management")" class="crud-btn btn-listar">
+                    ← Volver al Panel de Gestión
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function resetCheckboxes() {
+        const checkboxes = document.querySelectorAll('.custom-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    }
+
+    // Efecto de hover mejorado para las filas
+    document.querySelectorAll('.modern-table tbody tr').forEach(row => {
+        row.addEventListener('mouseenter', function () {
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+        });
+
+        row.addEventListener('mouseleave', function () {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = 'none';
+        });
+    });
+</script>

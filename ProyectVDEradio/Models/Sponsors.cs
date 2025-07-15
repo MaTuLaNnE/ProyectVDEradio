@@ -18,5 +18,6 @@ namespace ProyectVDEradio.Models
         public string SponsorName { get; set; }
         public string SponsorDescription { get; set; }
         public Nullable<int> SponsorPlan { get; set; }
+        public string SponsorImage { get; set; }
     }
 }

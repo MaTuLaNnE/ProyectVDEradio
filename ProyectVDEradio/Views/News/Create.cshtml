@@ -1,0 +1,93 @@
+﻿@model ProyectVDEradio.ViewModels.CreateNewsViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<div class="container">
+    <div class="section">
+        <h2>Crear Nueva Noticia</h2>
+        <h4>Cargar nueva noticia en el portal</h4>
+
+        <div class="form-divider" style="width: auto; max-width: 100%;"></div>
+        @using (Html.BeginForm("Create", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+
+                <div class="form-group has-icon">
+                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Title)
+                    </div>
+                </div>
+
+                <div class="form-group has-icon">
+                    @Html.LabelFor(model => model.ArticleSubtitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ArticleSubtitle, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ArticleSubtitle)
+                    </div>
+                </div>
+
+                <div class="form-group has-icon">
+                    @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows = 10 })
+                        @Html.ValidationMessageFor(model => model.Content)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CategoryId, "Categoría", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.CategoryId, Model.CategoriasDisponibles, "Seleccione una categoría", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CategoryId)
+                    </div>
+                </div>
+
+                <div class="form-group has-icon">
+                    @Html.LabelFor(model => model.ArticleImage, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ArticleImage, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ArticleImage)
+                        <small class="form-text text-muted">Ingrese una URL o nombre de archivo (si luego se maneja subida real).</small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ArticleDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ArticleDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        @Html.ValidationMessageFor(model => model.ArticleDate)
+                    </div>
+                </div>
+
+                <div class="btn-container">
+
+                    <input type="submit" value="Crear Noticia" class="btn btn-primary" />
+                    @Html.ActionLink("Cancelar", "NewsTable", null, new { @class = "btn btn-secondary" })
+
+                </div>
+
+            </div>
+        }
+
+        <div class="back-link">
+            <a href="@Url.Action("NewsTable", "News")" class="crud-btn btn-listar">
+                ← Volver al Panel de Gestión de Noticias
+            </a>
+        </div>
+        <div class="back-link">
+            <a href="@Url.Action("Index", "Management")" class="crud-btn btn-listar">
+                ← Volver al Panel de Gestión
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

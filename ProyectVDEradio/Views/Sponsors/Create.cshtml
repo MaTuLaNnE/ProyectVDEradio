@@ -1,0 +1,62 @@
+﻿@model ProyectVDEradio.Models.Sponsors
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="container">
+    <div class="section">
+        <h2>Crear Sponsor</h2>
+        <h4>Nuevo Sponsor de la Radio</h4>
+        <div class="form-divider"></div>
+
+        @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
+
+        @using (Html.BeginForm())
+        {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group has-icon">
+            <label class="form-label required">Nombre del Sponsor</label>
+            @Html.TextBoxFor(model => model.SponsorName, new { @class = "form-control", placeholder = "Ingrese el nombre del sponsor" })
+            <span class="input-icon">🏷️</span>
+            @Html.ValidationMessageFor(model => model.SponsorName, "", new { @class = "field-validation-error" })
+        </div>
+
+        <div class="form-group has-icon">
+            <label class="form-label required">Descripción</label>
+            @Html.TextAreaFor(model => model.SponsorDescription, new { @class = "form-control", placeholder = "Descripción detallada del sponsor", rows = "3" })
+            <span class="input-icon">📝</span>
+            @Html.ValidationMessageFor(model => model.SponsorDescription, "", new { @class = "field-validation-error" })
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Plan del Sponsor</label>
+            @Html.TextBoxFor(model => model.SponsorPlan, new { @class = "form-control", placeholder = "Ingrese el plan de anuncios del sponsor" })
+            @Html.ValidationMessageFor(model => model.SponsorPlan, "", new { @class = "field-validation-error" })
+        </div>
+
+        <div class="form-group has-icon">
+            <label class="form-label">URL de la Imagen</label>
+            @Html.TextBoxFor(model => model.SponsorImage, new { @class = "form-control", placeholder = "https://ejemplo.com/imagen.jpg", type = "url" })
+            <span class="input-icon">🖼️</span>
+            @Html.ValidationMessageFor(model => model.SponsorImage, "", new { @class = "field-validation-error" })
+        </div>
+
+        <div class="btn-container">
+            <input type="submit" value="✅ Crear Sponsor" class="btn btn-primary" />
+            <input type="reset" value="🔄 Limpiar Formulario" class="btn btn-secondary" />
+        </div>
+        }
+
+        <div class="back-link">
+            <a href="@Url.Action("Index", "Sponsors")" class="crud-btn btn-listar">
+                ← Volver al Panel de Sponsors
+            </a>
+        </div>
+        <div class="back-link">
+            <a href="@Url.Action("Index", "Management")" class="crud-btn btn-listar">
+                ← Volver al Panel de Gestión
+            </a>
+        </div>
+    </div>
+</div>
