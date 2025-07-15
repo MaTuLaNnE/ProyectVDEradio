@@ -1,16 +1,18 @@
-﻿@model ProyectVDEradio.Models.RadioPrograms
+﻿@model ProyectVDEradio.ViewModels.EditRadioProgramViewModel
 
 @{
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<div class="container">
+    <div class="section">
+        <h2>Editar Programa de Radio</h2>
+        <div class="form-divider" style="width: auto; max-width: 100%;"></div>
 
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
     <div class="form-horizontal">
         <h4>RadioPrograms</h4>
         <hr />
@@ -20,7 +22,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ProgramName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProgramName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ProgramName, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre del programa" } })
                 @Html.ValidationMessageFor(model => model.ProgramName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -28,7 +30,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control", placeholder = "URL de la imagen" } })
                 @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -36,39 +38,84 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "Descripción del programa", rows = 4 })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+        <div class="form-row">
+            <div class="form-group">
+                @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", type = "time" } })
+                    @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control", type = "time" } })
+                    @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+            <label class="form-label required">Días de Emisión</label>
+            <div class="checkbox-group">
+                @{
+                    string[] dias = { "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" };
+                    for (int i = 0; i < 7; i++)
+                    {
+                        <div class="checkbox-item">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="SelectedDays" value="@i" class="checkbox-input" />
+                                @dias[i]
+                            </label>
+                        </div>
+                    }
+                }
             </div>
+            @Html.ValidationMessageFor(model => model.SelectedDays, "", new { @class = "field-validation-error" })
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <label class="form-label required">Conductores</label>
+            <div class="checkbox-group">
+                @foreach (var host in Model.HostsDisponibles)
+                {
+                    <div class="checkbox-item">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="SelectedHostIds" value="@host.Value" class="checkbox-input" />
+                            @host.Text
+                        </label>
+                    </div>
+                }
             </div>
+            @Html.ValidationMessageFor(model => model.SelectedHostIds, "", new { @class = "field-validation-error" })
+        </div>
+
+        <div class="btn-container">
+            <input type="submit" value="✅ Actualizar Programa" class="btn btn-primary" />
+            <input type="reset" value="🔄 Limpiar Formulario" class="btn btn-secondary" />
         </div>
     </div>
-}
+        }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+        <div class="back-link">
+            <a href="@Url.Action("Index", "RadioPrograms")" class="crud-btn btn-listar">
+                ← Volver a la Lista de Programas
+            </a>
+        </div>
+        <div class="back-link">
+            <a href="@Url.Action("Index", "Management")" class="crud-btn btn-listar">
+                ← Volver al Panel de Gestión
+            </a>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
