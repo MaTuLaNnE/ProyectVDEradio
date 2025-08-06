@@ -11,6 +11,9 @@ namespace ProyectVDEradio
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+
+            routes.IgnoreRoute("api/{*pathInfo}");
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
